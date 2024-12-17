@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Carte from '../screens/Cartescreen';
+import Test from '../screens/Test';
 
 // Créer des composants d'écran simples
 function HomeScreen() {
@@ -89,7 +90,7 @@ export default function Menue() {
       <Drawer.Navigator initialRouteName="Accueil">
         <Drawer.Screen
           name="Accueil"
-          component={Carte}
+          component={Test}
           options={{
             drawerIcon: ({ color }) => (
               <Icon name="home" size={24} color={color} />
