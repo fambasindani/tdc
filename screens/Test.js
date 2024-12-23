@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StatusBar } from 'expo-status-bar';
+
 
 const locations = [
   { id: 1, title: 'Taxi 1', latitude: -4.29899, longitude: 15.316 },
@@ -66,6 +68,8 @@ const Test = () => {
   };
 
   return (
+    <>
+    <StatusBar barStyle="dark-content" backgroundColor="#007BFF" />
     <View style={styles.container}>
       {userLocation ? (
         <MapView
@@ -114,6 +118,7 @@ const Test = () => {
         <Icon name="my-location" size={30} color="white" />
       </TouchableOpacity>
     </View>
+    </>
   );
 };
 
