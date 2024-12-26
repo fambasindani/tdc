@@ -14,6 +14,12 @@ import Itinerairesreens from '../screens/Additinerairesreen';
 import Listecatscreen from '../screens/Listecatscreen';
 import Addcategoriesreen from '../screens/Addcategoriesreen';
 import ListeItinscreen from '../screens/ListeItinscreen';
+import Listearretscreen from '../screens/Listearretscreen';
+import Addarretsreen from '../screens/Addarretsreen';
+import Listevehiculescreen from '../screens/Listevehiculescreen';
+import Addvehiculescreen from '../screens/Addvehiculescreen';
+import Profilscreens from '../screens/Profilscreens';
+import Updateprofilscreen from '../screens/Updateprofilscreen';
 
 // Vos fonctions d'écran
 function HomeScreen() {
@@ -26,17 +32,13 @@ function HomeScreen() {
 
 function Profilscreen() {
   return (
-    <View style={styles.screen}>
-      <Text>Profil</Text>
-    </View>
+    <Profilscreens/>
   );
 }
 
 function VehiculeScreen() {
   return (
-    <View style={styles.screen}>
-      <Text>Véhicule</Text>
-    </View>
+    <Listevehiculescreen />
   );
 }
 
@@ -72,9 +74,8 @@ function Actioninineraire() {
 
 function ArretScreen() {
   return (
-    <View style={styles.screen}>
-      <Text>Arrêt</Text>
-    </View>
+    <Listearretscreen />
+
   );
 }
 
@@ -122,6 +123,12 @@ const DrawerNavigator = () => {
         component={Profilscreen}
         options={{
           drawerIcon: ({ color }) => <Icon name="person" size={24} color={color} />,
+          title: "Profil",
+          headerStyle: {
+            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
         }}
       />
       <Drawer.Screen
@@ -129,6 +136,12 @@ const DrawerNavigator = () => {
         component={VehiculeScreen}
         options={{
           drawerIcon: ({ color }) => <Icon name="directions-car" size={24} color={color} />,
+          headerStyle: {
+            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
+
         }}
       />
       <Drawer.Screen
@@ -181,18 +194,31 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Arrêt"
+        name="Listearret"
         component={ArretScreen}
         options={{
           drawerIcon: ({ color }) => <Icon name="stop" size={24} color={color} />,
+          title: "Arrêt",
+          headerStyle: {
+            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+
+
+
       <Drawer.Screen
         name="Tarification"
         component={TarificationScreen}
         options={{
           drawerIcon: ({ color }) => <Icon name="attach-money" size={24} color={color} />,
+
+
         }}
+
+
       />
       <Drawer.Screen
         name="Connexion"
@@ -267,6 +293,46 @@ const AppNavigator = () => {
             fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
             color: COLORS.white, // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+     
+
+      <Stack.Screen
+        name="Addvehicule"
+        component={Addvehiculescreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.blue,
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Vehicule', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+<Stack.Screen
+        name="Updateprofil"
+        component={Updateprofilscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.blue,
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Profil', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
           },
         }}
       />
