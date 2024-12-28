@@ -141,8 +141,8 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
                     source={require('../assets/Likunzi.png')} 
                     style={styles.notificationImage} 
                 />
-                <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold', textAlign: 'center' }}>Login</Text>
-                <Text style={{ color: COLORS.grey, fontSize: 18, marginBottom: 50, textAlign: 'center' }}>Entrer les Détails de Login</Text>
+     
+                
                 <View style={styles.modalContent}>
                     <Input icons="envelope" label="Email" placeholder="Votre Email" name={email} setname={setEmail} />
                     <PasswordInput password={password} setPassword={setPassword} label="Password" />
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     notificationImage: {
-        width: 200, // Ajustez la largeur selon vos besoins
-        height: 200, // Ajustez la hauteur selon vos besoins
+        width: 57, // Ajustez la largeur selon vos besoins
+        height: 81, // Ajustez la hauteur selon vos besoins
         alignSelf: 'center', // Centre l'image horizontalement
         marginBottom: 20, // Ajoute un peu d'espace sous l'image
     },

@@ -11,7 +11,7 @@ const COLORS={
     blanccasse:'#f0f2f5',
     griclaire:'#ccc',
     beige:'beige',
-    rouge:'#c80000'
+    rouge:'#0e79b6'
 
 
 
