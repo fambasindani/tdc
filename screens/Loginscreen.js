@@ -144,9 +144,9 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
      
                 
                 <View style={styles.modalContent}>
-                    <Input icons="envelope" label="Email" placeholder="Votre Email" name={email} setname={setEmail} />
+                    <Input icons="envelope" label="Email" placeholder="Votre e-mail" name={email} setname={setEmail} />
                     <PasswordInput password={password} setPassword={setPassword} label="Password" />
-                    <Boutons title='Connecter' onPress={Actionlogin} Actionpassword={Actionpassword} Actioninscription={Actioninscription} />
+                    <Boutons title='Se connecter' onPress={Actionlogin} Actionpassword={Actionpassword} Actioninscription={Actioninscription} />
                 </View>
             </ScrollView>
            
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: COLORS.blanccasse,
     },
+
     container: {
         paddingTop:30,
         alignItems: 'center',
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     notificationImage: {
-        width: 57, // Ajustez la largeur selon vos besoins
-        height: 81, // Ajustez la hauteur selon vos besoins
+        width: 59, // Ajustez la largeur selon vos besoins
+        height: 98, // Ajustez la hauteur selon vos besoins
         alignSelf: 'center', // Centre l'image horizontalement
         marginBottom: 20, // Ajoute un peu d'espace sous l'image
     },

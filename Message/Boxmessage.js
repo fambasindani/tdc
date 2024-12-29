@@ -11,7 +11,7 @@ const SuccessModal = ({ visible, onClose}) => {
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalContainer}>
           <View style={[styles.modalContent, styles.roundedCorners]}>
-            <Text style={styles.message1}>Notification</Text>
+            <Text  style={styles.message1}>Notification </Text>
             <Text style={styles.message}>{text}</Text>
           </View>
         </View>

@@ -14,8 +14,8 @@ const Buttons = ({connexion,Actionconnection,title, onPress=()=>{}}) => {
             backgroundColor:COLORS.rouge,
             justifyContent:'center',
             alignItems:'center',
-            marginTop:20,
-            borderRadius:10,
+            marginTop:5,
+            borderRadius:210,
             paddingVertical:12,
             
         }}
@@ -24,7 +24,7 @@ const Buttons = ({connexion,Actionconnection,title, onPress=()=>{}}) => {
         ><Text
         style={{
             color:COLORS.white,
-            fontWeight:'bold',
+            fontWeight:'70',
             fontSize:20,
           
            
@@ -34,11 +34,11 @@ const Buttons = ({connexion,Actionconnection,title, onPress=()=>{}}) => {
         >{title}</Text></TouchableOpacity>
         <Text onPress={Actionconnection}
          style={{
-            color:COLORS.blue,
-            fontWeight:'bold',
-            fontSize:20,
+            color:'#646c72',
+            fontWeight:'70',
+            fontSize:15,
             marginBottom:20,
-            marginTop:10,
+            marginTop:15,
             textAlign:'center'
            
         }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View,Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 
 const Boutons = ({Actioninscription, Actionpassword, title, onPress = () => { } }) => {
@@ -11,11 +11,11 @@ const Boutons = ({Actioninscription, Actionpassword, title, onPress = () => { } 
                 onPress={onPress}
                 style={{
                     // width:"100%",
-                    backgroundColor: COLORS.rouge,
+                    backgroundColor: '#0a8ad3',
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 20,
-                    borderRadius: 10,
+                    borderRadius: 120,
                     paddingVertical: 12,
 
                 }}
@@ -24,7 +24,7 @@ const Boutons = ({Actioninscription, Actionpassword, title, onPress = () => { } 
             ><Text
                 style={{
                     color: COLORS.white,
-                    fontWeight: 'bold',
+                  
                     fontSize: 20,
 
 
@@ -37,11 +37,15 @@ const Boutons = ({Actioninscription, Actionpassword, title, onPress = () => { } 
 
             <View style={styles.contenu} >
 
-                <Text style={styles.texts} onPress={Actioninscription}>
-                    Inscription
+                <Text icons="envelope" style={styles.texts} onPress={Actioninscription}>
+              Créer un compte  <Image 
+                    source={require('../assets/small.png')} 
+                    style={styles.notificationImage} 
+                />
                 </Text>
                 <Text style={styles.texts} onPress={Actionpassword}>
-                    Password oublié
+                    Mot de passe oublié  
+                
                 </Text>
             </View>
 
@@ -61,9 +65,10 @@ const styles = StyleSheet.create({
     },
     texts: {
 
-        color: COLORS.blue,
-        fontWeight: 'bold',
-        fontSize: 18,
+        color: 'gray',
+        fontWeight: '10',
+        fontSize: 15,
+        paddingTop:18,
 
     },
 
@@ -76,6 +81,14 @@ const styles = StyleSheet.create({
         marginVertical: 10,
 
 
+    },
+
+    notificationImage: {
+        width: 14, // Ajustez la largeur selon vos besoins
+        height: 14, // Ajustez la hauteur selon vos besoins
+        padding:-22
+
+     
     },
 
 

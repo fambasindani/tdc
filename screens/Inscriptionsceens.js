@@ -196,20 +196,20 @@ export default function Inscriptionsceens({ navigation }) {
      
       <Image source={require('../assets/Likunzi.png')} style={styles.notificationImage} />
 
-        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold', textAlign:'center' }}>Inscription </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginBottom: 30 , textAlign:'center' }}>Entrer les Details de l'Inscription</Text>
+        
+        <Text style={{ color: '#', fontSize: 18, marginBottom: 30 , textAlign:'center',paddingTop:1 }}>Entrez les détails de l'inscription</Text>
         
         <View style={styles.modalContent}>
        
         <Input icons="user" label="Nom" placeholder="Votre nom" name={nom} setname={setnom}/>
 
 
-        <Input icons="envelope" label="Email" placeholder="Votre Email" name={email} setname={setemail}/>
-        <PasswordInput password={password} setPassword={setPassword} label="Password"/>
+        <Input icons="envelope" label="Email" placeholder="Votre e-mail" name={email} setname={setemail}/>
+        <PasswordInput password={password} setPassword={setPassword} label="Mot de passe"/>
         <Input icons="phone" label="Phone" placeholder="Votre phone" name={phone} setname={setphone}/>
         <Textareainput icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
 
-        <Buttons title='Enregistrer'  onPress={uploadImage} Actionconnection={Actionconnection} connexion="Connexion"/>
+        <Buttons title='Enregistrer'  onPress={uploadImage} Actionconnection={Actionconnection} connexion="J'ai déjà un compte"/>
 
 
         
@@ -270,10 +270,10 @@ const styles = StyleSheet.create({
     },
 
     notificationImage: {
-        width: 200, // Ajustez la largeur selon vos besoins
-        height: 200, // Ajustez la hauteur selon vos besoins
-        alignSelf: 'center', // Centre l'image horizontalement
-       // marginBottom: 20, // Ajoute un peu d'espace sous l'image
+      width: 59, // Ajustez la largeur selon vos besoins
+      height: 98, // Ajustez la hauteur selon vos besoins
+      alignSelf: 'center', // Centre l'image horizontalement
+      marginBottom: 20, // Ajoute un peu d'espace sous l'image
     },
 
    

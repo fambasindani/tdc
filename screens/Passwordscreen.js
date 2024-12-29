@@ -137,15 +137,22 @@ export default function Passwordscreen({ navigation }) {
      
 
 
-        <Text style={{ color: COLORS.black, fontSize: 25, fontWeight: 'bold', textAlign:'center' }}>Password oublié </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginBottom: 50 , textAlign:'center' }}>Entrer les Details de Password</Text>
+        <Text style={{ color: COLORS.black, fontSize: 25,marginBottom: 20 , fontWeight: 'bold', textAlign:'center' }}>Trouvez votre compte </Text>
+        <Text style={{ color: COLORS.grey, fontSize: 18, marginBottom: 20 , textAlign:'center' }}>Entrez votre e-mail</Text>
         <View style={styles.modalContent}>
        
       
        
-        <Input icons="envelope" label="Email" placeholder="Votre Email" name={email} setname={setemail}/>
+        <Input icons="envelope" label="Email" placeholder="Votre e-mail" name={email} setname={setemail}/>
        
-        <Buttons title='Envoyer' Actionconnection={Actionconnection}  onPress={uploadImage} connexion="Connexion"/>
+        <Buttons title='Continuer' Actionconnection={Actionconnection}  onPress={uploadImage} connexion="Retour à l'accueil "/> 
+    
+        
+        
+        
+        
+        
+        
 
 
         
@@ -204,6 +211,13 @@ const styles = StyleSheet.create({
         // marginLeft: '30%',
 
     },
+    notificationImage: {
+      width: 11, // Ajustez la largeur selon vos besoins
+      height: 23, // Ajustez la hauteur selon vos besoins
+      padding:-22
+
+   
+  },
 
    
 })
