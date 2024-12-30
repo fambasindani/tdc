@@ -8,22 +8,14 @@ const BoutonProfil = ({ onModifier, onSupprimer }) => {
     <View style={styles.container}>
      
      <TouchableOpacity style={[styles.button, styles.firstButton]} onPress={onModifier}>
-      <Text style={{ color: 'white', fontSize: 18, marginBottom: 2 ,  }}>
-        Modifier <Image 
-                    source={require('../assets/small.png')} 
-                    style={styles.notificationImage} 
-                />
-        </Text>
+     <Text style={styles.buttonsText}>Modifier </Text>
+     <Icon name="update" size={15} color="white" style={styles.iconn}/>
+    
       
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.button} onPress={onSupprimer}>
-        <Text  style={{ color: 'white', fontSize: 18, marginBottom: 2 ,  }}>
-          Supprimer <Image 
-                    source={require('../assets/small.png')} 
-                    style={styles.notificationImage} 
-                />
-          </Text>
+          <Text style={styles.buttonsText}>Supprimer </Text>
+          <Icon name="delete" size={15} color="white" style={styles.iconn}/>
       </TouchableOpacity>
       
     </View>
@@ -36,29 +28,40 @@ const styles = StyleSheet.create({
    
   },
   
+  
   button: {
+    flexDirection: 'row',        
+    backgroundColor: '#1779a7',
+    borderRadius: 100,
+    padding:11,    
+    marginVertical: 10,
+    alignItems:'center',
+    width: '42%',
+    borderColor: 'black',
+    borderWidth: 0.1,
+    marginLeft:19,
+},
 
-    padding: 8, // Ajuster le padding pour réduire la taille
-    borderRadius: 84,
-    alignItems: 'center',
-    backgroundColor:'#194465',
-    marginTop:10,
-    marginLeft: 17,
-    marginRight: 0,
-    width: 155, // Ajustez la largeur selon vos besoins
 
-   
-  },
+
   firstButton: {
 
 
   },
-  notificationImage: {
-    width: 12, // Ajustez la largeur selon vos besoins
-    height:12, // Ajustez la hauteur selon vos besoins
-  
+  buttonsText: {
+    marginLeft:25,
+    color:'white',
+    flexDirection: 'row',  
+    alignItems:'center',
 
-},
+  
+  },
+  iconn: {
+    marginTop:1,
+   color: 'white',
+    
+    },
+    
 });
 
 export default BoutonProfil;

@@ -24,7 +24,7 @@ export default function Imagephoto({setimage,defimage, setdefimage,  image,selec
                     style={styles.iconContainer} 
                     onPress={() => setModalVisible(true)}
                 >
-                    <Icon name="photo-camera" size={15} color="#000" />
+                    <Icon name="photo-camera" size={15} color="white" />
                 </TouchableOpacity>
             </View>
 
@@ -86,21 +86,21 @@ const styles = StyleSheet.create({
         width: 180,
         height: 180,
         borderRadius: 90,
-        borderColor: COLORS.grey,
-        borderWidth: 0.2,
+        borderColor: '#cecece',
+        borderWidth: 0.1,
         resizeMode: 'cover',
     },
     iconContainer: {
         position: 'absolute',
         bottom: 20,
         right: 0,
-        backgroundColor: COLORS.blanccasse,
+        backgroundColor: '#1d1309',
         padding: 10,
         borderRadius: 25,
-        shadowColor: COLORS.black,
+        shadowColor: 'blue',
         shadowOffset: {
-            width: 0,
-            height: 2,
+            width: 5,
+            height: 1,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
@@ -144,6 +144,8 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignItems:'center',
         width: '65%',
+        borderColor: 'black',
+        borderWidth: 0.1,
     },
     iconn: {
     marginTop:1,
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
       color:'white',
       flexDirection: 'row',  
       alignItems:'center',
+  
     
     },
     notificationImage: {

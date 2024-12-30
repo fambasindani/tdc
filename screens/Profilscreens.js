@@ -321,7 +321,10 @@ export default function Profilscreens({ navigation }) {
         <MonText desisnation={email} label="Email" />
         <MonText desisnation={phone} label="Téléphone" />
       </View>
-      <View style={styles.line}></View> 
+      <Image 
+                    source={require('../assets/linear2.png')} 
+                    style={styles.linear} 
+                />
       <BoutonProfil onModifier={onModifier} />
       
     </ScrollView>
@@ -355,6 +358,15 @@ const styles = StyleSheet.create({
     
    
  },
+ linear: {
+  width: 295, // Ajustez la largeur selon vos besoins
+  height:4, // Ajustez la hauteur selon vos besoins
+  marginTop:20,
+  marginLeft:32,
+
+
+
+},
 
     container: {
    
