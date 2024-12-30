@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   },
   
   button: {
-    backgroundColor: COLORS.rouge, // Couleur de fond pour les boutons
+
     padding: 8, // Ajuster le padding pour réduire la taille
-    borderRadius: 85,
+    borderRadius: 84,
     alignItems: 'center',
     backgroundColor:'#194465',
     marginTop:10,

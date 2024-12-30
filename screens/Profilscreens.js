@@ -316,11 +316,14 @@ export default function Profilscreens({ navigation }) {
                     setdefimage={setDefaultImage}
                    
                 />
+        
         <MonText desisnation={nom} label="Nom" />
         <MonText desisnation={email} label="Email" />
         <MonText desisnation={phone} label="Téléphone" />
       </View>
+      <View style={styles.line}></View> 
       <BoutonProfil onModifier={onModifier} />
+      
     </ScrollView>
   
   </View>
@@ -337,11 +340,21 @@ const styles = StyleSheet.create({
      //flex: 1,
      // justifyContent: 'center',
       alignItems: 'center',
-        backgroundColor: COLORS.blanccasse,
+      backgroundColor: 'COLORS.blanccasse',
    // padding: 20,
      
     
   },
+  line: {
+    
+  height:0.5,
+  width:'90%',
+  margin:10,
+  backgroundColor:'#a0a3a5',
+  alignSelf:'center',
+    
+   
+ },
 
     container: {
    

@@ -38,22 +38,29 @@ export default function Imagephoto({setimage,defimage, setdefimage,  image,selec
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Choisissez une option</Text>
+                        <Text style={styles.modalText}>choisir une option</Text>
                         
                         <View style={styles.iconRow}>
                             <TouchableOpacity style={styles.iconItem} onPress={takePhoto}>
-                                <Icon name="camera-alt" size={40} color="#000" />
-                                <Text style={styles.iconText}>Photo</Text>
+                                <Icon name="camera-alt" size={40} color="gray" />
+                                <Text style={styles.iconText}>Caméra</Text>
                             </TouchableOpacity>
 
+                            <Image 
+                    source={require('../assets/linear.png')} 
+                    style={styles.linear} 
+                />
                             <TouchableOpacity style={styles.iconItem} onPress={selectFromGallery}>
-                                <Icon name="photo-library" size={40} color="#000" />
+                                <Icon name="photo" size={40} color="gray" />
                                 <Text style={styles.iconText}>Galerie</Text>
                             </TouchableOpacity>
                         </View>
 
                         <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.buttonText}>Annuler</Text>
+                        
+                        <Text style={styles.buttonsText}>ANNULER </Text>
+                        <Icon name="cancel" size={15} color="white" style={styles.iconn}/>
+                            
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     iconRow: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        width: '100%',
+        width: '90%',
         marginBottom: 20,
     },
     iconItem: {
@@ -127,17 +134,40 @@ const styles = StyleSheet.create({
     },
     iconText: {
         textAlign: 'center',
-        marginTop: 5,
+        marginTop: 15,
     },
     closeButton: {
-        backgroundColor: 'red',
-        borderRadius: 10,
-        padding: 10,
+        flexDirection: 'row',        
+        backgroundColor: '#135067',
+        borderRadius: 50,
+        padding:9,    
         marginVertical: 10,
-        width: '80%',
+        alignItems:'center',
+        width: '65%',
     },
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
+    iconn: {
+    marginTop:1,
+    
+    },
+    buttonsText: {
+      marginLeft:59,
+      color:'white',
+      flexDirection: 'row',  
+      alignItems:'center',
+    
+    },
+    notificationImage: {
+        width: 12, // Ajustez la largeur selon vos besoins
+        height:12, // Ajustez la hauteur selon vos besoins
+      
+    
+    },
+    linear: {
+        width: 95, // Ajustez la largeur selon vos besoins
+        height:7, // Ajustez la hauteur selon vos besoins
+        marginTop:20,
+
+      
+    
     },
 });
