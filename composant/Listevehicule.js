@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert ,Image} from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 
@@ -33,15 +33,25 @@ const Listevehicule = ({ mydata, SetLoading, handDelete,handupdate, Loading, fet
               {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
           </View>
           <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)} >
+            <Image 
+                    source={require('../assets/detail.png')} 
+                    style={styles.linear} 
+                />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
-              <Icon name="pencil" size={18} color={COLORS.white} />
+            <Image 
+                    source={require('../assets/edit.png')} 
+                    style={styles.linear} 
+                />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)} >
-              <Icon name="trash" size={18} color={COLORS.white} />
+            <Image 
+                    source={require('../assets/delete.png')} 
+                    style={styles.linear} 
+                />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)} >
-              <Icon name="eye" size={18} color={COLORS.white} />
-            </TouchableOpacity>
+
           </View>
         </View>
       </View>
@@ -71,20 +81,28 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
+  },
+  linear: {
+    width: 22, // Ajustez la largeur selon vos besoins
+    height:23, // Ajustez la hauteur selon vos besoins
+    marginTop:5,
+    marginLeft:3,
+  
+  
   },
   numberContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 52,
     backgroundColor: COLORS.grey,
     justifyContent: 'center',
     alignItems: 'center',
   },
   numberText: {
-    color: COLORS.white,
-    fontSize: 20,
+    color: 'white',
+    fontSize: 14,
     fontWeight: 'bold',
   },
   descriptionContainer: {
@@ -116,26 +134,26 @@ const styles = {
     alignItems: 'center',
   },
   iconButton: {
-    backgroundColor: COLORS.blue,
+    backgroundColor:'#404141',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   iconButtonDelete: {
-    backgroundColor: COLORS.red,
+    backgroundColor: '#fc7676',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   iconButtoneye: {
-    backgroundColor: COLORS.black,
+    backgroundColor:'#62a8d1',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

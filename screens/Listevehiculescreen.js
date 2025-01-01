@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: COLORS.rouge,
-    borderRadius: 10,
+    borderRadius: 50,
     height: 40,
     width: 40,
     justifyContent: 'center',
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.blanccasse,
-    borderRadius: 8,
+    backgroundColor: '#e2edf3',
+    borderRadius: 53,
     paddingHorizontal: 12,
     flex: 1,
     marginRight: 5,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     fontSize: 16,
-    color: '#333',
+    color: '#525659',
   },
   searchIcon: {
     marginLeft: 8,
