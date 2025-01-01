@@ -87,15 +87,11 @@ const styles = {
   linear: {
     width: 22, // Ajustez la largeur selon vos besoins
     height:23, // Ajustez la hauteur selon vos besoins
-    marginTop:5,
-    marginLeft:3,
-  
-  
   },
   numberContainer: {
     width: 40,
     height: 40,
-    borderRadius: 52,
+    borderRadius: 5,
     backgroundColor: COLORS.grey,
     justifyContent: 'center',
     alignItems: 'center',
@@ -140,6 +136,8 @@ const styles = {
     marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
   iconButtonDelete: {
     backgroundColor: '#fc7676',
@@ -148,14 +146,19 @@ const styles = {
     marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
   iconButtoneye: {
+    flexDirection: 'row',
     backgroundColor:'#62a8d1',
     padding: 8,
     borderRadius: 5,
     marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, StyleSheet,Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ConfirmationModal = ({ visible, message, onConfirm, onCancel}) => {
   return (
@@ -7,18 +8,23 @@ const ConfirmationModal = ({ visible, message, onConfirm, onCancel}) => {
       <View style={styles.modalContainer}>
         <View style={[styles.modalContent, styles.roundedCorners]}>
           <Text style={styles.message}>{message}</Text>
+      
           <View style={styles.buttonContainer}>
+         
             <TouchableOpacity
-              style={[styles.button, styles.roundedCorners]}
+              style={styles.button}
               onPress={onConfirm}
             >
-              <Text style={styles.buttonText}>Oui</Text>
+                 
+              <Text style={styles.buttonText}>Oui </Text>
+              <Icon name="check-circle" size={15} color="white" style={styles.iconn}/>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, styles.roundedCorners]}
+              style={styles.button}
               onPress={onCancel}
             >
-              <Text style={styles.buttonText}>Non</Text>
+              <Text style={styles.buttonText}>Non </Text>
+              <Icon name="cancel" size={15} color="white" style={styles.iconn}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -53,9 +59,10 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   modalContent: {
     backgroundColor: 'white',
@@ -63,10 +70,10 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   roundedCorners: {
-    borderRadius: 8,
+    borderRadius: 5,
   },
   message: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 20,
   },
   buttonContainer: {
@@ -74,14 +81,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    flexDirection: 'row', 
+    backgroundColor: '#607079',
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 18,
   },
   buttonText: {
+    flexDirection: 'row', 
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
+    
   },
+  iconn: {
+    marginTop:1.9,
+    
+    },
+
 });
 
 export default Messagebox;

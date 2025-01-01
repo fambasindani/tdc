@@ -152,27 +152,22 @@ const styles = StyleSheet.create({
 
   addButton: {
     backgroundColor: COLORS.rouge,
-    borderRadius: 10,
-    height: 40, // Match height with TextInput
-    width: 40, // Fixed width for the button
-    justifyContent: 'center', // Center icon vertically
-    alignItems: 'center', // Center icon horizontally
-    marginLeft: 5, // Optional margin for spacing
+    borderRadius: 50,
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
   },
  
-
-
-
-
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.blanccasse,
-    borderRadius: 8,
+    backgroundColor: '#e2edf3',
+    borderRadius: 53,
     paddingHorizontal: 12,
-   // marginBottom: 10,
-    flex: 1, // Allow this container to take remaining space
-    marginRight: 5, // Add margin to the right to space the button
+    flex: 1,
+    marginRight: 5,
   },
 
   complet: {

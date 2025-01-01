@@ -9,6 +9,7 @@ import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 import Droplist from '../composant/Droplist';
 
+
 export default function Addvehiculescreen({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
@@ -103,10 +104,12 @@ export default function Addvehiculescreen({ navigation }) {
                             setname={setNumeroChassie} 
                         />
                         <Buttons 
-                            title='Enregistrer' 
+                            title='Ajouter' 
                             Actionconnection={ActionConnection} 
                             onPress={uploadData}  
+                            
                         />
+                        
                     </View>
                 </ScrollView>
             </View>
