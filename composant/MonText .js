@@ -26,16 +26,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start', // Aligner le conteneur à gauche
   },
   label: {
-    fontSize: 20,
+    fontSize: 17,
    // fontWeight: 'bold',
-    color: COLORS.grey,
+    color: '#a4a4a4',
     marginBottom: 5,
   },
   name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.rouge,
-    marginBottom: 5,
+    fontSize: 17,
+    fontWeight: '',
+    color: 'black',
+    marginBottom: 8,
   },
 });
 

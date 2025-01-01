@@ -318,7 +318,7 @@ export default function Profilscreens({ navigation }) {
                 />
         
         <MonText desisnation={nom} label="Nom" />
-        <MonText desisnation={email} label="Email" />
+        <MonText  desisnation={email} label="E-mail" />
         <MonText desisnation={phone} label="Téléphone" />
       </View>
       <Image 
