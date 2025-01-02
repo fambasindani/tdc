@@ -79,7 +79,7 @@ const styles = {
   numberContainer: {
     width: 40,
     height: 40,
-    borderRadius: 5,
+    borderRadius: 50,
     backgroundColor: COLORS.grey,
     justifyContent: 'center',
     alignItems: 'center',

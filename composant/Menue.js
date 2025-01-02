@@ -109,7 +109,7 @@ const DrawerNavigator = () => {
         name="Test"
         component={Test}
         options={{
-          drawerIcon: ({ color }) => <Icon name="home" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/home.png')} style={styles.linear} />,
           title: "Accueil",
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
@@ -117,12 +117,13 @@ const DrawerNavigator = () => {
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
         }}
-      />
+      />            
+      
       <Drawer.Screen
         name="Profil"
         component={Profilscreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="person" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
           title: "Profil",
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
@@ -135,7 +136,7 @@ const DrawerNavigator = () => {
         name="Véhicule"
         component={VehiculeScreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="directions-car" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/car.png')} style={styles.linear} />,
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
           },
@@ -148,7 +149,7 @@ const DrawerNavigator = () => {
         name="Chat"
         component={ChatScreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="chat" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/chat.png')} style={styles.linear} />,
         }}
       />
       {/*  <Drawer.Screen
@@ -167,7 +168,7 @@ const DrawerNavigator = () => {
         name="Listecat"
         component={Actionlistcat}
         options={{
-          drawerIcon: ({ color }) => <Icon name="category" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/cat.png')} style={styles.linear} />,
           title: "Catégorie",
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
@@ -183,7 +184,7 @@ const DrawerNavigator = () => {
         name="Itineraire"
         component={Actioninineraire}
         options={{
-          drawerIcon: ({ color }) => <Icon name="directions" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/maps.png')} style={styles.linear} />,
           title: "Itinéraire",
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
@@ -197,7 +198,7 @@ const DrawerNavigator = () => {
         name="Listearret"
         component={ArretScreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="stop" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/arret.png')} style={styles.linear} />,
           title: "Arrêt",
           headerStyle: {
             backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
@@ -213,7 +214,8 @@ const DrawerNavigator = () => {
         name="Tarification"
         component={TarificationScreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="attach-money" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
+          
 
 
         }}
@@ -224,7 +226,7 @@ const DrawerNavigator = () => {
         name="Connexion"
         component={ConnexionScreen}
         options={{
-          drawerIcon: ({ color }) => <Icon name="login" size={24} color={color} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/connexion.png')} style={styles.linear} />,
         }}
       />
     </Drawer.Navigator>
@@ -362,5 +364,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 15,
+  },
+  linear: {
+    width: 30, // Ajustez la largeur selon vos besoins
+    height:31, // Ajustez la hauteur selon vos besoins
+
+    borderRadius:45
   },
 });
