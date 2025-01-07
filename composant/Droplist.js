@@ -6,7 +6,7 @@ import ApiUrl from './ApiUrl';
 import axios from 'axios';
 import COLORS from '../Couleurs/COLORS';
 
-const Droplist = ({ description, setDescription, label }) => {
+const Droplist = ({ description, setDescription, label, icons, placephold }) => {
 
   const vehicleCategories = [
     { id: 1, cat: 'Voiture' },
@@ -40,14 +40,14 @@ const Droplist = ({ description, setDescription, label }) => {
     <View style={styles.container}> 
       <Text style={styles.label}>{label}</Text>
       <View style={styles.pickerWrapper}>
-        <Icon name="description" size={20} style={styles.icon} />
+        <Icon name={icons} size={20} style={styles.icon} />
         <Picker
           selectedValue={description}
           onValueChange={(itemValue) => setDescription(itemValue)}
           style={styles.picker}
           mode="dropdown"
         >
-          <Picker.Item    style={styles.textpicker} label="Sélectionner catégorie" value="" />
+          <Picker.Item    style={styles.textpicker} label={placephold} value="" />
           {data.map((cat) => (
             <Picker.Item
               key={cat.id}

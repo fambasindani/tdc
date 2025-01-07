@@ -20,6 +20,8 @@ import Listevehiculescreen from '../screens/Listevehiculescreen';
 import Addvehiculescreen from '../screens/Addvehiculescreen';
 import Profilscreens from '../screens/Profilscreens';
 import Updateprofilscreen from '../screens/Updateprofilscreen';
+import Menutab from './Menutab';
+import Addcoursescreen from '../screens/Addcoursescreen';
 
 // Vos fonctions d'écran
 function HomeScreen() {
@@ -42,11 +44,11 @@ function VehiculeScreen() {
   );
 }
 
-function ChatScreen() {
+function transportscreen() {
   return (
-    <View style={styles.screen}>
-      <Text>Chat</Text>
-    </View>
+    
+      
+    <Menutab/>
   );
 }
 
@@ -102,6 +104,20 @@ function ConnexionScreen() {
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+//const Drawer = createDrawerNavigator();
+
+const MenutabStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen 
+      name="Menutab" 
+      component={Menutab} 
+      options={{ title: "Accueil" }} // Affiche "Accueil" dans l'en-tête
+    />
+  </Stack.Navigator>
+);
+
+
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator initialRouteName="Test">
@@ -145,10 +161,16 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="Chat"
-        component={ChatScreen}
+        name="Transport"
+        component={transportscreen}
         options={{
           drawerIcon: ({ color }) => <Icon name="chat" size={24} color={color} />,
+          title: "Transport",
+          headerStyle: {
+            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
         }}
       />
       {/*  <Drawer.Screen
@@ -336,6 +358,28 @@ const AppNavigator = () => {
           },
         }}
       />
+
+      
+<Stack.Screen
+        name="Addcours"
+        component={Addcoursescreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.blue,
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Course', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
 
 
 
