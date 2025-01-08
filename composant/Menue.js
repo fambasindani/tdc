@@ -165,9 +165,9 @@ const DrawerNavigator = () => {
         name="Transport"
         component={transportscreen}
         options={{
-<<<<<<< HEAD
+
           drawerIcon: ({ color }) => <Image source={require('../assets/chat.png')} style={styles.linear} />,
-=======
+
           drawerIcon: ({ color }) => <Icon name="chat" size={24} color={color} />,
           title: "Transport",
           headerStyle: {
@@ -175,7 +175,7 @@ const DrawerNavigator = () => {
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
->>>>>>> e43e0b2f14bd8966a35553185bb14711e840c46f
+
         }}
       />
       {/*  <Drawer.Screen
