@@ -62,9 +62,17 @@ export default function Menutab() {
   
       <Tab.Navigator 
         screenOptions={{
-          tabBarStyle: { backgroundColor: 'black' }, // Fond noir
-          tabBarActiveTintColor: 'green', // Couleur active verte
-          tabBarInactiveTintColor: 'white', // Couleur inactive blanche
+          tabBarStyle: { backgroundColor: '#e7e7e7',
+            height: 70,
+            paddingTop:7,
+            borderBottomWidth: 1,
+        
+          
+
+           }, // Fond noir
+          tabBarActiveTintColor: 'black', // Couleur active verte
+          tabBarInactiveTintColor: '#0e79b6', // Couleur inactive blanche
+         
         }}
       >
 
@@ -77,14 +85,14 @@ export default function Menutab() {
               <Icon name="directions-car" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+              fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 
@@ -97,14 +105,14 @@ export default function Menutab() {
               <Icon name="check" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+              fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 
@@ -117,14 +125,14 @@ export default function Menutab() {
               <Icon name="map" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+             fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 
@@ -138,14 +146,14 @@ export default function Menutab() {
               <Icon name="history" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+             fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 
@@ -164,14 +172,14 @@ export default function Menutab() {
               <Icon name="filter-list" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+            fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 
@@ -179,20 +187,22 @@ export default function Menutab() {
 
         <Tab.Screen 
           name="Justification" 
+          
+          
           component={Justification} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="warning" color={color} size={size} />
             ),
             headerTitleStyle: {
-              fontSize: 16, // Taille de police 11
+              fontSize: 16,color:'#4975ad' // Taille de police 11
              
              // textAlign: 'center', // Centre le titre
               //flex: 1, // Permet au texte de prendre tout l'espace
             },
             headerStyle: {
               backgroundColor: '#f5f5f5', // Blanc cassé
-              borderRadius:5,
+              borderRadius:0,
               //marginVertical:10
             },
           }} 

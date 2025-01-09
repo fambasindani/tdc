@@ -138,10 +138,14 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   headerContainer: {
-    marginTop: 70,
+    marginTop: 90,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    paddingBottom:20,
+    borderBottomWidth: 0.4,
+    borderBottomColor: COLORS.grey,
+    height: 40,
     width: '95%',
   },
   addButton: {

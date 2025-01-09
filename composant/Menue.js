@@ -128,7 +128,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color }) => <Image source={require('../assets/home.png')} style={styles.linear} />,
           title: "Accueil",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -142,7 +142,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
           title: "Profil",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -154,7 +154,7 @@ const DrawerNavigator = () => {
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/car.png')} style={styles.linear} />,
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -166,12 +166,12 @@ const DrawerNavigator = () => {
         component={transportscreen}
         options={{
 
-          drawerIcon: ({ color }) => <Image source={require('../assets/chat.png')} style={styles.linear} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/route.png')} style={styles.linear} />,
 
-          drawerIcon: ({ color }) => <Icon name="chat" size={24} color={color} />,
+          
           title: "Transport",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -197,7 +197,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color }) => <Image source={require('../assets/cat.png')} style={styles.linear} />,
           title: "Catégorie",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -213,7 +213,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color }) => <Image source={require('../assets/maps.png')} style={styles.linear} />,
           title: "Itinéraire",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -227,7 +227,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color }) => <Image source={require('../assets/arret.png')} style={styles.linear} />,
           title: "Arrêt",
           headerStyle: {
-            backgroundColor: '#007BFF', // Couleur bleue pour l'en-tête
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
@@ -406,6 +406,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    
+  
   },
   avatar: {
     width: 40,

@@ -142,12 +142,15 @@ const styles = StyleSheet.create({
   },
  
   headerContainer: {
-    //flex:1,
-    marginTop: 70,
+    marginTop: 90,
     flexDirection: 'row',
-    alignItems: 'center', // Center items vertically
-    justifyContent: 'flex-start', // Align items to the start
-    width: '95%', // Set width to accommodate both items
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingBottom:20,
+    borderBottomWidth: 0.4,
+    borderBottomColor: COLORS.grey,
+    height: 40,
+    width: '95%',
   },
 
   addButton: {

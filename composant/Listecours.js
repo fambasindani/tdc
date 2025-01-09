@@ -24,15 +24,25 @@ const Listecours = ({ mydata, SetLoading, handDelete, handupdate, Loading, fetch
             <Text style={styles.firstName}>{item.prixCourse} CDF</Text>
           </View>
           <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)} >
+            <Image 
+                    source={require('../assets/detail.png')} 
+                    style={styles.linear} 
+                />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
-              <Icon name="pencil" size={18} color={COLORS.white} />
+            <Image 
+                    source={require('../assets/edit.png')} 
+                    style={styles.linear} 
+                />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)}>
-              <Icon name="trash" size={18} color={COLORS.white} />
+            <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)} >
+            <Image 
+                    source={require('../assets/delete.png')} 
+                    style={styles.linear} 
+                />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)}>
-              <Icon name="eye" size={18} color={COLORS.white} />
-            </TouchableOpacity>
+
           </View>
         </View>
       </View>
@@ -61,12 +71,16 @@ const styles = {
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 25, // Ajustez selon vos besoins
+    paddingVertical: 17, // Ajustez selon vos besoins
     paddingHorizontal: 16, // Pour l'espace latéral
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
    // marginTop: 10,
     //margin: 10,
+  },
+  linear: {
+    width: 22, // Ajustez la largeur selon vos besoins
+    height:23, // Ajustez la hauteur selon vos besoins
   },
   indexContainer: {
     width: 40,
@@ -75,8 +89,8 @@ const styles = {
     alignItems: 'center',
   },
   userImage: {
-    width: 60,
-    height: 60,
+    width: 45,
+    height: 45,
     borderRadius: 20,
     //marginRight:20,
   },
@@ -89,8 +103,7 @@ const styles = {
   },
   nameContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft:20,
+     marginLeft:5,
   },
   lastName: {
     fontSize: 16,
@@ -105,28 +118,35 @@ const styles = {
     alignItems: 'center',
   },
   iconButton: {
-    backgroundColor: COLORS.blue,
+    backgroundColor:'#286a90',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
   iconButtonDelete: {
-    backgroundColor: COLORS.red,
+    backgroundColor: '#286a90',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
   iconButtoneye: {
-    backgroundColor: COLORS.black,
+    flexDirection: 'row',
+    backgroundColor:'#286a90',
     padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
+    borderRadius: 5,
+    marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:5,
+    marginLeft:3,
   },
 };
 
