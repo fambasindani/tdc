@@ -73,7 +73,7 @@ export default function Addcoursescreen({ navigation }) {
 
     return (
         <>
-            <StatusBar barStyle="dark-content" backgroundColor="#007BFF" />
+            <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
 
             <View style={styles.container}>
                 <Loading visible={loading} />
