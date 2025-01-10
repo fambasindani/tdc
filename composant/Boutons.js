@@ -11,11 +11,11 @@ const Boutons = ({Actioninscription, Actionpassword, title, onPress = () => { } 
                 onPress={onPress}
                 style={{
                     // width:"100%",
-                    backgroundColor: '#0a8ad3',
+                    backgroundColor: '#0f75bc',
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 20,
-                    borderRadius: 120,
+                    borderRadius: 210,
                     paddingVertical: 12,
 
                 }}

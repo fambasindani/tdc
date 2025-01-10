@@ -11,7 +11,7 @@ const Buttons = ({connexion,Actionconnection,title, onPress=()=>{}}) => {
         onPress={onPress}
         style={{
            // width:"100%",
-            backgroundColor:COLORS.rouge,
+           backgroundColor: '#0f75bc',
             justifyContent:'center',
             alignItems:'center',
             marginTop:5,

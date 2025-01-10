@@ -197,7 +197,7 @@ export default function Inscriptionsceens({ navigation }) {
       <Image source={require('../assets/Likunzi.png')} style={styles.notificationImage} />
 
         
-        <Text style={{ color: '#', fontSize: 18, marginBottom: 30 , textAlign:'center',paddingTop:1 }}>Entrez les détails de l'inscription</Text>
+        <Text style={{ color: '#202020', fontSize: 12, marginBottom: 5 , textAlign:'center',paddingTop:1 }}>Entrez les détails de l'inscription</Text>
         
         <View style={styles.modalContent}>
        
@@ -207,7 +207,7 @@ export default function Inscriptionsceens({ navigation }) {
         <Input icons="envelope" label="Email" placeholder="Votre e-mail" name={email} setname={setemail}/>
         <PasswordInput password={password} setPassword={setPassword} label="Mot de passe"/>
         <Input icons="phone" label="Phone" placeholder="Votre phone" name={phone} setname={setphone}/>
-        <Textareainput icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
+        <Input icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
 
         <Buttons title='Enregistrer'  onPress={uploadImage} Actionconnection={Actionconnection} connexion="J'ai déjà un compte"/>
 
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     contairebuttona:{
         marginTop:20,
         backgroundColor: COLORS.grey,
-         marginBottom: 10,
+        marginBottom: 10,
 
     },
 
@@ -270,8 +270,8 @@ const styles = StyleSheet.create({
     },
 
     notificationImage: {
-      width: 59, // Ajustez la largeur selon vos besoins
-      height: 98, // Ajustez la hauteur selon vos besoins
+      width: 79, // Ajustez la largeur selon vos besoins
+      height: 99, // Ajustez la hauteur selon vos besoins
       alignSelf: 'center', // Centre l'image horizontalement
       marginBottom: 20, // Ajoute un peu d'espace sous l'image
     },

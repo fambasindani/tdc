@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     notificationImage: {
-        width: 59, // Ajustez la largeur selon vos besoins
-        height: 98, // Ajustez la hauteur selon vos besoins
+        width: 79, // Ajustez la largeur selon vos besoins
+        height: 99, // Ajustez la hauteur selon vos besoins
         alignSelf: 'center', // Centre l'image horizontalement
         marginBottom: 20, // Ajoute un peu d'espace sous l'image
     },
