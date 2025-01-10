@@ -371,7 +371,7 @@ const AppNavigator = () => {
         component={Addcoursescreen}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.blue,
+            backgroundColor: '#0e79b6',
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Ajouter Course', // Titre de l'en-tête  
