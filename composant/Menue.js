@@ -312,7 +312,7 @@ const AppNavigator = () => {
         component={Addcategoriesreen}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.blue,
+            backgroundColor: '#0e79b6',
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Ajouter Itinéraire', // Titre de l'en-tête  
@@ -332,7 +332,7 @@ const AppNavigator = () => {
         component={Addvehiculescreen}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.blue,
+            backgroundColor: '#0e79b6',
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Ajouter Vehicule', // Titre de l'en-tête  
