@@ -38,7 +38,12 @@ const Listearret = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchU
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-      
+            <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)} >
+            <Image 
+                    source={require('../assets/delete.png')} 
+                    style={styles.linear} 
+                />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
