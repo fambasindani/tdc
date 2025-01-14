@@ -69,13 +69,14 @@ const Listevalider = ({ mydata, SetLoading, handDelete, handupdate, Loading, fet
 
 const styles = {
   container: {
-    paddingBottom: 52, 
+    paddingTop:9, 
+    paddingBottom: 70, 
     // flex: 1,
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14, // Ajustez selon vos besoins
+    paddingVertical: 19, // Ajustez selon vos besoins
     paddingHorizontal: 16, // Pour l'espace latéral
     borderBottomWidth: 0.4,
     marginLeft: 1,

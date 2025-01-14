@@ -65,7 +65,8 @@ const Listecours = ({ mydata, SetLoading, handDelete, handupdate, Loading, fetch
 
 const styles = {
   container: {
-    paddingBottom: 52, 
+    paddingTop:12, 
+    paddingBottom: 70, 
     // flex: 1,
   },
   itemContainer: {
