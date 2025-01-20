@@ -1,40 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Assurez-vous d'importer l'icône
+import Icon from 'react-native-vector-icons/FontAwesome';
+//import Icon from 'react-native-vector-icons/MaterialIcons'; // Assurez-vous d'importer l'icône
 import ApiUrl from './ApiUrl';
 import axios from 'axios';
 import COLORS from '../Couleurs/COLORS';
 
-const Droplist = ({ description, setDescription, label, icons, placephold }) => {
+const Droplist = ({ description, contenus, identifiant, setDescription, label, data, setData, icons, placephold, getCategorie }) => {
 
-  const vehicleCategories = [
-    { id: 1, cat: 'Voiture' },
-    { id: 2, cat: 'Moto' },
-    { id: 3, cat: 'Camion' },
-    { id: 4, cat: 'Vélo' }
-  ];
 
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    // Remplacez l'appel à getCategorie par le tableau vehicleCategories
-    setData(vehicleCategories);
-  }, []);
-
-  useEffect(() => {
-    getCategorie();
-  }, []);
-  
-  const getCategorie = async () => {
-    try {
-      const url = ApiUrl({ endpoint: 'gettypeobjet' });
-      const response = await axios.get(url);
-     // setData(response.data);
-    } catch (error) {
-      console.error('Erreur lors de la requête à l\'API :', error);
-    }
-  };
 
   return (
     <View style={styles.container}> 
@@ -50,9 +25,9 @@ const Droplist = ({ description, setDescription, label, icons, placephold }) => 
           <Picker.Item    style={styles.textpicker} label={placephold} value="" />
           {data.map((cat) => (
             <Picker.Item
-              key={cat.id}
-              label={cat.cat}
-              value={cat.id}
+              key={cat[identifiant]}
+              label={cat[contenus]}
+              value={cat[identifiant]}
             />
           ))}
         </Picker>

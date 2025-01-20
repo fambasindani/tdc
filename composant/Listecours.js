@@ -3,34 +3,45 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import userImage from '../assets/user.png'; // Assurez-vous que le chemin est correct
+//import userImage from '../assets/user.png'; // Assurez-vous que le chemin est correct
+import ApiUrlbis from './ApiUrlbis';
+import moment from 'moment';
 
-const Listecours = ({ mydata, SetLoading, handDelete, handupdate, Loading, fetchUserData, handleConfirm }) => {
+const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  
+  const urlimg = ApiUrlbis({ endpoint: '' });
+//
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
   const renderItem = ({ item }) => {
+    const formattedDate = moment(item.datecourse).format('YYYY-MM-DD');
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.indexContainer}>
-          <Image source={userImage} style={styles.userImage} />
+        <Image source={{ uri:`${urlimg}${item.avatar}` }} style={styles.userImage} /> 
+         
+         {/* <Image source={userImage} style={styles.userImage} />*/}
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.nomChauffeur}</Text>
-            <Text style={styles.firstName}>{item.prixCourse} CDF</Text>
+            <Text style={styles.lastName}>{item.nom}</Text>
+            <Text style={styles.firstName}>{item.immatriculation}</Text>
+            <Text style={styles.firstName}>{formattedDate}</Text>
+             
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)} >
+          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handdetails(item)} >
             <Image 
                     source={require('../assets/detail.png')} 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 

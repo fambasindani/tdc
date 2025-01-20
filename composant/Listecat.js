@@ -6,7 +6,7 @@ import Listflast from './Listflast';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Listecat = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchUserData, handleConfirm }) => {
+const Listecat = ({ mydata, SetLoading, handDelete,handupdate, handlupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -28,11 +28,11 @@ const Listecat = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchUse
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.cat}</Text>
+            <Text style={styles.lastName}>{item.description}</Text>
               {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => handlupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 

@@ -16,8 +16,8 @@ export default function Imagephoto({setimage,defimage, setdefimage,  image,selec
             <View style={styles.imageContainer}>
                 <Image 
                   
-                    //source={image ? { uri: image.uri } : { uri: df }} 
-                    source={image ? { uri: image.uri } : defaultImage} 
+                    source={image ? { uri: image.uri } : { uri: defimage }} 
+                    //source={image ? { uri: image.uri } : defimage} 
                     style={styles.image} 
                 />
                 <TouchableOpacity 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert ,Image} from 'react-native';
+import { View, Text, TouchableOpacity, Alert,Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates, Loading, fetchUserData, handleConfirm }) => {
+const Listetarification = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -28,18 +28,11 @@ const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates,
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.marque}</Text>
-             <Text style={styles.firstName}>{item.immatriculation}</Text> 
-              {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
+            <Text style={styles.lastName}>{item.description}</Text>
+              <Text style={styles.firstName}>{item.montant} CDF</Text> 
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handdetails(item)} >
-            <Image 
-                    source={require('../assets/detail.png')} 
-                    style={styles.linear} 
-                />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={() => handupdates(item)}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 
@@ -51,7 +44,6 @@ const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates,
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-
           </View>
         </View>
       </View>
@@ -84,10 +76,6 @@ const styles = {
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
   },
-  linear: {
-    width: 22, // Ajustez la largeur selon vos besoins
-    height:23, // Ajustez la hauteur selon vos besoins
-  },
   numberContainer: {
     width: 40,
     height: 40,
@@ -97,22 +85,22 @@ const styles = {
     alignItems: 'center',
   },
   numberText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 14,
     fontWeight: 'bold',
   },
   descriptionContainer: {
-  // flex: 1,
-  // margint:20,
-
- // marginTop: 30,
-
-    width: '85%',
-    marginLeft: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-   // alignItems: 'center',
-  },
+    // flex: 1,
+    // margint:20,
+  
+   // marginTop: 30,
+  
+      width: '85%',
+      marginLeft: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+     // alignItems: 'center',
+    },
   nameContainer: {
     justifyContent: 'center', // Centers the names vertically
     alignItems: 'center', // Centers the names horizontally
@@ -149,17 +137,10 @@ const styles = {
     marginTop:5,
     marginLeft:3,
   },
-  iconButtoneye: {
-    flexDirection: 'row',
-    backgroundColor:'#62a8d1',
-    padding: 8,
-    borderRadius: 5,
-    marginLeft: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:5,
-    marginLeft:3,
+  linear: {
+    width: 22, // Ajustez la largeur selon vos besoins
+    height:23, // Ajustez la hauteur selon vos besoins
   },
 };
 
-export default Listevehicule;
+export default Listetarification;

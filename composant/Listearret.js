@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, Image} from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
+import axios from 'axios';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Listearret = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchUserData, handleConfirm }) => {
+const Listearret = ({ mydata, SetLoading, handDelete,handupdate, handleupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -28,11 +29,11 @@ const Listearret = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchU
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.arret}</Text>
+            <Text style={styles.lastName}>{item.description}</Text>
               {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 

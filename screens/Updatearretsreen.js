@@ -8,15 +8,14 @@ import Message from '../Message/Boxmessage';
 import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 
-export default function Addcategoriesreen({  navigation, route }) {
+export default function Updatearretsreen({ navigation, route }) {
+    const { items, refreshList } = route.params;
+
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [description, setDescription] = useState('');
-
-
-    const { refreshList } = route.params;
-
+    const [description, setDescription] = useState(items.description);
+    const [idarret, setidarret] = useState(items.id);
 
 
     const handleCloseModal = () => {
@@ -27,8 +26,8 @@ export default function Addcategoriesreen({  navigation, route }) {
         setDescription('');
     };
 
-    const createcategorie = async () => {
-        const url = ApiUrl({ endpoint: 'create_categorie' });
+    const uploadDescription = async () => {
+        const url = ApiUrl({ endpoint: 'update_arret' });
 
         setLoading(true);
         setTimeout(async () => {
@@ -41,17 +40,16 @@ export default function Addcategoriesreen({  navigation, route }) {
                     setShowSuccessModal(true);
                     setText("Veuillez insérer une description");
                 } else {
-                    const res = await axios.post(url, formData, {
+                    const res = await axios.put(`${url}/${idarret}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
-
+                    refreshList()
                     resetDescription();
-                    setShowSuccessModal(true);
-                    setText(res.data);
-                    refreshList(); // Appeler la fonction pour rafraîchir la liste
-                   // navigation.goBack(); // Retourner au composant Vehicule
+                    navigation.goBack()
+                    //setShowSuccessModal(true);
+                   // setText(res.data);
                 }
             } catch (error) {
                 console.error('Erreur:', error);
@@ -60,9 +58,6 @@ export default function Addcategoriesreen({  navigation, route }) {
             }
         }, 5000);
     };
-
-
-    
 
     const ActionConnection = () => {
         navigation.navigate('Login');
@@ -80,7 +75,7 @@ export default function Addcategoriesreen({  navigation, route }) {
                    
                     <View style={styles.modalContent}>
                         <Input icons="pencil" label="Description" placeholder="Votre description" name={description} setname={setDescription} />
-                        <Buttons title='Enregistrer' Actionconnection={ActionConnection} onPress={createcategorie}  />
+                        <Buttons title='Modifier' Actionconnection={ActionConnection} onPress={uploadDescription}  />
                     </View>
                 </ScrollView>
             </View>

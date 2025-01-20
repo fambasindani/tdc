@@ -7,6 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Listearret from '../composant/Listearret';
 import Listevehicule from '../composant/Listevehicule';
+import axios from 'axios';
+import ApiUrl from '../composant/ApiUrl';
+import ModalPopup from '../composant/ModalPopup';
+import ApiUrlbis from '../composant/ApiUrlbis';
 
 const Listevehiculescreen = ({ navigation }) => {
   const naviger = useNavigation();
@@ -18,27 +22,61 @@ const Listevehiculescreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-  // Remplace vehiculeArret par vehicule
-  const vehicule = [
-    { id: 1, marque: 'Toyota', immatricule: 'ABC123', numeroChassie: 'XYZ456789' },
-    { id: 2, marque: 'Honda', immatricule: 'DEF456', numeroChassie: 'ABC123456' },
-    { id: 3, marque: 'Nissan', immatricule: 'GHI789', numeroChassie: 'DEF789123' },
-    { id: 4, marque: 'Ford', immatricule: 'JKL012', numeroChassie: 'GHI456789' },
-    { id: 5, marque: 'Chevrolet', immatricule: 'MNO345', numeroChassie: 'JKL123456' }
-  ];
+
+  const [Visible, setVisible] = useState(false);
+  const [phone, setphone] = useState(null);
+  const [email, setemail] = useState(null);
+  const [nom, setnom] = useState(null);
+  const [prenom, setprenom] = useState(null);
+  const [confirmation, setconfirmation] = useState('');
+  const [monimage, setmonimage] = useState();
+  const [marque, setmarque] = useState();
+
+
+  const urlimg = ApiUrlbis({ endpoint: '' });
+  const url = ApiUrl({ endpoint: 'getvehicule' });
+
 
   const additin = () => {
-    naviger.navigate("Addvehicule");
+    //naviger.navigate("Addvehicule");
+    naviger.navigate('Addvehicule', { refreshList })
   };
 
+
+
+  const toggleModal = () => {
+    setVisible(!Visible);
+  };
+  const handdetails  = (item) => {
+    // Logique d'édition ici
+    console.log('Confirmé');
+    
+      setphone(item.telephone)
+      setemail(item.email)
+      setnom(item.nom)
+      setprenom(item.prenom)
+      setmarque(item.marque)
+      setmonimage(`${urlimg}${item.avatar}`);
+     // Alert.alert(urlimg+item.avatar)
+    toggleModal();
+  };
+  
+  const refreshList = () => {
+    fetchUserData(); // Mettre à jour la liste
+};
   useEffect(() => {
     fetchUserData();
   }, []);
 
-  const fetchUserData = () => {
+  const fetchUserData = async() => {
     SetLoading(true);
     try {
-      const newData = vehicule; // Utiliser les données des véhicules
+      const response = await axios.get(url, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+      const newData = response.data; // Utiliser les données des véhicules
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -80,7 +118,8 @@ const Listevehiculescreen = ({ navigation }) => {
   };
 
   const handupdate = (item) => {
-    navigation.navigate('Updateuserscreen', { items: item });
+    naviger.navigate('Updatevehicule', { items: item, refreshList  });
+   //alert('update')
   };
 
   return (
@@ -124,9 +163,12 @@ const Listevehiculescreen = ({ navigation }) => {
           <Listevehicule
             mydata={filteredData}
             handDelete={handDelete}
-            handUpdate={handupdate}
+            handupdates={handupdate}
             Loading={Loading}
+            handdetails={handdetails}
           />
+          <ModalPopup marque={marque} monimage={monimage} setmonimage={setmonimage} nom={nom} prenom={prenom} phone={phone} email={email} modalVisible={Visible} setModalVisible={setVisible} toggleModal={toggleModal} />
+   
         </View>
       </View>
     </>

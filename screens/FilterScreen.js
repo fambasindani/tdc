@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import COLORS from '../Couleurs/COLORS';
 import axios from 'axios';
@@ -10,6 +10,8 @@ import ApiUrl from '../composant/ApiUrl';
 import Droplist from '../composant/Droplist';
 import DatePicker from '../composant/DatePicker';
 import CustomModal from '../composant/CustomModal';
+import CheckComposant from './CheckComposant';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function FilterScreen({ navigation }) {
@@ -17,14 +19,23 @@ export default function FilterScreen({ navigation }) {
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [date, setDate] = useState(new Date());
+    const [datefin, setDatefin] = useState(new Date());
 
-    // Nouveaux états pour les champs
+    // Nouveaux états pour les champs  
     const [marque, setMarque] = useState('');
     const [immatricule, setImmatricule] = useState('');
     const [numeroChassie, setNumeroChassie] = useState('');
     const [description, setDescription] = useState('');
-
+    const [data, setdata] = useState([]);
+  
+    const [proprietaire, setproprietaire] = useState('');
     const [customvisible, Setustomvisible] = useState(false);
+
+
+
+    const [totalChecked, setTotalChecked] = useState(false);
+    const [riderChecked, setRiderChecked] = useState(false);
+    const [mySumChecked, setMySumChecked] = useState(false);
 
     const toggleModal = () => {
         Setustomvisible(!customvisible);
@@ -40,9 +51,47 @@ export default function FilterScreen({ navigation }) {
         setNumeroChassie('');
     };
 
-    const uploadData = async () => {
+    const uploadDatass = async () => {
         toggleModal()
     }
+
+    const getuser = async () => {
+        try {
+          const urlget = ApiUrl({ endpoint: 'getuser' });
+          const response = await axios.get(urlget);
+          setdata(response.data);
+        } catch (error) {
+          console.error('Erreur lors de la requête à l\'API :', error);
+        }
+      };
+
+      
+        useFocusEffect(
+          React.useCallback(() => {
+            getuser();
+      
+            return () => {
+              // Optionnel : logique de nettoyage si nécessaire
+            };
+          }, [])
+        );
+
+
+        
+  const uploadData = () => {
+    let message = '';
+    if (totalChecked) {
+      message = 'Vous avez sélectionné "Toute somme".';
+    } else if (riderChecked) {
+      message = 'Vous avez sélectionné "Somme par motard".';
+    } else if (mySumChecked) {
+      message = 'Vous avez sélectionné "Liste".';
+    } else {
+      message = 'Aucune option sélectionnée.';
+    }
+    Alert.alert('Sélection', message);
+    // <Button title="Valider" onPress={handleSubmit} />
+  };
 
     const uploadDatas = async () => {
         const url = ApiUrl({ endpoint: 'send_vehicle_data' });
@@ -87,16 +136,17 @@ export default function FilterScreen({ navigation }) {
             <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
 
             <View style={styles.container}>
+                   <CheckComposant totalChecked={totalChecked}   setMySumChecked={setMySumChecked} mySumChecked={mySumChecked}  setRiderChecked={setRiderChecked} setTotalChecked={setTotalChecked}   riderChecked={riderChecked} />
                 <Loading visible={loading} />
                 <Message handleCloseModal={handleCloseModal} text={text} showSuccessModal={showSuccessModal} setShowSuccessModal={setShowSuccessModal} />
 
                 <ScrollView style={styles.scrollview}>
                     <View style={styles.modalContent}>
-
+                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setdata} description={proprietaire} setDescription={setproprietaire} label="Motard" placephold="Sélectionnez motard"/>
                        <DatePicker date={date} setDate={setDate} label="Date de début" />
-                       <DatePicker date={date} setDate={setDate} label="Date de Fin" />
-                       <Droplist placephold="Sélectionner Immatriculation" icons="directions-car" description={description} setDescription={setDescription} label="Vehicule" />
-                        <Droplist placephold="Sélectionner motard" icons="person" description={description} setDescription={setDescription} label="Motard" />
+                       <DatePicker date={datefin} setDate={setDatefin} label="Date de Fin" />
+                      {/*   <Droplist placephold="Sélectionner Immatriculation" icons="directions-car" description={description} setDescription={setDescription} label="Vehicule" />
+                        <Droplist placephold="Sélectionner motard" icons="person" description={description} setDescription={setDescription} label="Motard" />*/} 
                        
                  
 
@@ -121,14 +171,14 @@ export default function FilterScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     modalContent: {
-        flex: 1,
+       // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.blanccasse,
     },
     container: {
-        paddingTop: 80,
-        alignItems: 'center',
+       // paddingTop: 80,
+       // alignItems: 'center',
         width: '100%',
         height: '100%',
     },

@@ -22,6 +22,15 @@ import Profilscreens from '../screens/Profilscreens';
 import Updateprofilscreen from '../screens/Updateprofilscreen';
 import Menutab from './Menutab';
 import Addcoursescreen from '../screens/Addcoursescreen';
+import Updatevehiculescreen from '../screens/Updatevehiculescreen';
+import Updatecategoriesreen from '../screens/Updatecategoriesreen';
+import Additinerairesreen from '../screens/Additinerairesreen';
+import Updateitinerairesreen from '../screens/Updateitinerairesreen';
+import Updatearretsreen from '../screens/Updatearretsreen';
+import Addtarificationscreen from '../screens/Addtarificationscreen';
+import Listetarificationscreen from '../screens/Listetarificationscreen';
+import Updatetarificationscreen from '../screens/Updatetarificationscreen';
+import Updatecoursescreen from '../screens/Updatecoursescreen';
 
 // Vos fonctions d'écran
 function HomeScreen() {
@@ -81,11 +90,9 @@ function ArretScreen() {
   );
 }
 
-function TarificationScreen() {
+function TarificationScreens() {
   return (
-    <View style={styles.screen}>
-      <Text>Tarification</Text>
-    </View>
+    <Listetarificationscreen/>
   );
 }
 
@@ -235,19 +242,24 @@ const DrawerNavigator = () => {
       />
 
 
-
-      <Drawer.Screen
+<Drawer.Screen
         name="Tarification"
-        component={TarificationScreen}
+        component={TarificationScreens}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
           
-
-
+          title: "Tarification",
+          headerStyle: {
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
         }}
-
-
       />
+
+
+
+
       <Drawer.Screen
         name="Connexion"
         component={ConnexionScreen}
@@ -294,7 +306,7 @@ const AppNavigator = () => {
         component={Addcategoriesreen}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.blue,
+            backgroundColor: '#0e79b6',
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Ajouter Catégorie', // Titre de l'en-tête  
@@ -307,15 +319,16 @@ const AppNavigator = () => {
         }}
       />
 
-      <Stack.Screen
-        name="Additineraire"
-        component={Addcategoriesreen}
+
+<Stack.Screen
+        name="Updatecategorie"
+        component={Updatecategoriesreen}
         options={{
           headerStyle: {
             backgroundColor: '#0e79b6',
             color: COLORS.white // Couleur de fond de l'en-tête
           },
-          headerTitle: 'Ajouter Itinéraire', // Titre de l'en-tête  
+          headerTitle: 'Modifier Catégorie', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
             fontSize: 17, // Taille de police
@@ -324,6 +337,9 @@ const AppNavigator = () => {
           },
         }}
       />
+
+
+   
 
      
 
@@ -384,6 +400,177 @@ const AppNavigator = () => {
           },
         }}
       />
+
+           
+<Stack.Screen
+        name="Updatecours"
+        component={Updatecoursescreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Course', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+           
+<Stack.Screen
+        name="Updatevehicule"
+        component={Updatevehiculescreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Vehicule', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+              
+<Stack.Screen
+        name="Additineraire"
+        component={Additinerairesreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Itinéraire', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
+
+               
+<Stack.Screen
+        name="Updateitineraire"
+        component={Updateitinerairesreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Itinéraire', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
+
+                
+<Stack.Screen
+        name="Addarret"
+        component={Addarretsreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Arrêt', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+      
+      
+                
+<Stack.Screen
+        name="Updatearret"
+        component={Updatearretsreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Arrêt', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+                     
+<Stack.Screen
+        name="Addtarification"
+        component={Addtarificationscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Tarification', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+                        
+<Stack.Screen
+        name="Updatetarification"
+        component={Updatetarificationscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier Tarification', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+      
+
+
+
+
+
+
 
 
 

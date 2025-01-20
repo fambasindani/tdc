@@ -1,18 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import userImage from '../assets/user.png'; // Assurez-vous que le chemin est correct
+import moment from 'moment';
+import ApiUrl from './ApiUrl';
+import axios from 'axios';
 
-const Listevalider = ({ mydata, SetLoading, handDelete, handupdate, Loading, fetchUserData, handleConfirm }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const Listevalider = ({ mydata, SetLoading,getcompter, setcourseid, handDelete, embarquer, depart, arriver, compter, handupdate, Loading, fetchUserData, handleConfirm }) => {
+ 
+  const [moncompeur, setmoncompeur] = useState(0);
+  const [tourCounts, setTourCounts] = useState({}); // Pour stocker les comptes de tours
+    const gettdates = () => {
+      return moment().format('YYYY-MM-DD')
+  
+    }
+  
+  const getcompters = async (id) => {
+    const url = ApiUrl({ endpoint: 'comptertour' });
+
+    try {
+      const formData = new FormData();
+      formData.append('datearriver', gettdates()); // Assurez-vous que gettdates() est défini
+      formData.append('idcourse', id);
+
+      const res = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return res.data.count; // Retourne le count
+    } catch (error) {
+      console.error('Erreur:', error);
+      return 0; // Retourne 0 en cas d'erreur
+    }
+  };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const counts = {};
+      for (const item of mydata) {
+        counts[item.id] = await getcompters(item.id);
+      }
+      setTourCounts(counts);
+    };
+
+    fetchCounts();
+  }, [mydata]); // Ajoutez mydata comme dépendance
+
+
+
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
   const renderItem = ({ item }) => {
+    const count = tourCounts[item.id] || 0; // Utiliser le compte ici
+     
+    
+  
+  
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.indexContainer}>
@@ -20,26 +70,27 @@ const Listevalider = ({ mydata, SetLoading, handDelete, handupdate, Loading, fet
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.nomChauffeur}</Text>
-            <Text style={styles.firstName}>{item.tour} tours</Text>
+            <Text style={styles.lastName}>{item.nom}</Text>
+            <Text style={styles.firstName}>{item.immatriculation}</Text>
+            <Text style={styles.firstName}>{count} tours</Text>
           </View>
           <View style={styles.buttonContainer}>
         
-            <TouchableOpacity style={styles.iconEmbarque} onPress={() => handupdate(item)}>
+            <TouchableOpacity style={styles.iconEmbarque} onPress={() => embarquer(item)}>
             <Image 
                     source={require('../assets/charge.png')} 
                     style={styles.linear} 
                 />
                 <Text style={styles.Name}> Charge</Text>
             </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconDepart} onPress={() => handupdate(item)}>
+                        <TouchableOpacity style={styles.iconDepart} onPress={() => depart(item)}>
             <Image 
                     source={require('../assets/up.png')} 
                     style={styles.linear} 
                 />
                 <Text style={styles.Name}> Départ</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconArriver} onPress={() => handDelete(item)} >
+            <TouchableOpacity style={styles.iconArriver} onPress={() => arriver(item)} >
             <Image 
                     source={require('../assets/down.png')} 
                     style={styles.linear} 

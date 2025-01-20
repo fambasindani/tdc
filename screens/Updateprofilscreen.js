@@ -29,19 +29,21 @@ export default function Updateprofilscreen({ navigation}) {
     const [loading, setloading] = useState(false)
     const [text, settext] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [email, setemail] = useState('');
+    const [prenom, setprenom] = useState('');
     const [password, setPassword] = useState('');
     const [nom, setnom] = useState('');
    // const [postnom, setpostnom] = useState('');
     //const [prenom, setprenom] = useState('');
     const [pseudo, setpseudo] = useState('');
     const [phone, setphone] = useState('');
-    //const [image, setImage] = useState(null);
+    const [email, setemail] = useState(null);
     const [urlimage, seturlimage] =  useState(null);
     const [adresse, setadresse] =  useState(null);
+    const [userid, setuserid]=useState('')
+    const [name, setname]=useState('ngoma')
 
     const route = useRoute();
-    const { userData } = route.params;
+    const { userData,updateUserData  } = route.params;
 
 
   
@@ -53,8 +55,11 @@ export default function Updateprofilscreen({ navigation}) {
    // setuserid(items.id.toString())
     setnom(userdata.nom)
  
-    setemail(userdata.email)
+    setprenom(userdata.prenom)
     setphone(userdata.telephone)
+    setadresse(userdata.adresse)
+    setuserid(userdata.id.toString());
+    setemail(userdata.email)
 
 
   }, []);
@@ -77,27 +82,24 @@ export default function Updateprofilscreen({ navigation}) {
 
       const annuler =  () => {
 
-        setemail('')
+        setprenom('')
         setPassword('')
         setnom('')
-      
+        setadresse('')
         setphone('')
 
       
 
       }
 
-  const Actionacc = () => {
-    navigation.navigate('MonMenu');
-
-  }
 
 
 
 
-  const uploadImage = async () => {
 
-    const url = ApiUrl({ endpoint: 'create_users' });
+  const updateuser = async () => {
+ 
+    const url = ApiUrl({ endpoint: 'update_user' });
 
     setloading(true)
     setTimeout(async () => {
@@ -110,9 +112,10 @@ export default function Updateprofilscreen({ navigation}) {
    
       formData.append('password', password);
 
-      formData.append('email', email);
+      formData.append('prenom', prenom);
       //formData.append('pseudo', pseudo);
       formData.append('telephone', phone);
+      formData.append('adresse', adresse);
 
 
 
@@ -120,19 +123,13 @@ export default function Updateprofilscreen({ navigation}) {
         setShowSuccessModal(true);
         settext('Veuillez saisir le nom')
       }
+      
+      if (prenom.trim() === '') {
+        setShowSuccessModal(true);
+        settext('Veuillez saisir le prénom')
+      }
    
   
-
-      else if (email.trim() === '') {
-        setShowSuccessModal(true);
-        settext("Veuillez inserer l'email")
-
-      }
-
-      else if (!email.match(/\S+@\S+\.\S+/)) {
-        setShowSuccessModal(true);
-        settext('Email incorrect')
-      }
 
       else if (password.trim() === '') {
         setShowSuccessModal(true);
@@ -143,48 +140,51 @@ export default function Updateprofilscreen({ navigation}) {
         setShowSuccessModal(true);
         settext('Veuillez saisir le numéro téléphone')
       }
+      else if (adresse.trim() === '') {
+        setShowSuccessModal(true);
+        settext("Veuillez saisir l'adresse")
+      }
       else {
-        const urlget = ApiUrl({ endpoint: 'verifieremail' });
+        const url = ApiUrl({ endpoint: 'update_user' });
 
-        const res = await axios.post(urlget, formData, {
+        const res = await axios.put(`${url}/${userid}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
 
 
-        if (res.data === "email") {
-          setShowSuccessModal(true);
-          settext('cet email existe')
-          //Alert.alert("Message", "cet email existe")
-        }
-
-        
-        else {
+    
        
         
 
             //const formData = new FormData();
             
 
-            const res = await axios.post(url, formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-
-            annuler()
-            setShowSuccessModal(true);
-            settext(res.data)
-         
-
           
-        }
+
+           // annuler()
+            //setShowSuccessModal(true);
+           // settext(res.data)
+           //if (res.status === 200) {
+            const updatedDatas = {
+                nom,
+                email,
+                phone,
+            };
+            //alert(updatedDatas.phone)
+           // console.log(updatedData.email)
+            updateUserData(updatedDatas); // Mettre à jour les données dans Profilscreens
+            navigation.goBack(); // Retourner à Profilscreens
+         
+        //  }
+          
+        
       }
     } catch (error) {
-      console.error('insersion echouée:', error);
+      console.error('update echoué:', error);
       setShowSuccessModal(true);
-      settext('insersion echouée')
+      settext('update echoué')
       //Alert.alert();
       // Alert.alert(res.data)
     }
@@ -219,14 +219,17 @@ export default function Updateprofilscreen({ navigation}) {
         <View style={styles.modalContent}>
        
         <Input icons="user" label="Nom" placeholder="Votre nom" name={nom} setname={setnom}/>
+        <Input icons="user" label="Prénom" placeholder="Votre prénom" name={prenom} setname={setprenom}/>
 
 
-        <Input icons="envelope" label="Email" placeholder="Votre Email" name={email} setname={setemail}/>
+       
+
+       
         <PasswordInput password={password} setPassword={setPassword} label="Password"/>
         <Input icons="phone" label="Phone" placeholder="Votre phone" name={phone} setname={setphone}/>
         <Textareainput icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
 
-        <Buttons title='Enregistrer'  onPress={uploadImage} Actionconnection={Actionconnection} connexion="Connexion"/>
+        <Buttons title='Enregistrer'  onPress={updateuser} Actionconnection={Actionconnection} connexion="Connexion"/>
 
 
         

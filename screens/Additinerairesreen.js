@@ -8,11 +8,12 @@ import Message from '../Message/Boxmessage';
 import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 
-export default function Additinerairesreen({ navigation }) {
+export default function Additinerairesreen({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [description, setDescription] = useState('');
+    const { refreshList } = route.params;
 
     const handleCloseModal = () => {
         setShowSuccessModal(false);
@@ -22,8 +23,8 @@ export default function Additinerairesreen({ navigation }) {
         setDescription('');
     };
 
-    const uploadDescription = async () => {
-        const url = ApiUrl({ endpoint: 'send_description' });
+    const createitineraire = async () => {
+        const url = ApiUrl({ endpoint: 'create_itineraire' });
 
         setLoading(true);
         setTimeout(async () => {
@@ -41,7 +42,7 @@ export default function Additinerairesreen({ navigation }) {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
-
+                     refreshList()
                     resetDescription();
                     setShowSuccessModal(true);
                     setText(res.data);
@@ -70,7 +71,7 @@ export default function Additinerairesreen({ navigation }) {
                    
                     <View style={styles.modalContent}>
                         <Input icons="pencil" label="Description" placeholder="Votre description" name={description} setname={setDescription} />
-                        <Buttons title='Enregistrer' Actionconnection={ActionConnection} onPress={uploadDescription}  />
+                        <Buttons title='Enregistrer' Actionconnection={ActionConnection} onPress={createitineraire}  />
                     </View>
                 </ScrollView>
             </View>
