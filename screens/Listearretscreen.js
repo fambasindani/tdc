@@ -6,9 +6,15 @@ import Messagebox from '../composant/Messagebox';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Listearret from '../composant/Listearret';
+import ApiUrl from '../composant/ApiUrl';
+import axios from 'axios';
 
 
 const Listearretscreen = ({ navigation }) => {
+
+  const url = ApiUrl({ endpoint: 'getarret' });
+
+
   const naviger = useNavigation();
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
@@ -18,18 +24,19 @@ const Listearretscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-  // Remplace vehiculeItineraire par vehiculeArret
-  const vehiculeArret = [
-    { id: 1, arret: 'KINTAMBO MAGASIN' },
-    { id: 2, arret: 'FULU' },
-    { id: 3, arret: 'MASANGA' },
-    { id: 4, arret: 'MBILA' },
-    { id: 5, arret: 'CITE VERTE' }
-  ];
+  
 
   const additin = async () => {
-    naviger.navigate("Addarret");
+    naviger.navigate("Addarret",{refreshList} );
   }
+
+  const handleupdate = async (item) => {
+    naviger.navigate('Updatearret', { items: item , refreshList});
+  };
+
+  const refreshList = () => {
+    fetchUserData(); // Mettre à jour la liste
+};
 
   useEffect(() => {
     fetchUserData();
@@ -38,7 +45,12 @@ const Listearretscreen = ({ navigation }) => {
   const fetchUserData = async () => {
     SetLoading(true);
     try {
-      const newData = vehiculeArret; // Utiliser les arrêts de véhicule
+      const response = await axios.get(url, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+      const newData = response.data; // Utiliser les arrêts de véhicule
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -52,7 +64,7 @@ const Listearretscreen = ({ navigation }) => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.arret.toLowerCase().includes(searchText.toLowerCase());
+    return item.description.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -79,9 +91,7 @@ const Listearretscreen = ({ navigation }) => {
     Setmessage(`Voulez-vous supprimer ${item.arret} ?`);
   };
 
-  const handupdate = async (item) => {
-    navigation.navigate('Updateuserscreen', { items: item });
-  };
+
 
   return (
     <>
@@ -124,7 +134,7 @@ const Listearretscreen = ({ navigation }) => {
           <Listearret
             mydata={filteredData}
             handDelete={handDelete}
-            handUpdate={handupdate}
+            handleupdate={handleupdate}
             Loading={Loading}
           />
         </View>

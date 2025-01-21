@@ -1,9 +1,9 @@
 import React from 'react';
 
 // Définition de l'URL de base de l'API
-//const API_BASE_URL = 'http://192.168.230.147:1200/api/';
-const API_BASE_URL = 'https://ngoy.pythonanywhere.com/api/';
-//const API_BASE_URLS = 'http://192.168.68.103:1200/';
+const API_BASE_URL = 'http://192.168.43.147:1200/api/';
+//const API_BASE_URL = 'https://ngoy.pythonanywhere.com/api/';
+//const API_BASE_URLS = 'http://192.168.38.147:1200/';
 
 // Composant Url pour les API
 const ApiUrl = ({ endpoint, params = {} }) => {

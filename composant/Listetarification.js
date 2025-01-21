@@ -1,47 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Alert,Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
-import Icon from 'react-native-vector-icons/FontAwesome';
-//import userImage from '../assets/user.png'; // Assurez-vous que le chemin est correct
-import ApiUrlbis from './ApiUrlbis';
-import moment from 'moment';
 
-const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, Loading, fetchUserData, handleConfirm }) => {
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const Listetarification = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  
-  const urlimg = ApiUrlbis({ endpoint: '' });
-//
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  const renderItem = ({ item }) => {
-    const formattedDate = moment(item.datecourse).format('YYYY-MM-DD');
+
+
+
+
+  const renderItem = ({ item, index }) => {
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.indexContainer}>
-        <Image source={{ uri:`${urlimg}${item.avatar}` }} style={styles.userImage} /> 
-         
-         {/* <Image source={userImage} style={styles.userImage} />*/}
+          <View style={styles.numberContainer}>
+            <Text style={styles.numberText}>{index + 1}</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.nom}</Text>
-            <Text style={styles.firstName}>{item.immatriculation}</Text>
-            <Text style={styles.firstName}>{formattedDate}</Text>
-             
+            <Text style={styles.lastName}>{item.description}</Text>
+              <Text style={styles.firstName}>{item.montant} CDF</Text> 
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handdetails(item)} >
-            <Image 
-                    source={require('../assets/detail.png')} 
-                    style={styles.linear} 
-                />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 
@@ -53,7 +44,6 @@ const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-
           </View>
         </View>
       </View>
@@ -68,54 +58,52 @@ const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, 
         Loading={Loading} 
         data={mydata} 
         fetchUserData={fetchUserData} 
-        renderItem={({ item }) => renderItem({ item })} 
+        renderItem={({ item, index }) => renderItem({ item, index })} 
       />
+      
     </View>
   );
 };
 
 const styles = {
   container: {
-    paddingTop:12, 
-    paddingBottom: 70, 
-    // flex: 1,
+   // flex: 1,
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 17, // Ajustez selon vos besoins
-    paddingHorizontal: 16, // Pour l'espace latéral
+    padding: 16,
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
-   // marginTop: 10,
-    //margin: 10,
   },
-  linear: {
-    width: 22, // Ajustez la largeur selon vos besoins
-    height:23, // Ajustez la hauteur selon vos besoins
-  },
-  indexContainer: {
+  numberContainer: {
     width: 40,
     height: 40,
+    borderRadius: 50,
+    backgroundColor: COLORS.grey,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  userImage: {
-    width: 45,
-    height: 45,
-    borderRadius: 20,
-    //marginRight:20,
+  numberText: {
+    color: COLORS.white,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   descriptionContainer: {
-    //flex:1,
-    width: '85%',
-    marginLeft: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+    // flex: 1,
+    // margint:20,
+  
+   // marginTop: 30,
+  
+      width: '85%',
+      marginLeft: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+     // alignItems: 'center',
+    },
   nameContainer: {
-    justifyContent: 'center',
-     marginLeft:5,
+    justifyContent: 'center', // Centers the names vertically
+    alignItems: 'center', // Centers the names horizontally
   },
   lastName: {
     fontSize: 16,
@@ -130,7 +118,7 @@ const styles = {
     alignItems: 'center',
   },
   iconButton: {
-    backgroundColor:'#286a90',
+    backgroundColor:'#404141',
     padding: 8,
     borderRadius: 5,
     marginLeft: 5,
@@ -140,7 +128,7 @@ const styles = {
     marginLeft:3,
   },
   iconButtonDelete: {
-    backgroundColor: '#286a90',
+    backgroundColor: '#fc7676',
     padding: 8,
     borderRadius: 5,
     marginLeft: 5,
@@ -149,17 +137,10 @@ const styles = {
     marginTop:5,
     marginLeft:3,
   },
-  iconButtoneye: {
-    flexDirection: 'row',
-    backgroundColor:'#286a90',
-    padding: 8,
-    borderRadius: 5,
-    marginLeft: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:5,
-    marginLeft:3,
+  linear: {
+    width: 22, // Ajustez la largeur selon vos besoins
+    height:23, // Ajustez la hauteur selon vos besoins
   },
 };
 
-export default Listecours;
+export default Listetarification;

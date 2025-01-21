@@ -11,9 +11,9 @@ import Droplist from '../composant/Droplist';
 import DatePicker from '../composant/DatePicker';
 
 
-export default function Addcoursescreen({ navigation, route }) {
+export default function Updatecoursescreen({ navigation, route }) {
 
-    const { refreshList } = route.params;
+    const { refreshList, items } = route.params;
 
 
     const [loading, setLoading] = useState(false);
@@ -25,17 +25,18 @@ export default function Addcoursescreen({ navigation, route }) {
     const [marque, setMarque] = useState('');
     const [immatricule, setImmatricule] = useState('');
     const [numeroChassie, setNumeroChassie] = useState('');
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState(items.idvehicule);
 
 
      const [data, setData] = useState([]);
      const [datacat, setDatacat] = useState([]);
      const [contenu, setcontenu] = useState('');
-     const [proprietaire, setproprietaire] = useState('');
+     const [proprietaire, setproprietaire] = useState(items.iduser);
      const [dataitineraire, setdataitineraire] = useState([]);
-     const [montant, setmontant] = useState('');  //itineraire
-     const [itineraires, setitineraire] = useState('');  
+     const [montant, setmontant] = useState(items.montant);  //itineraire
+     const [itineraires, setitineraire] = useState(items.idtarification);  
      const [iditin, setiditin] = useState(''); 
+     const [idcourse, setidcourse] = useState(items.id); 
 
     
     useEffect(() => {
@@ -111,8 +112,8 @@ export default function Addcoursescreen({ navigation, route }) {
         return isoString.split('T')[0]; // Extrait "2023-03-04"
     };
 
-    const createcourse = async () => {
-        const url = ApiUrl({ endpoint: 'create_course' });
+    const updateupdate = async () => {
+        const url = ApiUrl({ endpoint: 'update_course' });
 
         setLoading(true);
     
@@ -130,16 +131,17 @@ export default function Addcoursescreen({ navigation, route }) {
                     setShowSuccessModal(true);
                     setText("Veuillez remplir tous les champs");
                 } else {
-                    const res = await axios.post(url, formData, {
+                    const res = await axios.put(`${url}/${idcourse}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
 
                     resetFields();
-                    setShowSuccessModal(true);
-                    setText(res.data);
+                   // setShowSuccessModal(true);
+                   // setText(res.data);
                     refreshList()
+                    navigation.goBack();
                 }
             } catch (error) {
                 console.error('Erreur:', error);
@@ -181,9 +183,9 @@ export default function Addcoursescreen({ navigation, route }) {
 
 
                         <Buttons
-                            title='Enregistrer'
+                            title='Modifier'
                             Actionconnection={ActionConnection}
-                            onPress={createcourse}
+                            onPress={updateupdate}
                         />
                     </View>
                 </ScrollView>

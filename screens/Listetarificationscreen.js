@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Platform } from 'react-native';
+import COLORS from '../Couleurs/COLORS';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Messagebox from '../composant/Messagebox';
-import Listevehicule from '../composant/Listevehicule'; // Assurez-vous que ce chemin est correct
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import COLORS from '../Couleurs/COLORS'; // Assurez-vous que ce chemin est correct
-import Listecours from '../composant/Listecours';
-import axios from 'axios';
-import ApiUrl from '../composant/ApiUrl';
-import ModalPopup from '../composant/ModalPopup';
-import ApiUrlbis from '../composant/ApiUrlbis';
 
-const Listecoursscreen = () => {
+import ApiUrl from '../composant/ApiUrl';
+import axios from 'axios';
+import Listetarification from '../composant/Listetarification';
+
+const Listetarificationscreen = ({ navigation }) => {
   const naviger = useNavigation();
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
@@ -22,53 +20,11 @@ const Listecoursscreen = () => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
+  const url = ApiUrl({ endpoint: 'gettarification' });
 
-
-  
-  const [Visible, setVisible] = useState(false);
-  const [phone, setphone] = useState(null);
-  const [email, setemail] = useState(null);
-  const [nom, setnom] = useState(null);
-  const [prenom, setprenom] = useState(null);
-  const [confirmation, setconfirmation] = useState('');
-  const [monimage, setmonimage] = useState();
-  const [marque, setmarque] = useState();
-
-
-  const urlimg = ApiUrlbis({ endpoint: '' });
-  //const url = ApiUrl({ endpoint: 'getvehicule' });
-
-
- 
-
-
-
-  const toggleModal = () => {
-    setVisible(!Visible);
-  };
-  const handdetails  = (item) => {
-    // Logique d'édition ici
-    console.log('Confirmé');
-    
-      setphone("imma : "+item.immatriculation)
-      setemail(item.montant +" CDF")
-      setnom(item.nom)
-      setprenom(item.prenom)
-      setmarque(item.marque)
-      //setmarque(item.nom)
-      setmonimage(`${urlimg}${item.avatar}`);
-     // Alert.alert(urlimg+item.avatar)
-    toggleModal();
-  };
-
-
-  const url = ApiUrl({ endpoint: 'getcourses' });
-
-  
-
-  const additin = () => {
-    naviger.navigate("Addcours", {refreshList});
-  };
+  const additin = async () => {
+    naviger.navigate("Addtarification", {refreshList});
+  }
 
   useEffect(() => {
     fetchUserData();
@@ -78,7 +34,7 @@ const Listecoursscreen = () => {
     fetchUserData(); // Mettre à jour la liste
 };
 
-  const fetchUserData = async() => {
+  const fetchUserData = async () => {
     SetLoading(true);
     try {
       const response = await axios.get(url, {
@@ -86,7 +42,7 @@ const Listecoursscreen = () => {
             'Content-Type': 'application/json',
         },
     });
-      const newData = response.data; // Utiliser les données des courses
+      const newData = response.data; // Utiliser les itinéraires de véhicule
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -100,7 +56,7 @@ const Listecoursscreen = () => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.nom.toLowerCase().includes(searchText.toLowerCase());
+    return item.description.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -111,24 +67,24 @@ const Listecoursscreen = () => {
     setShowSuccessModal(false);
   };
 
-  const handleConfirms = () => {
+  const handleConfirms = async () => {
     SetmodalVisible(false);
     // Ici, tu peux ajouter la logique de confirmation
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     SetmodalVisible(false);
   };
 
-  const handDelete = (item) => {
+  const handDelete = async (item) => {
     setShowSuccessModal(true);
     SetmodalVisible(true);
     Setselected(item);
-    Setmessage(`Voulez-vous supprimer ${item.nomChauffeur} ?`);
+    Setmessage(`Voulez-vous supprimer Itinéraire ${item.description} ?`);
   };
 
-  const handleupdate = (item) => {
-    naviger.navigate('Updatecours', { items: item, refreshList });
+  const handleupdate = async (item) => {
+    naviger.navigate('Updatetarification', { items: item, refreshList });
   };
 
   return (
@@ -169,15 +125,12 @@ const Listecoursscreen = () => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
-          <Listecours
+          <Listetarification
             mydata={filteredData}
             handDelete={handDelete}
             handleupdate={handleupdate}
             Loading={Loading}
-            handdetails={handdetails}
           />
-           <ModalPopup marque={marque} monimage={monimage} setmonimage={setmonimage} nom={nom} prenom={prenom} phone={phone} email={email} modalVisible={Visible} setModalVisible={setVisible} toggleModal={toggleModal} />
-   
         </View>
       </View>
     </>
@@ -185,14 +138,8 @@ const Listecoursscreen = () => {
 };
 
 const styles = StyleSheet.create({
-  complet: {
-    backgroundColor: COLORS.blanccasse,
-    flex: 1,
-  },
-  container: {
-    backgroundColor: COLORS.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+  addButtonIcon: {
+    color: COLORS.white,
   },
   headerContainer: {
     marginTop: 90,
@@ -205,6 +152,15 @@ const styles = StyleSheet.create({
     height: 40,
     width: '95%',
   },
+  addButton: {
+    backgroundColor: COLORS.rouge,
+    borderRadius: 50,
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -213,6 +169,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     flex: 1,
     marginRight: 5,
+  },
+  complet: {
+    backgroundColor: COLORS.blanccasse,
+    flex: 1,
+  },
+  container: {
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   searchInput: {
     flex: 1,
@@ -223,18 +188,6 @@ const styles = StyleSheet.create({
   searchIcon: {
     marginLeft: 8,
   },
-  addButton: {
-    backgroundColor: COLORS.rouge,
-    borderRadius: 50,
-    height: 40,
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 5,
-  },
-  addButtonIcon: {
-    color: COLORS.white,
-  },
 });
 
-export default Listecoursscreen;
+export default Listetarificationscreen;

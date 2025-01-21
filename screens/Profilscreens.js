@@ -34,9 +34,9 @@ export default function Profilscreens({ navigation }) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     
     const [password, setPassword] = useState('');
-    const [email, setemail] = useState('pierrpapy@gmail.com');
-    const [nom, setnom] = useState('FAMBA');
-    const [phone, setphone] = useState('0898596501');
+    const [email, setemail] = useState('');
+    const [nom, setnom] = useState('');
+    const [phone, setphone] = useState('');
     const [postnom, setpostnom] = useState('');
     const [prenom, setprenom] = useState('');
     const [pseudo, setpseudo] = useState('');
@@ -46,6 +46,7 @@ export default function Profilscreens({ navigation }) {
     const [urlimage, seturlimage] =  useState(null);
     const [valeur, setvaleur] =  useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [userData, setUserData] = useState({ nom: '', email: '', phone: '' });
     
   
    // const [defaultImage, setDefaultImage] = useState(require('../assets/user.png'));
@@ -116,7 +117,7 @@ export default function Profilscreens({ navigation }) {
     }, []);
   
 
-    const fetchUserName = async () => {
+    const fetchUserNames = async () => {
       try {
         const monid = await AsyncStorage.getItem('monid'); // Récupérer le nom
      
@@ -139,7 +140,7 @@ export default function Profilscreens({ navigation }) {
       try {
         const monid = await AsyncStorage.getItem('monid'); // Récupérer le nom
      
-        //alert(monid)
+         //alert(monid)
         if (monid !== null) {
        // alert(monid)
          // setUserName(name); // Mettre à jour l'état local avec le nom
@@ -156,40 +157,7 @@ export default function Profilscreens({ navigation }) {
     
 
 
-    const getusers = async (id) => {
 
-
-
-        const url = ApiUrl({ endpoint: 'getuserid' });
-        const urlimg = ApiUrlbis({ endpoint: '' });
-         setloading(true);
-        try {
-            const response = await axios.get(`${url}/${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            
-            // Traitez les données comme vous le souhaitez
-            console.log(response.data);
-           //const  responseData=response.data[0]
-        
-            setnom(response.data[0].nom)
-            setemail(response.data[0].email)
-           setphone(response.data[0].telephone)
-           setDefaultImage(`${urlimg}${response.data[0].avatar}`)
-       
-    
-        } catch (error) {
-            console.error('Erreur:', error.message);
-            return null; // Ou gérez l'erreur selon vos besoins
-          } finally {
-            setloading(false); // Arrêter le chargement dans tous les cas
-          }
-
-
-
-    };
 
 
     const handleCloseModal = () => {
@@ -204,7 +172,7 @@ export default function Profilscreens({ navigation }) {
   
       const updateuploadImage = async (selectedImage, id) => {
        // const id = 25;
-        const url = ApiUrl({ endpoint: 'update_user' });
+        const url = ApiUrl({ endpoint: 'update_image' });
         setloading(true); // Démarrer le chargement
       
         try {
@@ -248,28 +216,74 @@ export default function Profilscreens({ navigation }) {
       };
 
       const naviger = useNavigation();
-      const onModifier = async () => {
-        // Créer un objet avec les valeurs par défaut
+
       
-        const userData = {
-            nom: 'FAMBA',
-            email: 'pierrpapy@gmail.com',
-            telephone: '0898596501',
-        };
-    
-        // Mettre à jour les états avec les valeurs par défaut
-        setnom(userData.nom);
-        setemail(userData.email);
-        setphone(userData.telephone);
-        //alert('hhhhhh')
-        //naviger.navigate('Updateprofil');
-    
-        // Naviguer vers l'écran de mise à jour du profil
-        naviger.navigate('Updateprofil', {userData});
+    const getusers = async (id) => {
+
+
+
+      const url = ApiUrl({ endpoint: 'getuserid' });
+      const urlimg = ApiUrlbis({ endpoint: '' });
+       setloading(true);
+      try {
+          const response = await axios.get(`${url}/${id}`, {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          
+          // Traitez les données comme vous le souhaitez
+          console.log(response.data);
+         //const  responseData=response.data[0] 
+      
+         setnom(response.data[0].nom)
+         setemail(response.data[0].email)
+         setphone(response.data[0].telephone)
+        setDefaultImage(`${urlimg}${response.data[0].avatar}`)
+       
+      } catch (error) {
+          console.error('Erreur:', error.message);
+          return null; // Ou gérez l'erreur selon vos besoins
+        } finally {
+          setloading(false); // Arrêter le chargement dans tous les cas
+        }
+
+
+
+  };
+
+  const fetchUserName = async () => {
+    const userId = await AsyncStorage.getItem('monid');
+    const url = ApiUrl({ endpoint: 'getuserid' });
+    getusers(userId)
+    setLoading(true);
+
+    try {
+        const response = await axios.get(`${url}/${userId}`, {
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const user = response.data[0];
+        setUserData({
+            nom: user.nom,
+            email: user.email,
+            phone: user.telephone,
+        });
+        
+       // setDefaultImage(user.avatar);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+
+      const updateUserData = (updatedData) => {
+        setUserData(updatedData);
     };
 
-
-      const onModifiers =async () => {
+      const onModifier =async () => {
         //`${url}/${id}
         const id = await AsyncStorage.getItem('monid'); // Récupérer le nom
     
@@ -282,9 +296,17 @@ export default function Profilscreens({ navigation }) {
                     'Content-Type': 'application/json',
                 },
             });
-            const responseData=response.data[0]
+            const userData=response.data[0]
 
-            navigation.navigate('Updateprofile', { userData: responseData});
+           // navigation.navigate('Updateprofile', { userData: responseData});
+           // naviger.navigate('Updateprofil', {userData, updateUserData });
+           naviger.navigate('Updateprofil', {
+              userData,
+              updateUserData: (updatedData) => {
+                  updateUserData(updatedData);
+                  fetchUserName();
+                },
+              });
 
           } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -306,15 +328,16 @@ export default function Profilscreens({ navigation }) {
     <ScrollView style={styles.scrollview}>
       <View style={styles.modalContent}>
       <Imagephoto 
-                   modalVisible={modalVisible}
-                   setModalVisible={setModalVisible}
-                   takePhoto={takePhoto}
-                   selectFromGallery={selectFromGallery}
-                    image={image}
-                    setimage={setImage}
-                    defimage={defaultImage}
-                    setdefimage={setDefaultImage}
-                   
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    takePhoto={takePhoto}
+                    selectFromGallery={selectFromGallery}
+                     image={image}
+                     setimage={setImage}
+                      defimage={defaultImage}
+                    
+                     
+                     setdefimage={setDefaultImage}
                 />
         
         <MonText desisnation={nom} label="Nom" />

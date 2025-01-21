@@ -36,7 +36,7 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
 
     //
 
-    const Actionlogin = async () => {
+    const Actionlogins = async () => {
         navigation.navigate('Test');
 
     }
@@ -46,7 +46,7 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
 
 
 
-    const uploadImage = async () => {
+    const Actionlogin = async () => {
         const url = ApiUrl({ endpoint: 'login' });
         setLoading(true);
 
@@ -82,30 +82,17 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
                 setShowSuccessModal(true);
                 setText("Password ou Email incorrect");
             } else {
-                const id = res.data.user.id.toString();
-                const role = res.data.user.role.toString();
-                const name = res.data.user.nom.toString();
-                await AsyncStorage.setItem('key', id);
+                 const id = res.data.user.id.toString();
+                //const role = res.data.user.role.toString();
+                //const name = res.data.user.nom.toString();
+                 await AsyncStorage.setItem('key', id);
                 await AsyncStorage.setItem('monid', id);
-                await AsyncStorage.setItem('name', name);
+               // await AsyncStorage.setItem('name', name);
               
                 setiduser(id)
-                //alert(res.data.user.nom)
-                //navigation.navigate('Menuadmincreen');
-                if(role=="1"){
-                    navigation.navigate('Menuadmincreen');
-
-                }
-                else if(role=="0"){
-                    setIsLoggedIn(true); 
-                    navigation.navigate('Menuscreen');
-
-                }
-                else{
-                    setShowSuccessModal(true);
-                    setText("Vous êtes désactivés");
-
-                }
+                navigation.navigate('Test');
+                //alert('ok')
+               
                
             }
         } catch (error) {

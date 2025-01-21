@@ -6,7 +6,7 @@ import Listflast from './Listflast';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Listevehicule = ({ mydata, SetLoading, handDelete,handupdate, Loading, fetchUserData, handleConfirm }) => {
+const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -29,17 +29,17 @@ const Listevehicule = ({ mydata, SetLoading, handDelete,handupdate, Loading, fet
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
             <Text style={styles.lastName}>{item.marque}</Text>
-             <Text style={styles.firstName}>{item.immatricule}</Text> 
+             <Text style={styles.firstName}>{item.immatriculation}</Text> 
               {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
           </View>
           <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handDelete(item)} >
+          <TouchableOpacity style={styles.iconButtoneye} onPress={() => handdetails(item)} >
             <Image 
                     source={require('../assets/detail.png')} 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={() => handupdate(item)}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => handupdates(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 

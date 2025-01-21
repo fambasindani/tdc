@@ -11,20 +11,23 @@ import Droplist from '../composant/Droplist';
 import { useEffect } from 'react';
 
 
-export default function Addvehiculescreen({ navigation, route }) {
+export default function Updatevehiculescreen({ navigation, route }) {
+
+    const { items } = route.params; 
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     
     // Nouveaux états pour les champs
-    const [marque, setMarque] = useState('');
-    const [immatricule, setImmatricule] = useState('');
-    const [numeroChassie, setNumeroChassie] = useState('');
-    const [description, setDescription] = useState('');
+    const [marque, setMarque] = useState(items.marque);
+    const [immatricule, setImmatricule] = useState(items.immatriculation);
+    const [numeroChassie, setNumeroChassie] = useState(items.numero_chassies);
+    const [description, setDescription] = useState(items.idcat);
     const [data, setData] = useState([]);
     const [datacat, setDatacat] = useState([]);
     const [contenu, setcontenu] = useState('');
-    const [proprietaire, setproprietaire] = useState('');
+    const [proprietaire, setproprietaire] = useState(items.iduser);
+    const [idvehicule, setidvehicule] = useState(items.id);
 
 
     const { refreshList } = route.params;
@@ -81,9 +84,9 @@ export default function Addvehiculescreen({ navigation, route }) {
 
 
 
-    const createvehicule = async () => {
-        const url = ApiUrl({ endpoint: 'create_vehicule' });
-
+    const updatevehicule = async () => {
+        const url = ApiUrl({ endpoint: 'update_vehicule' });
+   //alert(idvehicule)
         setLoading(true);
         setTimeout(async () => {
             try {
@@ -101,7 +104,7 @@ export default function Addvehiculescreen({ navigation, route }) {
                     setShowSuccessModal(true);
                     setText("Veuillez remplir tous les champs");
                 } else {
-                    const res = await axios.post(url, formData, {
+                    const res = await axios.put(`${url}/${idvehicule}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
@@ -109,8 +112,9 @@ export default function Addvehiculescreen({ navigation, route }) {
 
                     resetFields();
                     refreshList()
-                    setShowSuccessModal(true);
-                    setText(res.data);
+                    //setShowSuccessModal(true);
+                    //setText(res.data);
+                    navigation.goBack();
                 }
             } catch (error) {
                 console.error('Erreur:', error);
@@ -160,9 +164,9 @@ export default function Addvehiculescreen({ navigation, route }) {
                             setname={setNumeroChassie} 
                         />
                         <Buttons 
-                            title='Ajouter' 
+                            title='Modifier' 
                             Actionconnection={ActionConnection} 
-                            onPress={createvehicule}  
+                            onPress={updatevehicule}  
                             
                         />
                         

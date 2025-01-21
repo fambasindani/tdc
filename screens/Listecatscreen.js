@@ -6,6 +6,14 @@ import Messagebox from '../composant/Messagebox';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Listecat from '../composant/Listecat';
+import ApiUrl from '../composant/ApiUrl';
+import axios from 'axios';
+
+
+
+
+
+const url = ApiUrl({ endpoint: 'getcategorie' });
 
 const Listecatscreen = ({ navigation }) => {
   const naviger=useNavigation()
@@ -17,16 +25,16 @@ const Listecatscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-  const vehicleCategories = [
-    { id: 1, cat: 'Voiture' },
-    { id: 2, cat: 'Moto' },
-    { id: 3, cat: 'Camion' },
-    { id: 4, cat: 'Vélo' }
-  ];
+
+
+
+
+  
 
   const addcat = async () => {
     
-    naviger.navigate("Additineraire");
+    //naviger.navigate("Additineraire");
+    naviger.navigate('addcat', { refreshList })
   }
 
   
@@ -35,10 +43,19 @@ const Listecatscreen = ({ navigation }) => {
     fetchUserData();
   }, []);
 
+  const refreshList = () => {
+    fetchUserData(); // Mettre à jour la liste
+};
+
   const fetchUserData = async () => {
     SetLoading(true);
     try {
-      const newData = vehicleCategories; // Utiliser les catégories de véhicule
+      const response = await axios.get(url, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+      const newData = response.data; // Utiliser les catégories de véhicule
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -52,7 +69,7 @@ const Listecatscreen = ({ navigation }) => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.cat.toLowerCase().includes(searchText.toLowerCase());
+    return item.description.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -75,12 +92,12 @@ const Listecatscreen = ({ navigation }) => {
   const handDelete = async (item) => {
     setShowSuccessModal(true);
     SetmodalVisible(true);
-    Setselected(item);
-    Setmessage(`Voulez-vous supprimer ${item.cat} ?`);
+    Setselected(item);//${item.nom}
+    Setmessage(`Voulez-vous supprimer ?`);
   };
 
-  const handupdate = async (item) => {
-    navigation.navigate('Updateuserscreen', { items: item });
+  const handlupdate = async (item) => {
+    naviger.navigate('Updatecategorie', { items: item, refreshList });
   };
 
   return (
@@ -124,8 +141,9 @@ const Listecatscreen = ({ navigation }) => {
           <Listecat
             mydata={filteredData}
             handDelete={handDelete}
-            handUpdate={handupdate}
+          
             Loading={Loading}
+            handlupdate={handlupdate}
           />
         </View>
       </View>

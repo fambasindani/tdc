@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Messagebox from '../composant/Messagebox';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-
-
 import Listeitin from '../composant/Listeitin';
+import ApiUrl from '../composant/ApiUrl';
+import axios from 'axios';
 
 const ListeItinscreen = ({ navigation }) => {
   const naviger = useNavigation();
@@ -19,26 +19,29 @@ const ListeItinscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-  // Remplace vehicleCategories par vehiculeItineraire
-  const vehiculeItineraire = [
-    { id: 1, itin: 'UPN-VICTOIRE' },
-    { id: 2, itin: 'UPN-UNIKIN' },
-    { id: 3, itin: 'VICTOIRE-UNIKIN' },
-    { id: 4, itin: 'UPN-BANDALE' }
-  ];
+  const url = ApiUrl({ endpoint: 'getitineraire' });
 
   const additin = async () => {
-    naviger.navigate("Additineraire");
+    naviger.navigate("Additineraire", {refreshList});
   }
 
   useEffect(() => {
     fetchUserData();
   }, []);
 
+  const refreshList = () => {
+    fetchUserData(); // Mettre à jour la liste
+};
+
   const fetchUserData = async () => {
     SetLoading(true);
     try {
-      const newData = vehiculeItineraire; // Utiliser les itinéraires de véhicule
+      const response = await axios.get(url, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+      const newData = response.data; // Utiliser les itinéraires de véhicule
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -52,7 +55,7 @@ const ListeItinscreen = ({ navigation }) => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.itin.toLowerCase().includes(searchText.toLowerCase());
+    return item.description.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -76,11 +79,11 @@ const ListeItinscreen = ({ navigation }) => {
     setShowSuccessModal(true);
     SetmodalVisible(true);
     Setselected(item);
-    Setmessage(`Voulez-vous supprimer ${item.itin} ?`);
+    Setmessage(`Voulez-vous supprimer Itinéraire ${item.description} ?`);
   };
 
-  const handupdate = async (item) => {
-    navigation.navigate('Updateuserscreen', { items: item });
+  const handleupdate = async (item) => {
+    naviger.navigate('Updateitineraire', { items: item, refreshList });
   };
 
   return (
@@ -124,7 +127,7 @@ const ListeItinscreen = ({ navigation }) => {
           <Listeitin
             mydata={filteredData}
             handDelete={handDelete}
-            handUpdate={handupdate}
+            handleupdate={handleupdate}
             Loading={Loading}
           />
         </View>

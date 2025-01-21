@@ -11,47 +11,36 @@ import Droplist from '../composant/Droplist';
 import { useEffect } from 'react';
 
 
-export default function Addvehiculescreen({ navigation, route }) {
+export default function Updatetarificationscreen({ navigation, route }) {
+    const { refreshList, items } = route.params;
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     
     // Nouveaux états pour les champs
-    const [marque, setMarque] = useState('');
-    const [immatricule, setImmatricule] = useState('');
-    const [numeroChassie, setNumeroChassie] = useState('');
-    const [description, setDescription] = useState('');
+    const [montant, setmontant] = useState(items.montant);
     const [data, setData] = useState([]);
     const [datacat, setDatacat] = useState([]);
     const [contenu, setcontenu] = useState('');
-    const [proprietaire, setproprietaire] = useState('');
+    const [description, setDescription] = useState(items.iditineraire);
+    const [idtarif, setidtarif] = useState(items.id);
+  
 
 
-    const { refreshList } = route.params;
+   
 
 
 
     useEffect(() => {
-      getCategorie();
-      getuser();
+        getitineraire();
+     // getuser();
     }, []);
     
-    const getCategorie = async () => {
-      try {
-       // setcontenu('description')
-        const urlget = ApiUrl({ endpoint: 'getcategorie' });
-        const response = await axios.get(urlget);
-       
-        //alert(response.data[0].description)
-        setDatacat(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la requête à l\'API :', error);
-      }
-    };
+   
 
-    const getuser = async () => {
+    const getitineraire = async () => {
         try {
-          const urlget = ApiUrl({ endpoint: 'getuser' });
+          const urlget = ApiUrl({ endpoint: 'getitineraire' });
           const response = await axios.get(urlget);
           setData(response.data);
         } catch (error) {
@@ -72,36 +61,33 @@ export default function Addvehiculescreen({ navigation, route }) {
     };
 
     const resetFields = () => {
-        setMarque('');
-        setImmatricule('');
-        setNumeroChassie('');
+       
+        setmontant('');
         setDescription('')
-        setproprietaire('')
+       // setproprietaire('')
     };
 
 
 
-    const createvehicule = async () => {
-        const url = ApiUrl({ endpoint: 'create_vehicule' });
+    const updatetarif = async () => {
+        const url = ApiUrl({ endpoint: 'update_tarification' });
 
         setLoading(true);
         setTimeout(async () => {
             try {
                 setLoading(false);
                 const formData = new FormData();
-                formData.append('marque', marque);
-                formData.append('immatriculation', immatricule);
-                formData.append('num_chassies', numeroChassie);
-                formData.append('idcat', description);  //iduser
-                formData.append('iduser', proprietaire); 
+             
+                formData.append('iditineraire', description);  //iduser
+                formData.append('montant', montant); 
                 
                
 
-                if (!description || !proprietaire || marque.trim() === '' || immatricule.trim() === '' || numeroChassie.trim() === '') {
+                if (!description ||montant.trim() === '') {
                     setShowSuccessModal(true);
                     setText("Veuillez remplir tous les champs");
                 } else {
-                    const res = await axios.post(url, formData, {
+                    const res = await axios.put(`${url}/${idtarif}`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
@@ -109,8 +95,9 @@ export default function Addvehiculescreen({ navigation, route }) {
 
                     resetFields();
                     refreshList()
-                    setShowSuccessModal(true);
-                    setText(res.data);
+                   //setShowSuccessModal(true);
+                   // setText(res.data);
+                   navigation.goBack()
                 }
             } catch (error) {
                 console.error('Erreur:', error);
@@ -135,34 +122,24 @@ export default function Addvehiculescreen({ navigation, route }) {
                 <ScrollView style={styles.scrollview}>
                     <View style={styles.modalContent}>
 
-                    <Droplist icons="pencil" contenus="description" identifiant="id" getCategorie={getCategorie} data={datacat} setData={setDatacat} description={description} setDescription={setDescription} label="Catégorie" placephold="Sélectionnez catégorie"/>
-                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Propriétaire" placephold="Sélectionnez propriétaire"/>
+                
+                    <Droplist  icons="pencil" contenus="description" identifiant="id" getCategorie={getitineraire} data={data} setData={setData} description={description} setDescription={setDescription} label="Itinéraire" placephold="Sélectionnez itinéraire"/>
       
                         <Input 
-                            icons="car" 
-                            label="Marque" 
-                            placeholder="Marque" 
-                            name={marque} 
-                            setname={setMarque} 
+                            icons="money" 
+                            label="Monatant" 
+                            placeholder="Monatant" 
+                            name={montant} 
+                            setname={setmontant} 
+                            numerique="numeric"
                         />
-                        <Input 
-                            icons="id-card" 
-                            label="Immatricule" 
-                            placeholder="Immatricule" 
-                            name={immatricule} 
-                            setname={setImmatricule} 
-                        />
-                        <Input 
-                            icons="key" 
-                            label="Numéro de Châssis" 
-                            placeholder="Numéro de châssis" 
-                            name={numeroChassie} 
-                            setname={setNumeroChassie} 
-                        />
+
+                    
+                  
                         <Buttons 
-                            title='Ajouter' 
+                            title='Modifier' 
                             Actionconnection={ActionConnection} 
-                            onPress={createvehicule}  
+                            onPress={updatetarif}  
                             
                         />
                         

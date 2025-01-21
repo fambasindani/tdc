@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text,getitineraire, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../Couleurs/COLORS';
 
-const Input = ({name, setname, icons, placeholder, label, type}) => {
+const Input = ({name, setname, icons, placeholder, editables, label, type, numerique}) => {
  
   return (
 
@@ -24,6 +24,8 @@ const Input = ({name, setname, icons, placeholder, label, type}) => {
           keyboardType={type}
           value={name}
           onChangeText={setname}
+          keyboardType={numerique}
+          editable={editables} 
         />
       </View>
 

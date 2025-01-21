@@ -39,6 +39,7 @@ export default function Inscriptionsceens({ navigation }) {
     //const [image, setImage] = useState(null);
     const [urlimage, seturlimage] =  useState(null);
     const [adresse, setadresse] =  useState(null);
+    //const [adresse, setadresse] =  useState(null);
   
 
 
@@ -59,7 +60,7 @@ export default function Inscriptionsceens({ navigation }) {
         setemail('')
         setPassword('')
         setnom('')
-      
+        setadresse('')
         setphone('')
 
       
@@ -74,9 +75,9 @@ export default function Inscriptionsceens({ navigation }) {
 
 
 
-  const uploadImage = async () => {
+  const createuser = async () => {
 
-    const url = ApiUrl({ endpoint: 'create_users' });
+    const url = ApiUrl({ endpoint: 'create_user' });
 
     setloading(true)
     setTimeout(async () => {
@@ -90,7 +91,7 @@ export default function Inscriptionsceens({ navigation }) {
       formData.append('password', password);
 
       formData.append('email', email);
-      //formData.append('pseudo', pseudo);
+      formData.append('adresse', adresse);
       formData.append('telephone', phone);
 
 
@@ -122,10 +123,21 @@ export default function Inscriptionsceens({ navigation }) {
         setShowSuccessModal(true);
         settext('Veuillez saisir le numéro téléphone')
       }
+
+      else if (adresse.trim() === '') {
+        setShowSuccessModal(true);
+        settext("Veuillez saisir l'adresse")
+      }
+
+
       else {
+        const form = new FormData();
+
+        form.append('email', email);
+
         const urlget = ApiUrl({ endpoint: 'verifieremail' });
 
-        const res = await axios.post(urlget, formData, {
+        const res = await axios.post(urlget, form, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -209,7 +221,7 @@ export default function Inscriptionsceens({ navigation }) {
         <Input icons="phone" label="Phone" placeholder="Votre phone" name={phone} setname={setphone}/>
         <Input icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
 
-        <Buttons title='Enregistrer'  onPress={uploadImage} Actionconnection={Actionconnection} connexion="J'ai déjà un compte"/>
+        <Buttons title='Enregistrer'  onPress={createuser} Actionconnection={Actionconnection} connexion="J'ai déjà un compte"/>
 
 
         

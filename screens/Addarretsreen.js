@@ -8,11 +8,14 @@ import Message from '../Message/Boxmessage';
 import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 
-export default function Addarretsreen({ navigation }) {
+export default function Addarretsreen({ navigation, route }) {
+    const { refreshList } = route.params;
+
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [description, setDescription] = useState('');
+
 
     const handleCloseModal = () => {
         setShowSuccessModal(false);
@@ -23,7 +26,7 @@ export default function Addarretsreen({ navigation }) {
     };
 
     const uploadDescription = async () => {
-        const url = ApiUrl({ endpoint: 'send_description' });
+        const url = ApiUrl({ endpoint: 'create_arret' });
 
         setLoading(true);
         setTimeout(async () => {
@@ -41,7 +44,7 @@ export default function Addarretsreen({ navigation }) {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
-
+                    refreshList()
                     resetDescription();
                     setShowSuccessModal(true);
                     setText(res.data);
@@ -52,6 +55,7 @@ export default function Addarretsreen({ navigation }) {
                 setText('Erreur');
             }
         }, 5000);
+        
     };
 
     const ActionConnection = () => {
