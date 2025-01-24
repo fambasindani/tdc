@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import Listeitin from '../composant/Listeitin';
 import ApiUrl from '../composant/ApiUrl';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListeItinscreen = ({ navigation }) => {
   const naviger = useNavigation();
@@ -19,11 +20,41 @@ const ListeItinscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
+
+
+
+  
+// Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
+
+
   const url = ApiUrl({ endpoint: 'getitineraire' });
 
   const additin = async () => {
     naviger.navigate("Additineraire", {refreshList});
   }
+
+
+
+
+
+
 
   useEffect(() => {
     fetchUserData();
@@ -109,9 +140,11 @@ const ListeItinscreen = ({ navigation }) => {
                 <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
               )}
             </View>
+            {(role === 'admin'||role === 'super user') && (
             <TouchableOpacity style={styles.addButton} onPress={additin}>
               <Icon name="plus" size={20} style={styles.addButtonIcon} />
             </TouchableOpacity>
+            )}
           </View>
 
           <Messagebox

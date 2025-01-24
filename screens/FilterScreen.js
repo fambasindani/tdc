@@ -12,6 +12,7 @@ import DatePicker from '../composant/DatePicker';
 import CustomModal from '../composant/CustomModal';
 import CheckComposant from './CheckComposant';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 
 
 export default function FilterScreen({ navigation}) {
@@ -78,18 +79,77 @@ export default function FilterScreen({ navigation}) {
 
     const naviger = useNavigation()
 
-    const uploadData = () => {
-        let message = '';
+    const formatDate = (dateString) => {
+        // Convertir la chaîne de date en objet moment  calculate_total_montant
+      
+        const  date= moment(dateString);
+        return date.format('YYYY-MM-DD');
+    }
+
+    
+  const Madate  = (dt) => {
+
+    return dt ? moment(dt).format('YYYY-MM-DD') : null;
+  
+    }
+
+
+    
+  const Actionsomme = async () => {
+    const url = ApiUrl({ endpoint: 'calculate_total_montant' });
+    const formData = new FormData();
+    formData.append('dateembarquement', Madate(date));
+    formData.append('datearriver', Madate(datefin));
+   
+
+    try {
+        const response = await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        setShowSuccessModal(true);
+ 
+        const intervalle =`Du ${formatDate(date)} au ${formatDate(datefin)}` ;
+        const Somme = `Somme : ${response.data.total_montant} CDF`
+        setText(`${intervalle}\n\n${Somme}`);
+        
+       // alert(response.data.total_montant);
+       // setError(null);
+    } catch (err) {
+        if (err.response && err.response.data) {
+           // setError(err.response.data.error);
+        } else {
+            //setError('Erreur de connexion');
+        }
+    }
+};
+
+
+
+
+    const uploadData = async() => {
+       // let message = '1000';
         if (totalChecked) {
-            message = 'Vous avez sélectionné "Toute somme".';
-        } else if (riderChecked) {
-            message = 'Vous avez sélectionné "Somme par motard".';
-        } else if (mySumChecked) {
-           // message = 'Vous avez sélectionné "Liste".';
-           //setdatedebut(date)
+       
+            //alert('Vous avez sélectionné Toute somme.');
+            await Actionsomme()
+        }
+     
+        
+        else if (mySumChecked) {
+           if(!proprietaire) {
+            setShowSuccessModal(true);
+            setText("Veuillez sélectionner le motard.");
+            return;
+
+           }
             naviger.navigate('Listefiltre',{ dateDebut: date, dateFins:datefin, Proprietaires:proprietaire });
         } else {
-             message = 'Aucune option sélectionnée.';
+           // alert('Aucune option sélectionnée.') ;
+            setShowSuccessModal(true);
+            setText('Aucune option sélectionnée.');
          
         }
        // Alert.alert('Sélection', message);

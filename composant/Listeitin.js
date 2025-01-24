@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert,Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Listeitin = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  
+// Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
+
 
 
   const toggleModal = () => {
@@ -31,6 +53,7 @@ const Listeitin = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loa
             <Text style={styles.lastName}>{item.description}</Text>
               {/* <Text style={styles.firstName}>{item.prenom}</Text> */}
           </View>
+          {(role === 'admin'||role === 'super user') && (
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
@@ -45,6 +68,8 @@ const Listeitin = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loa
                 />
             </TouchableOpacity>
           </View>
+          )}
+
         </View>
       </View>
     );

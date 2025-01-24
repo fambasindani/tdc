@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text } from 'react-native';
@@ -9,6 +9,8 @@ import Listevaliderscreen from '../screens/Listevaliderscreen';
 import FilterScreen from '../screens/FilterScreen';
 import Justificationscreen from '../screens/Justificationscreen';
 import HistoriqueScreen from '../screens/HistoriqueScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Listejustificationscreen from '../screens/Listejustificationscreen';
 
 
 
@@ -21,8 +23,9 @@ function FiltrageScreen() {
 }
 
 function Justification() {
+  // <Justificationscreen/>
   return (
-    <Justificationscreen/>
+    <Listejustificationscreen/>
    
   );
 }
@@ -58,6 +61,30 @@ function Cours() {
 const Tab = createBottomTabNavigator();
 
 export default function Menutab() {
+
+  
+  // Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
+
+
+
+
   return (
   
       <Tab.Navigator 
@@ -76,7 +103,7 @@ export default function Menutab() {
         }}
       >
 
-        
+{(role === 'admin'||role === 'super user' ||role === 'motard') && (   
 <Tab.Screen 
           name="Course" 
           component={Cours} 
@@ -97,6 +124,8 @@ export default function Menutab() {
             },
           }} 
         />
+        )}
+
          <Tab.Screen 
           name="Valider" 
           component={valider} 
@@ -137,7 +166,7 @@ export default function Menutab() {
             },
           }} 
         />
-
+{(role === 'admin'||role === 'super user' ) && ( 
 <Tab.Screen 
           name="Historique" 
           component={Historique} 
@@ -158,12 +187,12 @@ export default function Menutab() {
             },
           }} 
         />
+        )}
 
 
 
 
-
-
+{(role === 'admin'||role === 'super user') && ( 
         <Tab.Screen 
           name="Filtrer" 
           component={FiltrageScreen} 
@@ -184,6 +213,7 @@ export default function Menutab() {
             },
           }} 
         />
+)}
 
         <Tab.Screen 
           name="Justification" 

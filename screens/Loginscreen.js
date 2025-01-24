@@ -83,15 +83,16 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
                 setText("Password ou Email incorrect");
             } else {
                  const id = res.data.user.id.toString();
+                 const role = res.data.user.role.toString();
                 //const role = res.data.user.role.toString();
                 //const name = res.data.user.nom.toString();
-                 await AsyncStorage.setItem('key', id);
+                await AsyncStorage.setItem('key', id);
                 await AsyncStorage.setItem('monid', id);
-               // await AsyncStorage.setItem('name', name);
+                await AsyncStorage.setItem('role', role);
               
                 setiduser(id)
                 navigation.navigate('Test');
-                //alert('ok')
+                //alert(res.data.user.role)
                
                
             }

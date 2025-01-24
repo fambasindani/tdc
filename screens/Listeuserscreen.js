@@ -5,13 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Messagebox from '../composant/Messagebox';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-
+import Listeitin from '../composant/Listeitin';
 import ApiUrl from '../composant/ApiUrl';
 import axios from 'axios';
-import Listetarification from '../composant/Listetarification';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Listeuser from '../composant/Listeuser';
 
-const Listetarificationscreen = ({ navigation }) => {
+const Listeuserscreen = ({ navigation }) => {
   const naviger = useNavigation();
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
@@ -21,30 +20,10 @@ const Listetarificationscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-
-
-    // Vos fonctions d'écran
-const [role, setRole] = useState('');
-
-const retrieveRole = async () => {
-  try {
-    const storedRole = await AsyncStorage.getItem('role');
-    if (storedRole) {
-      setRole(storedRole);
-    }
-  } catch (e) {
-    console.error('Erreur lors de la récupération du rôle:', e);
-  }
-};
-
-useEffect(() => {
-  retrieveRole();
-}, []);
-
-  const url = ApiUrl({ endpoint: 'gettarification' });
+  const url = ApiUrl({ endpoint: 'get_role' });
 
   const additin = async () => {
-    naviger.navigate("Addtarification", {refreshList});
+    naviger.navigate("Adduser", {refreshList});
   }
 
   useEffect(() => {
@@ -77,7 +56,7 @@ useEffect(() => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.description.toLowerCase().includes(searchText.toLowerCase());
+    return item.nom.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -105,7 +84,7 @@ useEffect(() => {
   };
 
   const handleupdate = async (item) => {
-    naviger.navigate('Updatetarification', { items: item, refreshList });
+    naviger.navigate('Updateuser', { items: item, refreshList });
   };
 
   return (
@@ -131,11 +110,9 @@ useEffect(() => {
                 <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
               )}
             </View>
-            {(role === 'admin'||role === 'super user') && (
             <TouchableOpacity style={styles.addButton} onPress={additin}>
               <Icon name="plus" size={20} style={styles.addButtonIcon} />
             </TouchableOpacity>
-            )}
           </View>
 
           <Messagebox
@@ -148,7 +125,7 @@ useEffect(() => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
-          <Listetarification
+          <Listeuser
             mydata={filteredData}
             handDelete={handDelete}
             handleupdate={handleupdate}
@@ -213,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Listetarificationscreen;
+export default Listeuserscreen;

@@ -34,14 +34,14 @@ const CheckComposant = ({totalChecked, setTotalChecked, riderChecked, setRiderCh
         />
         <Text style={styles.checkboxLabel}>Somme</Text>
       </View>
-      <View style={styles.checkboxContainer}>
+    {/*   <View style={styles.checkboxContainer}>
         <CheckBox
           checked={riderChecked}
           onPress={() => handleCheckBoxChange('rider')}
           containerStyle={styles.checkbox}
         />
         <Text style={styles.checkboxLabel}>Somme par motard</Text>
-      </View>
+      </View>*/}
       <View style={styles.checkboxContainer}>
         <CheckBox
           checked={mySumChecked}

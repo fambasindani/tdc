@@ -6,13 +6,19 @@ import Messagebox from '../composant/Messagebox';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
-import ApiUrl from '../composant/ApiUrl';
-import axios from 'axios';
-import Listetarification from '../composant/Listetarification';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Listetarificationscreen = ({ navigation }) => {
-  const naviger = useNavigation();
+import axios from 'axios';
+import Listejustification from '../composant/Listejustification';
+import ApiUrl from '../composant/ApiUrl';
+
+
+
+
+
+const url = ApiUrl({ endpoint: 'getjustification' });
+
+const Listejustificationscreen = ({ navigation }) => {
+  const naviger=useNavigation()
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -23,29 +29,18 @@ const Listetarificationscreen = ({ navigation }) => {
 
 
 
-    // Vos fonctions d'écran
-const [role, setRole] = useState('');
 
-const retrieveRole = async () => {
-  try {
-    const storedRole = await AsyncStorage.getItem('role');
-    if (storedRole) {
-      setRole(storedRole);
-    }
-  } catch (e) {
-    console.error('Erreur lors de la récupération du rôle:', e);
+
+  
+
+  const addcat = async () => {
+   // alert('jjjjjjjjjjjjjj')
+    
+    //naviger.navigate("Additineraire");
+    naviger.navigate('Justifications', { refreshList })
   }
-};
 
-useEffect(() => {
-  retrieveRole();
-}, []);
-
-  const url = ApiUrl({ endpoint: 'gettarification' });
-
-  const additin = async () => {
-    naviger.navigate("Addtarification", {refreshList});
-  }
+  
 
   useEffect(() => {
     fetchUserData();
@@ -63,7 +58,7 @@ useEffect(() => {
             'Content-Type': 'application/json',
         },
     });
-      const newData = response.data; // Utiliser les itinéraires de véhicule
+      const newData = response.data; // Utiliser les catégories de véhicule
       setUserData(newData);
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);
@@ -77,7 +72,7 @@ useEffect(() => {
   };
 
   const filteredData = userData.filter((item) => {
-    return item.description.toLowerCase().includes(searchText.toLowerCase());
+    return item.nom.toLowerCase().includes(searchText.toLowerCase());
   });
 
   const clearSearch = () => {
@@ -100,17 +95,17 @@ useEffect(() => {
   const handDelete = async (item) => {
     setShowSuccessModal(true);
     SetmodalVisible(true);
-    Setselected(item);
-    Setmessage(`Voulez-vous supprimer Itinéraire ${item.description} ?`);
+    Setselected(item);//${item.nom}
+    Setmessage(`Voulez-vous supprimer ?`);
   };
 
-  const handleupdate = async (item) => {
-    naviger.navigate('Updatetarification', { items: item, refreshList });
+  const handlupdate = async (item) => {
+    naviger.navigate('Updatecategorie', { items: item, refreshList });
   };
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
+     <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
       <View style={styles.complet}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
@@ -131,11 +126,9 @@ useEffect(() => {
                 <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
               )}
             </View>
-            {(role === 'admin'||role === 'super user') && (
-            <TouchableOpacity style={styles.addButton} onPress={additin}>
+            <TouchableOpacity style={styles.addButton} onPress={() => addcat()}>
               <Icon name="plus" size={20} style={styles.addButtonIcon} />
             </TouchableOpacity>
-            )}
           </View>
 
           <Messagebox
@@ -148,11 +141,12 @@ useEffect(() => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
-          <Listetarification
+          <Listejustification
             mydata={filteredData}
             handDelete={handDelete}
-            handleupdate={handleupdate}
+          
             Loading={Loading}
+            handlupdate={handlupdate}
           />
         </View>
       </View>
@@ -161,9 +155,13 @@ useEffect(() => {
 };
 
 const styles = StyleSheet.create({
-  addButtonIcon: {
-    color: COLORS.white,
+
+
+  addButtonIcon:{
+    color:COLORS.white
+
   },
+ 
   headerContainer: {
     marginTop: 90,
     flexDirection: 'row',
@@ -175,6 +173,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: '95%',
   },
+
   addButton: {
     backgroundColor: COLORS.rouge,
     borderRadius: 50,
@@ -184,6 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 5,
   },
+ 
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -193,15 +193,41 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 5,
   },
+
   complet: {
     backgroundColor: COLORS.blanccasse,
     flex: 1,
+
   },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: Platform.OS === 'android' ? 4 : 0,
+  },
+
   container: {
+    //marginTop: 20,
     backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  logo: {
+    width: 30,
+    height: 30,
+    marginRight: 8,
+  },
+  headerText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: COLORS.grey,
+  },
+ 
   searchInput: {
     flex: 1,
     height: 40,
@@ -211,6 +237,36 @@ const styles = StyleSheet.create({
   searchIcon: {
     marginLeft: 8,
   },
-});
+  item: {
+    backgroundColor: COLORS.blue,
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    marginHorizontal: 8,
+    borderRadius: 8,
+  },
+  selectedItem: {
+    backgroundColor: COLORS.red,
+  },
+  itemText: {
+    color: COLORS.beige,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 
-export default Listetarificationscreen;
+  selectedItem: {
+    backgroundColor: COLORS.red,
+  },
+
+  amis: {
+
+    backgroundColor: COLORS.blue,
+  },
+
+  selectedAmis: {
+
+    backgroundColor: COLORS.red,
+  },
+
+});
+export default Listejustificationscreen;

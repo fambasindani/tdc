@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert ,Image} from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,7 +15,24 @@ const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates,
     setModalVisible(!modalVisible);
   };
 
+  
+// Vos fonctions d'écran
+const [role, setRole] = useState('');
 
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
 
 
 
@@ -39,6 +57,8 @@ const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates,
                     style={styles.linear} 
                 />
             </TouchableOpacity>
+            
+
             <TouchableOpacity style={styles.iconButton} onPress={() => handupdates(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
@@ -51,6 +71,9 @@ const Listevehicule = ({ mydata, SetLoading,handdetails, handDelete,handupdates,
                     style={styles.linear} 
                 />
             </TouchableOpacity>
+
+
+
 
           </View>
         </View>

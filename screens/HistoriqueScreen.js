@@ -81,10 +81,11 @@ export default function Historiquescreen({ navigation }) {
 
                 <ScrollView style={styles.scrollview}>
                     <View style={styles.modalContent}>
+                        {/*     
                         <DatePicker date={date} setDate={setDate} label="Date de début" />
                         <DatePicker date={date} setDate={setDate} label="Date de Fin" />
                         <Droplist placephold="Sélectionner Immatriculation" icons="directions-car" description={description} setDescription={setDescription} label="Immatriculation" />
-                        
+                         */}
 
 
 
