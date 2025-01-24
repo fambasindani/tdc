@@ -18,6 +18,7 @@ def create_user():
     cur = conn.cursor()
 
     try:
+        conn.autocommit = False
         nom = request.form.get('nom')
         email = request.form.get('email')
         password = request.form.get('password')
@@ -36,7 +37,7 @@ def create_user():
         iduser = cur.lastrowid
 
         # Insertion dans la table roles
-        libelle = "utilisateur"
+        libelle = "abonne"
         cur.execute("INSERT INTO roles (iduser, libelle) VALUES (%s, %s)", (iduser, libelle))
         
         # Commit des changements
@@ -57,12 +58,100 @@ def create_user():
 
 
 
+def create_role():
+    bcrypt = Bcrypt()
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        conn.autocommit = False
+        nom = request.form.get('nom')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        adresse = request.form.get('adresse')
+        telephone = request.form.get('telephone')
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        role = request.form.get('role')
+        
+        # Insertion dans la table users
+        monimage = "user.png"
+        cur.execute(
+            "INSERT INTO users (nom, email, password, avatar, telephone, adresse) VALUES (%s, %s, %s, %s, %s, %s)",
+            (nom, email, hashed_password, monimage, telephone, adresse)
+        )
+        
+        # Récupération de l'ID de l'utilisateur nouvellement créé
+        iduser = cur.lastrowid
+
+        # Insertion dans la table roles
+       # libelle = "abonne"
+        cur.execute("INSERT INTO roles (iduser, libelle) VALUES (%s, %s)", (iduser, role))
+        
+        # Commit des changements
+        conn.commit()
+
+        return 'Opération effectuée.'
+
+    except Exception as e:
+        # Rollback en cas d'erreur
+        conn.rollback()
+        print(f"Erreur lors de la création de user : {str(e)}")
+        return 'Erreur lors de la création de user'
+    
+    finally:
+        # Fermeture du curseur et de la connexion
+        cur.close()
+        conn.close()   
+
+
+
+
+
+def  update_role():
+    bcrypt = Bcrypt()
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        conn.autocommit = False
+        password = request.form.get('password')
+        nom = request.form.get('nom')   
+        role = request.form.get('role')
+        prenom = request.form.get('prenom')
+        adresse = request.form.get('adresse')
+        telephone = request.form.get('telephone')
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        iduser = request.form.get('iduser') 
+        idrole = request.form.get('idrole')
+        #cursor = db.cursor()
+       
+     
+        #monimage = "user.png"
+        cur.execute("UPDATE  users SET nom=%s,telephone=%s, adresse=%s, password=%s WHERE id=%s", (nom,telephone, adresse, hashed_password, iduser))
+        cur.execute("UPDATE  roles SET  libelle=%s WHERE id=%s ", ( role, idrole))
+        
+        conn.commit()
+         
+        cur.close()
+
+        return 'Opération effectuée.'
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Erreur lors de la modification de user : {str(e)}")
+        return 'Erreur lors de la modification de user'
+    
+                
+
+
+
 def  update_user(id):
     bcrypt = Bcrypt()
     conn = get_connection()
     cur = conn.cursor()
 
     try:
+        conn.autocommit = False
         password = request.form.get('password')
         nom = request.form.get('nom')   
         #postnom = request.form.get('postnom')
@@ -99,7 +188,7 @@ def login():
         password = request.form.get('password')
 
         # Vérification de l'utilisateur dans la base de données
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT * FROM listeusers WHERE email = %s", (email,))
         user = cursor.fetchone()
         conn.close()
 
@@ -114,7 +203,7 @@ def login():
                     #'postnom': user[2],
                     'prenom': user[2],
                     'email': user[3],
-                    #'role': user[8]
+                    'role': user[10]
                 }
             }
             return response
@@ -290,3 +379,51 @@ def getuser():
         # Assurez-vous que la connexion à la base de données est fermée
         cursor.close()
         conn.close()                  
+
+
+
+def get_role():
+    try:
+        # Connexion à la base de données
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Récupération des données des utilisateurs, excluant ceux avec le rôle 'abonne'
+        cursor.execute("""
+            SELECT id, nom, prenom, email, password, avatar, telephone, adresse, libelle, idrole 
+            FROM listeusers 
+            WHERE libelle <> 'abonne'
+        """)
+        users = cursor.fetchall()
+
+        # Vérification si des utilisateurs ont été trouvés
+        if not users:
+            return []
+
+        # Conversion des données en format JSON
+        data = []
+        for id, nom, prenom, email, password, avatar, telephone, adresse, libelle, idrole in users:
+            image_url = f'/static/Image/{avatar}' if avatar else None  # Vérification de l'avatar
+            data.append({
+                'id': id,
+                'nom': nom,
+                'prenom': prenom,
+                'email': email,
+                'libelle': libelle,  # Ajout du rôle
+                'avatar': image_url,
+                'telephone': telephone,
+                'adresse': adresse,
+                'idrole': idrole,
+                'url': avatar
+            })
+
+        return data
+
+    except Exception as e:
+        print(f"Erreur lors de la récupération des données utilisateur : {str(e)}")
+        return f"Erreur : {str(e)}"
+
+    finally:
+        # Assurez-vous que la connexion à la base de données est fermée
+        cursor.close()
+        conn.close()        

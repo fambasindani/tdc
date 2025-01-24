@@ -80,13 +80,13 @@ def getcourses():
         cursor = conn.cursor()
 
         # Récupération des données des utilisateurs
-        cursor.execute("SELECT id,nom, prenom, immatriculation, marque, montant, datecourse, iduser, idtarification, idvehicule, avatar FROM listecourses order by id desc ")
+        cursor.execute("SELECT id,nom, prenom, immatriculation, marque, montant, datecourse, iduser, idtarification, idvehicule, avatar, description FROM listecourses order by id desc ")
         courses = cursor.fetchall()
 
      
         data = []
     
-        for id,nom, prenom, immatriculation, marque, montant, datecourse,iduser, idtarification, idvehicule , avatar in courses:
+        for id,nom, prenom, immatriculation, marque, montant, datecourse,iduser, idtarification, idvehicule , avatar, description in courses:
             image_url = f'/static/Image/{avatar}' if avatar else None  
           
             data.append({
@@ -102,6 +102,7 @@ def getcourses():
                 'idvehicule': idvehicule,
                 'avatar': image_url,
                 'url': avatar,
+                'description': description,
           
             })
 

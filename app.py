@@ -1,18 +1,19 @@
 from flask import Flask, jsonify, send_from_directory,request
 from flask_cors import CORS
-from controller.usercontroller import create_user, update_user,update_imageuser,verifieremail, login,getuserid,getuser
+from controller.usercontroller import create_user, update_user,update_imageuser,verifieremail, login,getuserid,getuser, get_role, create_role, update_role
 from controller.arretcontroller import create_arret, update_arret, delete_arret, getarret
 from controller.categoriecontroller import create_categorie, update_categorie, getcategorie
 from controller.itinerairecontroller import create_itineraire, update_itineraire, getitineraire
 from controller.vehiculecontroller import create_vehicule, update_vehicule, getvehicule
 from controller.tarificationcontroller import create_tarification, gettarification, update_tarification
 from controller.coursecontroller import getcourseid, create_course, getcourses, update_course
-from controller.versementcontroller import embarquement, depart, arriver, comptertour,getversement,calculate_minutes
+from controller.versementcontroller import embarquement, depart, arriver, comptertour,getversement,calculate_minutes,calculate_total_montant
 from flask_jwt_extended import jwt_required, get_jwt_identity, JWTManager, create_access_token
+from controller.justificationcontroller import create_justification, getjustification, gettypejust
 
 
 #IP_ADDRESS = '192.168.38.147' "msg": "Token has expired" 
-IP_ADDRESS = '192.168.43.147'  
+IP_ADDRESS = '192.168.114.147'  
 PORT = 1200
 
 app = Flask(__name__)
@@ -26,10 +27,20 @@ jwt = JWTManager(app)
 def api_create_user():
     return (create_user())
 
+@app.route('/api/create_role', methods=['POST'])
+def api_create_role():
+    return (create_role())
+
 @app.route('/api/getuser', methods=['GET'])
 #@jwt_required()
 def api_getuser():
-    return (getuser())    
+    return (getuser())  
+
+
+@app.route('/api/get_role', methods=['GET'])
+#@jwt_required()
+def api_get_role():
+    return (get_role())   
 
 @app.route('/api/login', methods=['POST'])
 def api_loginr():
@@ -42,6 +53,10 @@ def api_verifieremail():
 @app.route('/api/update_user/<int:id>', methods=['PUT'])
 def api_update_user(id):
       return (update_user(id))
+
+@app.route('/api/update_role', methods=['POST'])
+def api_update_role():
+      return (update_role())
 
 
 @app.route('/api/getuserid/<int:id>', methods=['GET'])
@@ -181,6 +196,26 @@ def api_getversement():
 @app.route('/api/calculate_minutes', methods=['POST'])
 def api_calculate_minutes():
     return (calculate_minutes())
+
+
+@app.route('/api/calculate_total_montant', methods=['POST'])
+def api_calculate_total_montant():
+    return (calculate_total_montant())
+
+
+
+#controller Justification  
+@app.route('/api/create_justification', methods=['POST'])
+def api_create_justification():
+    return (create_justification())
+
+@app.route('/api/gettypejust', methods=['GET'])
+def api_gettypejust():
+    return (gettypejust())
+
+@app.route('/api/getjustification', methods=['GET'])
+def api_getjustification():
+    return (getjustification())
 
 
 

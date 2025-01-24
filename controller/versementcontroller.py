@@ -287,3 +287,38 @@ def calculate_minutes():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+
+ 
+
+def calculate_total_montant():
+    dateembarquement = request.form.get('dateembarquement')
+    datearriver = request.form.get('datearriver')
+
+    # Vérifier si les dates sont fournies
+    if not dateembarquement or not datearriver:
+        return jsonify({'error': 'Les dates doivent être fournies.'}), 400
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Requête pour calculer le montant total
+        query = """
+            SELECT 
+                SUM(montanttarif) AS total_montant
+            FROM listeversements
+            WHERE datearriver BETWEEN %s AND %s;
+        """
+        cursor.execute(query, (dateembarquement, datearriver))
+        result = cursor.fetchone()
+        cursor.close()
+
+        # Récupérer le montant total en s'assurant qu'il ne soit pas None
+        total_montant = result[0] if result[0] is not None else 0.0
+
+        return jsonify({'total_montant': total_montant})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
