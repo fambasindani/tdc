@@ -168,6 +168,7 @@ export default function Updatecoursescreen({ navigation, route }) {
 
 
                     <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Motard" placephold="Sélectionnez motard"/>
+                   
                     <Droplist icons="car" contenus="immatriculation" identifiant="id" getCategorie={getvehicule} data={datacat} setData={setDatacat} description={description} setDescription={setDescription} label="Immatriculation" placephold="Sélectionnez Immatriculation"/>
                     <Droplist icons="map" contenus="description" identifiant="id" getCategorie={getitineraire} data={dataitineraire} setData={setdataitineraire} description={itineraires} setDescription={handleItineraireSelect} label="Itinéraire" placephold="Sélectionnez Itinéraire"/>
                     <Input icons="money" editables={false} label="Montant" placeholder="Votre description" name={montant.toString()} setname={setDescription} />

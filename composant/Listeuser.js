@@ -1,32 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert,Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Listetarification = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loading, fetchUserData, handleConfirm }) => {
+const Listeuser = ({ mydata, SetLoading, handDelete,handupdate,handleupdate, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  // Vos fonctions d'écran
-const [role, setRole] = useState('');
-
-const retrieveRole = async () => {
-  try {
-    const storedRole = await AsyncStorage.getItem('role');
-    if (storedRole) {
-      setRole(storedRole);
-    }
-  } catch (e) {
-    console.error('Erreur lors de la récupération du rôle:', e);
-  }
-};
-
-useEffect(() => {
-  retrieveRole();
-}, []);
-  
 
 
   const toggleModal = () => {
@@ -47,10 +28,9 @@ useEffect(() => {
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>
-            <Text style={styles.lastName}>{item.description}</Text>
-              <Text style={styles.firstName}>{item.montant} CDF</Text> 
+            <Text style={styles.lastName}>{item.nom}</Text>
+         <Text style={styles.firstName}>{item.prenom}</Text> 
           </View>
-          {(role === 'admin'||role === 'super user') && (
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
@@ -58,16 +38,13 @@ useEffect(() => {
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-            {(role === 'admin'||role === 'super user') && (
             <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)} >
             <Image 
                     source={require('../assets/delete.png')} 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
-            )}
           </View>
-          )}
         </View>
       </View>
     );
@@ -166,4 +143,4 @@ const styles = {
   },
 };
 
-export default Listetarification;
+export default Listeuser;

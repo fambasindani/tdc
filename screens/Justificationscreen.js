@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, StatusBar, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import COLORS from '../Couleurs/COLORS';
 import axios from 'axios';
 import Input from '../composant/Inputtext';
@@ -9,19 +9,52 @@ import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 import Droplist from '../composant/Droplist';
 import DatePicker from '../composant/DatePicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 
-export default function Justificationscreen({ navigation }) {
+export default function Justificationscreen({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
     const [date, setDate] = useState(new Date());
 
-    // Nouveaux états pour les champs
+    // Nouveaux états pour les champs 
     const [marque, setMarque] = useState('');
     const [immatricule, setImmatricule] = useState('');
     const [numeroChassie, setNumeroChassie] = useState('');
     const [description, setDescription] = useState('');
+    const [Just, SetJust] = useState([]);
+    const [datadescription, setdatadescription] = useState();
+
+
+    const { refreshList } = route.params;
+
+
+   const formatDate = (madate) => {
+        return moment(madate).format('YYYY-MM-DD HH:mm:ss');
+    };     
+// Vos fonctions d'écran
+const [monid, setmonid] = useState('');
+
+const retrieveuser = async () => {
+  try {
+    const iduser = await AsyncStorage.getItem('monid');
+    
+    if (iduser) {
+        setmonid(iduser);
+    
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveuser();
+}, []);
+
 
     const handleCloseModal = () => {
         setShowSuccessModal(false);
@@ -33,29 +66,52 @@ export default function Justificationscreen({ navigation }) {
         setNumeroChassie('');
     };
 
-    const uploadData = async () => {
-        const url = ApiUrl({ endpoint: 'send_vehicle_data' });
+    
+    useEffect(() => {
+        getjustification();
+    }, []);
 
+
+    const getjustification = async () => {
+        try {
+         // setcontenu('description')
+          const urlget = ApiUrl({ endpoint: 'gettypejust' });
+          const response = await axios.get(urlget);
+         
+          setdatadescription(response.data[0].idtype)
+          SetJust(response.data);
+        } catch (error) {
+          console.error('Erreur lors de la requête à l\'API :', error);
+        }
+      };
+
+    const createjustification = async () => {
+        
+       // alert(datadescription)
+        const url = ApiUrl({ endpoint: 'create_justification' });
+   // alert(formatDate(date)+"   "+monid+"  "+description)
         setLoading(true);
         setTimeout(async () => {
             try {
                 setLoading(false);
                 const formData = new FormData();
-                formData.append('marque', marque);
-                formData.append('immatricule', immatricule);
-                formData.append('numeroChassie', numeroChassie);
+                formData.append('iduser', monid);
+                formData.append('datej', formatDate(date));
+                formData.append('idj', description);
 
-                if (marque.trim() === '' || immatricule.trim() === '' || numeroChassie.trim() === '') {
+                if (!description)  {
                     setShowSuccessModal(true);
-                    setText("Veuillez remplir tous les champs");
+
+                    setText("Veuillez sélectionner la justification");
                 } else {
                     const res = await axios.post(url, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
                     });
+                    //alert('gggggggggggg')
 
-                    resetFields();
+                    refreshList();
                     setShowSuccessModal(true);
                     setText(res.data);
                 }
@@ -82,8 +138,9 @@ export default function Justificationscreen({ navigation }) {
                 <ScrollView style={styles.scrollview}>
                     <View style={styles.modalContent}>
                         
-                        <Droplist placephold="Sélectionner Justification" icons="directions-car" description={description} setDescription={setDescription} label="Justification" />
-                        
+
+                        <Droplist  icons="user" contenus="description" identifiant="id" getCategorie={getjustification} data={Just} setData={SetJust} description={description} setDescription={setDescription} label="Justification" placephold="Sélectionner Justification"/>
+                   
 
 
 
@@ -91,7 +148,7 @@ export default function Justificationscreen({ navigation }) {
                         <Buttons
                             title='Enregistrer'
                             Actionconnection={ActionConnection}
-                            onPress={uploadData}
+                            onPress={createjustification}
                         />
                     </View>
                 </ScrollView>

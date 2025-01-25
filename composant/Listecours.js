@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import COLORS from '../Couleurs/COLORS';
 import Listflast from './Listflast';
@@ -6,9 +6,30 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 //import userImage from '../assets/user.png'; // Assurez-vous que le chemin est correct
 import ApiUrlbis from './ApiUrlbis';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, Loading, fetchUserData, handleConfirm }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  
+  // Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
 
   
   const urlimg = ApiUrlbis({ endpoint: '' });
@@ -40,19 +61,24 @@ const Listecours = ({ mydata, SetLoading, handDelete, handleupdate,handdetails, 
                     source={require('../assets/detail.png')} 
                     style={styles.linear} 
                 />
+                
             </TouchableOpacity>
+            {(role === 'admin'||role === 'super user') && (
             <TouchableOpacity style={styles.iconButton} onPress={() => handleupdate(item)}>
             <Image 
                     source={require('../assets/edit.png')} 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
+            )}
+              {(role === 'admin'||role === 'super user') && (
             <TouchableOpacity style={styles.iconButtonDelete} onPress={() => handDelete(item)} >
             <Image 
                     source={require('../assets/delete.png')} 
                     style={styles.linear} 
                 />
             </TouchableOpacity>
+              )}
 
           </View>
         </View>

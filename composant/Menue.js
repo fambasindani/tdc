@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -32,8 +32,14 @@ import Listetarificationscreen from '../screens/Listetarificationscreen';
 import Updatetarificationscreen from '../screens/Updatetarificationscreen';
 import Updatecoursescreen from '../screens/Updatecoursescreen';
 import Listefiltrerscreen from '../screens/Listefiltrerscreen';
+import Listeuserscreen from '../screens/Listeuserscreen';
+import Adduserscreen from '../screens/Adduserscreen';
+import Updateuserscreen from '../screens/Updateuserscreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Justificationscreen from '../screens/Justificationscreen';
 
-// Vos fonctions d'écran
+
+
 function HomeScreen() {
   return (
     <View style={styles.screen}>
@@ -42,9 +48,15 @@ function HomeScreen() {
   );
 }
 
+function Securite() {
+  return (
+    <Listeuserscreen />
+  );
+}
+
 function Profilscreen() {
   return (
-    <Profilscreens/>
+    <Profilscreens />
   );
 }
 
@@ -55,10 +67,12 @@ function VehiculeScreen() {
 }
 
 function transportscreen() {
+//alert(role)
+  
   return (
-    
-      
-    <Menutab/>
+
+
+    <Menutab />
   );
 }
 
@@ -93,7 +107,7 @@ function ArretScreen() {
 
 function TarificationScreens() {
   return (
-    <Listetarificationscreen/>
+    <Listetarificationscreen />
   );
 }
 
@@ -112,13 +126,15 @@ function ConnexionScreen() {
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+
+
 //const Drawer = createDrawerNavigator();
 
 const MenutabStack = () => (
   <Stack.Navigator>
-    <Stack.Screen 
-      name="Menutab" 
-      component={Menutab} 
+    <Stack.Screen
+      name="Menutab"
+      component={Menutab}
       options={{ title: "Accueil" }} // Affiche "Accueil" dans l'en-tête
     />
   </Stack.Navigator>
@@ -127,6 +143,27 @@ const MenutabStack = () => (
 
 
 const DrawerNavigator = () => {
+  
+// Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
+
+
   return (
     <Drawer.Navigator initialRouteName="Test">
       <Drawer.Screen
@@ -141,8 +178,8 @@ const DrawerNavigator = () => {
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
           headerTitleAlign: 'center', // Centrer le titre
         }}
-      />            
-      
+      />
+
       <Drawer.Screen
         name="Profil"
         component={Profilscreen}
@@ -156,6 +193,7 @@ const DrawerNavigator = () => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+      {(role === 'admin'||role === 'super user') && (
       <Drawer.Screen
         name="Véhicule"
         component={VehiculeScreen}
@@ -169,6 +207,9 @@ const DrawerNavigator = () => {
 
         }}
       />
+      )}
+
+{(role !== 'abonne') && (
       <Drawer.Screen
         name="Transport"
         component={transportscreen}
@@ -176,7 +217,7 @@ const DrawerNavigator = () => {
 
           drawerIcon: ({ color }) => <Image source={require('../assets/route.png')} style={styles.linear} />,
 
-          
+
           title: "Transport",
           headerStyle: {
             backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
@@ -186,6 +227,7 @@ const DrawerNavigator = () => {
 
         }}
       />
+)}
       {/*  <Drawer.Screen
         name="Catégorie"
         component={Actioncatddddd}
@@ -197,7 +239,7 @@ const DrawerNavigator = () => {
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
         }}
       />*/}
-
+ {(role === 'admin'||role === 'super user') && (
       <Drawer.Screen
         name="Listecat"
         component={Actionlistcat}
@@ -211,6 +253,7 @@ const DrawerNavigator = () => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+ )}
 
 
 
@@ -228,6 +271,7 @@ const DrawerNavigator = () => {
 
         }}
       />
+    {(role === 'admin'||role === 'super user') && (
       <Drawer.Screen
         name="Listearret"
         component={ArretScreen}
@@ -241,14 +285,15 @@ const DrawerNavigator = () => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+    )}
 
 
-<Drawer.Screen
+      <Drawer.Screen
         name="Tarification"
         component={TarificationScreens}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
-          
+
           title: "Tarification",
           headerStyle: {
             backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
@@ -259,17 +304,36 @@ const DrawerNavigator = () => {
       />
 
 
-   
+{(role === 'admin'||role === 'super user') && (
+      <Drawer.Screen
+        name="Securite"
+        component={Securite}
+        options={{
+          drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
+
+          title: "Sécurité",
+          headerStyle: {
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
+        }}
+      />
+
+    )}
+
 
 
 
       <Drawer.Screen
-        name="Connexion"
+  
+        name="Déconnecter"
         component={ConnexionScreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/connexion.png')} style={styles.linear} />,
         }}
       />
+   
     </Drawer.Navigator>
   );
 };
@@ -323,7 +387,7 @@ const AppNavigator = () => {
       />
 
 
-<Stack.Screen
+      <Stack.Screen
         name="Updatecategorie"
         component={Updatecategoriesreen}
         options={{
@@ -342,9 +406,9 @@ const AppNavigator = () => {
       />
 
 
-   
 
-     
+
+
 
       <Stack.Screen
         name="Addvehicule"
@@ -357,15 +421,15 @@ const AppNavigator = () => {
           headerTitle: 'Ajouter Vehicule', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="Updateprofil"
         component={Updateprofilscreen}
         options={{
@@ -376,16 +440,16 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Profil', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-      
-<Stack.Screen
+
+      <Stack.Screen
         name="Addcours"
         component={Addcoursescreen}
         options={{
@@ -396,16 +460,16 @@ const AppNavigator = () => {
           headerTitle: 'Ajouter Course', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-           
-<Stack.Screen
+
+      <Stack.Screen
         name="Updatecours"
         component={Updatecoursescreen}
         options={{
@@ -416,16 +480,16 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Course', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-           
-<Stack.Screen
+
+      <Stack.Screen
         name="Updatevehicule"
         component={Updatevehiculescreen}
         options={{
@@ -436,16 +500,16 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Vehicule', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-              
-<Stack.Screen
+
+      <Stack.Screen
         name="Additineraire"
         component={Additinerairesreen}
         options={{
@@ -456,9 +520,9 @@ const AppNavigator = () => {
           headerTitle: 'Ajouter Itinéraire', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
@@ -466,8 +530,8 @@ const AppNavigator = () => {
 
 
 
-               
-<Stack.Screen
+
+      <Stack.Screen
         name="Updateitineraire"
         component={Updateitinerairesreen}
         options={{
@@ -478,9 +542,9 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Itinéraire', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
@@ -488,8 +552,8 @@ const AppNavigator = () => {
 
 
 
-                
-<Stack.Screen
+
+      <Stack.Screen
         name="Addarret"
         component={Addarretsreen}
         options={{
@@ -500,17 +564,17 @@ const AppNavigator = () => {
           headerTitle: 'Ajouter Arrêt', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
-      
-      
-                
-<Stack.Screen
+
+
+
+      <Stack.Screen
         name="Updatearret"
         component={Updatearretsreen}
         options={{
@@ -521,16 +585,16 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Arrêt', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-                     
-<Stack.Screen
+
+      <Stack.Screen
         name="Addtarification"
         component={Addtarificationscreen}
         options={{
@@ -541,15 +605,15 @@ const AppNavigator = () => {
           headerTitle: 'Ajouter Tarification', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
-                        
-<Stack.Screen
+
+      <Stack.Screen
         name="Updatetarification"
         component={Updatetarificationscreen}
         options={{
@@ -560,16 +624,16 @@ const AppNavigator = () => {
           headerTitle: 'Modifier Tarification', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
 
-                          
-<Stack.Screen
+
+      <Stack.Screen
         name="Listefiltre"
         component={Listefiltrerscreen}
         options={{
@@ -580,14 +644,80 @@ const AppNavigator = () => {
           headerTitle: 'Liste des tours', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
-          fontSize: 17, // Taille de police
+            fontSize: 17, // Taille de police
             // fontWeight: 'bold', // Texte en gras
-            color: COLORS.white, 
+            color: COLORS.white,
             // Couleur du texte   Listeactifscreen
           },
         }}
       />
+
+
+
+
+      <Stack.Screen
+        name="Adduser"
+        component={Adduserscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter utilisateur', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+            fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white,
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
+    
+<Stack.Screen
+        name="Updateuser"
+        component={Updateuserscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Modifier utilisateur', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+            fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white,
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
       
+<Stack.Screen
+        name="Justifications"
+        component={Justificationscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Ajouter Justification', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+            fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white,
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+
+
 
 
 
@@ -616,8 +746,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
-  
+
+
   },
   avatar: {
     width: 40,
@@ -627,8 +757,8 @@ const styles = StyleSheet.create({
   },
   linear: {
     width: 30, // Ajustez la largeur selon vos besoins
-    height:31, // Ajustez la hauteur selon vos besoins
+    height: 31, // Ajustez la hauteur selon vos besoins
 
-    borderRadius:45
+    borderRadius: 45
   },
 });

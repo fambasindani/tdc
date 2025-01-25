@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 
-const Message = ({ handleCloseModal , text, showSuccessModal, setShowSuccessModal}) => {
+const Message = ({ handleCloseModal , text, contenu, showSuccessModal, setShowSuccessModal}) => {
 
   
 const SuccessModal = ({ visible, onClose}) => {
@@ -13,6 +13,7 @@ const SuccessModal = ({ visible, onClose}) => {
           <View style={[styles.modalContent, styles.roundedCorners]}>
             <Text  style={styles.message1}>Notification </Text>
             <Text style={styles.message}>{text}</Text>
+       
           </View>
         </View>
       </TouchableWithoutFeedback>

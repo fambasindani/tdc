@@ -11,6 +11,7 @@ import axios from 'axios';
 import ApiUrl from '../composant/ApiUrl';
 import ModalPopup from '../composant/ModalPopup';
 import ApiUrlbis from '../composant/ApiUrlbis';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Listecoursscreen = () => {
   const naviger = useNavigation();
@@ -35,6 +36,28 @@ const Listecoursscreen = () => {
   const [marque, setmarque] = useState();
 
 
+
+  
+  // Vos fonctions d'écran
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+useEffect(() => {
+  retrieveRole();
+}, []);
+
+
+
   const urlimg = ApiUrlbis({ endpoint: '' });
   //const url = ApiUrl({ endpoint: 'getvehicule' });
 
@@ -50,7 +73,7 @@ const Listecoursscreen = () => {
     // Logique d'édition ici
     console.log('Confirmé');
     
-      setphone("imma : "+item.immatriculation)
+      setphone("Itin. : "+item.description)
       setemail(item.montant +" CDF")
       setnom(item.nom)
       setprenom(item.prenom)
