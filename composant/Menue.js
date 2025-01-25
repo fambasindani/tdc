@@ -31,6 +31,7 @@ import Addtarificationscreen from '../screens/Addtarificationscreen';
 import Listetarificationscreen from '../screens/Listetarificationscreen';
 import Updatetarificationscreen from '../screens/Updatetarificationscreen';
 import Updatecoursescreen from '../screens/Updatecoursescreen';
+import Listefiltrerscreen from '../screens/Listefiltrerscreen';
 
 // Vos fonctions d'écran
 function HomeScreen() {
@@ -257,6 +258,8 @@ const DrawerNavigator = () => {
         }}
       />
 
+
+   
 
 
 
@@ -555,6 +558,26 @@ const AppNavigator = () => {
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Modifier Tarification', // Titre de l'en-tête  
+          headerTitleAlign: 'center', // Centrer le titre
+          headerTitleStyle: {
+          fontSize: 17, // Taille de police
+            // fontWeight: 'bold', // Texte en gras
+            color: COLORS.white, 
+            // Couleur du texte   Listeactifscreen
+          },
+        }}
+      />
+
+                          
+<Stack.Screen
+        name="Listefiltre"
+        component={Listefiltrerscreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#0e79b6',
+            color: COLORS.white // Couleur de fond de l'en-tête
+          },
+          headerTitle: 'Liste des tours', // Titre de l'en-tête  
           headerTitleAlign: 'center', // Centrer le titre
           headerTitleStyle: {
           fontSize: 17, // Taille de police
