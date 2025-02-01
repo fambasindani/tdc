@@ -10,6 +10,7 @@ import ApiUrl from '../composant/ApiUrl';
 import axios from 'axios';
 import Listetarification from '../composant/Listetarification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Message from '../Message/Boxmessage';
 
 const Listetarificationscreen = ({ navigation }) => {
   const naviger = useNavigation();
@@ -20,6 +21,19 @@ const Listetarificationscreen = ({ navigation }) => {
   const [message, Setmessage] = useState('');
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
+
+
+
+  
+    //message de notification
+    const [text, settext] = useState('');
+    const [showSuccesspopModal, setshowSuccesspopModal] = useState(false);
+  
+  
+    const closeSuccessModal = () => {
+      setshowSuccesspopModal(false);
+    };
+  
 
 
 
@@ -88,10 +102,7 @@ useEffect(() => {
     setShowSuccessModal(false);
   };
 
-  const handleConfirms = async () => {
-    SetmodalVisible(false);
-    // Ici, tu peux ajouter la logique de confirmation
-  };
+
 
   const handleCancel = async () => {
     SetmodalVisible(false);
@@ -102,6 +113,43 @@ useEffect(() => {
     SetmodalVisible(true);
     Setselected(item);
     Setmessage(`Voulez-vous supprimer Itinéraire ${item.description} ?`);
+  };
+
+  const handleConfirms = async () => {
+    SetmodalVisible(false);
+    const item = selected
+    //setshowSuccesspopModal(true);
+    //settext(item.id);
+     await deletarif(item)
+
+    //alert(item.id)
+
+
+    // Ici, tu peux ajouter la logique de confirmation
+  };
+
+  
+  const deletarif = async (item) => {
+    const urldelete = ApiUrl({ endpoint: 'delete_tarification/' });
+
+
+    try {
+      const response = await axios.delete(`${urldelete}${item.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchUserData()
+      setshowSuccesspopModal(true);
+      settext(response.data);
+      console.log(response.data)
+      //setUserData(newData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      //SetLoading(false);
+    }
   };
 
   const handleupdate = async (item) => {
@@ -146,6 +194,13 @@ useEffect(() => {
             handleCloseModal={handleCloseModal}
             showSuccessModal={showSuccessModal}
             setShowSuccessModal={setShowSuccessModal}
+          />
+
+            <Message
+            handleCloseModal={closeSuccessModal}
+            text={text}
+            showSuccessModal={showSuccesspopModal}
+            setShowSuccessModal={setshowSuccesspopModal}
           />
 
           <Listetarification

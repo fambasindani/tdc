@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import Listearret from '../composant/Listearret';
 import ApiUrl from '../composant/ApiUrl';
 import axios from 'axios';
+import Message from '../Message/Boxmessage';
 
 
 const Listearretscreen = ({ navigation }) => {
@@ -24,19 +25,31 @@ const Listearretscreen = ({ navigation }) => {
   const [modalVisible, SetmodalVisible] = useState(false);
   const [selected, Setselected] = useState(null);
 
-  
+
+
+  //message de notification
+  const [text, settext] = useState('');
+  const [showSuccesspopModal, setshowSuccesspopModal] = useState(false);
+
+
+  const closeSuccessModal = () => {
+    setshowSuccesspopModal(false);
+  };
+
+
+
 
   const additin = async () => {
-    naviger.navigate("Addarret",{refreshList} );
+    naviger.navigate("Addarret", { refreshList });
   }
 
   const handleupdate = async (item) => {
-    naviger.navigate('Updatearret', { items: item , refreshList});
+    naviger.navigate('Updatearret', { items: item, refreshList });
   };
 
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
-};
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -47,9 +60,9 @@ const Listearretscreen = ({ navigation }) => {
     try {
       const response = await axios.get(url, {
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
+      });
       const newData = response.data; // Utiliser les arrêts de véhicule
       setUserData(newData);
     } catch (error) {
@@ -75,10 +88,7 @@ const Listearretscreen = ({ navigation }) => {
     setShowSuccessModal(false);
   };
 
-  const handleConfirms = async () => {
-    SetmodalVisible(false);
-    // Ici, tu peux ajouter la logique de confirmation
-  };
+
 
   const handleCancel = async () => {
     SetmodalVisible(false);
@@ -90,6 +100,48 @@ const Listearretscreen = ({ navigation }) => {
     Setselected(item);
     Setmessage(`Voulez-vous supprimer ${item.arret} ?`);
   };
+
+  
+  const handleConfirms = async () => {
+    SetmodalVisible(false);
+    const item = selected
+    //setshowSuccesspopModal(true);
+    //settext(item.id);
+     await delearret(item)
+
+    //alert(item.id)
+
+
+    // Ici, tu peux ajouter la logique de confirmation
+  };
+
+  
+  const delearret = async (item) => {
+    const urldelete = ApiUrl({ endpoint: 'delete_arret/' });
+
+
+    try {
+      const response = await axios.delete(`${urldelete}${item.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchUserData()
+      setshowSuccesspopModal(true);
+      settext(response.data);
+      console.log(response.data)
+      //setUserData(newData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      //SetLoading(false);
+    }
+  };
+
+
+
+
 
 
 
@@ -131,6 +183,14 @@ const Listearretscreen = ({ navigation }) => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
+          <Message
+            handleCloseModal={closeSuccessModal}
+            text={text}
+            showSuccessModal={showSuccesspopModal}
+            setShowSuccessModal={setshowSuccesspopModal}
+          />
+
+
           <Listearret
             mydata={filteredData}
             handDelete={handDelete}
@@ -152,7 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom:20,
+    paddingBottom: 20,
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
     height: 40,
@@ -167,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 5,
   },
- 
+
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',

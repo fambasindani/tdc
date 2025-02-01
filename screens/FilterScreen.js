@@ -58,7 +58,7 @@ export default function FilterScreen({ navigation}) {
 
     const getuser = async () => {
         try {
-            const urlget = ApiUrl({ endpoint: 'getuser' });
+            const urlget = ApiUrl({ endpoint: 'getusermotard' });
             const response = await axios.get(urlget);
             setdata(response.data);
         } catch (error) {

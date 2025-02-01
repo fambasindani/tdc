@@ -37,6 +37,9 @@ import Adduserscreen from '../screens/Adduserscreen';
 import Updateuserscreen from '../screens/Updateuserscreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Justificationscreen from '../screens/Justificationscreen';
+import SplashScreen from '../screens/SplashScreen';
+import Lirepdfscreen from '../screens/Lirepdfscreen';
+import Aproposcreen from '../screens/Aproposcreen';
 
 
 
@@ -67,8 +70,8 @@ function VehiculeScreen() {
 }
 
 function transportscreen() {
-//alert(role)
-  
+  //alert(role)
+
   return (
 
 
@@ -80,6 +83,13 @@ function transportscreen() {
 function Actionlistcat() {
   return (
     <Listecatscreen />
+
+  );
+}
+
+function Actionmanuel() {
+  return (
+    <Lirepdfscreen />
 
   );
 }
@@ -108,6 +118,13 @@ function ArretScreen() {
 function TarificationScreens() {
   return (
     <Listetarificationscreen />
+  );
+}
+
+
+function ActionApropos() {
+  return (
+    <Aproposcreen/>
   );
 }
 
@@ -143,24 +160,24 @@ const MenutabStack = () => (
 
 
 const DrawerNavigator = () => {
-  
-// Vos fonctions d'écran
-const [role, setRole] = useState('');
 
-const retrieveRole = async () => {
-  try {
-    const storedRole = await AsyncStorage.getItem('role');
-    if (storedRole) {
-      setRole(storedRole);
+  // Vos fonctions d'écran
+  const [role, setRole] = useState('');
+
+  const retrieveRole = async () => {
+    try {
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
     }
-  } catch (e) {
-    console.error('Erreur lors de la récupération du rôle:', e);
-  }
-};
+  };
 
-useEffect(() => {
-  retrieveRole();
-}, []);
+  useEffect(() => {
+    retrieveRole();
+  }, []);
 
 
 
@@ -193,41 +210,41 @@ useEffect(() => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
-      {(role === 'admin'||role === 'super user') && (
-      <Drawer.Screen
-        name="Véhicule"
-        component={VehiculeScreen}
-        options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/car.png')} style={styles.linear} />,
-          headerStyle: {
-            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
-          },
-          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
-          headerTitleAlign: 'center', // Centrer le titre
+      {(role === 'admin' || role === 'super user') && (
+        <Drawer.Screen
+          name="Véhicule"
+          component={VehiculeScreen}
+          options={{
+            drawerIcon: ({ color }) => <Image source={require('../assets/car.png')} style={styles.linear} />,
+            headerStyle: {
+              backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+            },
+            headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+            headerTitleAlign: 'center', // Centrer le titre
 
-        }}
-      />
+          }}
+        />
       )}
 
-{(role !== 'abonne') && (
-      <Drawer.Screen
-        name="Transport"
-        component={transportscreen}
-        options={{
+      {(role !== 'abonne') && (
+        <Drawer.Screen
+          name="Transport"
+          component={transportscreen}
+          options={{
 
-          drawerIcon: ({ color }) => <Image source={require('../assets/route.png')} style={styles.linear} />,
+            drawerIcon: ({ color }) => <Image source={require('../assets/route.png')} style={styles.linear} />,
 
 
-          title: "Transport",
-          headerStyle: {
-            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
-          },
-          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
-          headerTitleAlign: 'center', // Centrer le titre
+            title: "Transport",
+            headerStyle: {
+              backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+            },
+            headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+            headerTitleAlign: 'center', // Centrer le titre
 
-        }}
-      />
-)}
+          }}
+        />
+      )}
       {/*  <Drawer.Screen
         name="Catégorie"
         component={Actioncatddddd}
@@ -239,21 +256,21 @@ useEffect(() => {
           headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
         }}
       />*/}
- {(role === 'admin'||role === 'super user') && (
-      <Drawer.Screen
-        name="Listecat"
-        component={Actionlistcat}
-        options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/cat.png')} style={styles.linear} />,
-          title: "Catégorie",
-          headerStyle: {
-            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
-          },
-          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
-          headerTitleAlign: 'center', // Centrer le titre
-        }}
-      />
- )}
+      {(role === 'admin' || role === 'super user') && (
+        <Drawer.Screen
+          name="Listecat"
+          component={Actionlistcat}
+          options={{
+            drawerIcon: ({ color }) => <Image source={require('../assets/cat.png')} style={styles.linear} />,
+            title: "Catégorie",
+            headerStyle: {
+              backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+            },
+            headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+            headerTitleAlign: 'center', // Centrer le titre
+          }}
+        />
+      )}
 
 
 
@@ -271,21 +288,21 @@ useEffect(() => {
 
         }}
       />
-    {(role === 'admin'||role === 'super user') && (
-      <Drawer.Screen
-        name="Listearret"
-        component={ArretScreen}
-        options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/arret.png')} style={styles.linear} />,
-          title: "Arrêt",
-          headerStyle: {
-            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
-          },
-          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
-          headerTitleAlign: 'center', // Centrer le titre
-        }}
-      />
-    )}
+      {(role === 'admin' || role === 'super user') && (
+        <Drawer.Screen
+          name="Listearret"
+          component={ArretScreen}
+          options={{
+            drawerIcon: ({ color }) => <Image source={require('../assets/arret.png')} style={styles.linear} />,
+            title: "Arrêt",
+            headerStyle: {
+              backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+            },
+            headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+            headerTitleAlign: 'center', // Centrer le titre
+          }}
+        />
+      )}
 
 
       <Drawer.Screen
@@ -304,14 +321,31 @@ useEffect(() => {
       />
 
 
-{(role === 'admin'||role === 'super user') && (
-      <Drawer.Screen
-        name="Securite"
-        component={Securite}
-        options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
+      {(role === 'admin' || role === 'super user') && (
+        <Drawer.Screen
+          name="Securite"
+          component={Securite}
+          options={{
+            drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
 
-          title: "Sécurité",
+            title: "Sécurité",
+            headerStyle: {
+              backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+            },
+            headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+            headerTitleAlign: 'center', // Centrer le titre
+          }}
+        />
+
+      )}
+
+      
+<Drawer.Screen
+        name="Apropos"
+        component={ActionApropos}
+        options={{
+          drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
+          title: "A propos",
           headerStyle: {
             backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
           },
@@ -320,20 +354,32 @@ useEffect(() => {
         }}
       />
 
-    )}
 
-
-
-
-      <Drawer.Screen
-  
-        name="Déconnecter"
-        component={ConnexionScreen}
+<Drawer.Screen
+        name="Manuel"
+        component={Actionmanuel}
         options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/connexion.png')} style={styles.linear} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
+          title: "Manuel",
+          headerStyle: {
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
         }}
       />
-   
+
+      <Drawer.Screen
+        name="Connexion"
+        component={ConnexionScreen}
+        options={{
+          drawerIcon: ({ color }) => <Image source={require('../assets/logout.png')} style={styles.linear} />,
+        }}
+      />
+
+
+  
+
     </Drawer.Navigator>
   );
 };
@@ -341,6 +387,11 @@ useEffect(() => {
 const AppNavigator = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }} // Masquer l'en-tête pour l'écran de connexion
+      />
 
 
 
@@ -434,7 +485,7 @@ const AppNavigator = () => {
         component={Updateprofilscreen}
         options={{
           headerStyle: {
-            backgroundColor: COLORS.blue,
+            backgroundColor: "#0e79b6",
             color: COLORS.white // Couleur de fond de l'en-tête
           },
           headerTitle: 'Modifier Profil', // Titre de l'en-tête  
@@ -675,8 +726,8 @@ const AppNavigator = () => {
       />
 
 
-    
-<Stack.Screen
+
+      <Stack.Screen
         name="Updateuser"
         component={Updateuserscreen}
         options={{
@@ -696,8 +747,8 @@ const AppNavigator = () => {
       />
 
 
-      
-<Stack.Screen
+
+      <Stack.Screen
         name="Justifications"
         component={Justificationscreen}
         options={{

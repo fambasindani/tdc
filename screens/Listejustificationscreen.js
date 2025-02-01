@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
 import Listejustification from '../composant/Listejustification';
 import ApiUrl from '../composant/ApiUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,7 +19,7 @@ import ApiUrl from '../composant/ApiUrl';
 const url = ApiUrl({ endpoint: 'getjustification' });
 
 const Listejustificationscreen = ({ navigation }) => {
-  const naviger=useNavigation()
+  const naviger = useNavigation()
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -31,42 +32,108 @@ const Listejustificationscreen = ({ navigation }) => {
 
 
 
-  
+
+
+
+
+  useEffect(() => {
+    retrieveuser();
+    retrieveRole();
+    fetchUserData();
+  }, []);
+
+
+
+
+
+
+
 
   const addcat = async () => {
-   // alert('jjjjjjjjjjjjjj')
-    
+    // alert('jjjjjjjjjjjjjj')
+
     //naviger.navigate("Additineraire");
     naviger.navigate('Justifications', { refreshList })
   }
 
-  
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+
 
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
-};
+  };
 
-  const fetchUserData = async () => {
-    SetLoading(true);
+
+
+  
+  // Vos fonctions d'écran
+  const [monid, setmonid] = useState('');
+
+  const retrieveuser = async () => {
     try {
-      const response = await axios.get(url, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-      const newData = response.data; // Utiliser les catégories de véhicule
-      setUserData(newData);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données utilisateur:', error);
-    } finally {
-      SetLoading(false);
+      const iduser = await AsyncStorage.getItem('monid');
+
+      if (iduser) {
+        setmonid(iduser);
+
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
     }
   };
 
+
+
+  
+
+  const [role, setRole] = useState('');
+
+  const retrieveRole = async () => {
+    try {
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
+    }
+  };
+
+
+
+
+  const fetchUserData = async () => {
+    SetLoading(true); // Correction de la casse
+    try {
+      let response;
+      
+      if (role==="motard") {
+        alert(monid)
+        const urlGetId = ApiUrl({ endpoint: 'getjustificationid' });
+        response = await axios.get(`${urlGetId}/${monid}`);
+      }
+       if (role!=="motard") {
+        alert(role)
+        const urlGet = ApiUrl({ endpoint: 'getjustification' });
+        response = await axios.get(urlGet);
+      }
+  
+      const newData = response.data; // Utiliser les catégories de véhicule
+      console.log(newData)
+      setUserData(newData);
+  
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      SetLoading(false); // Correction de la casse
+    }
+  };
+
+
+
+
+
+  
   const handleSearch = (text) => {
     setSearchText(text);
   };
@@ -105,7 +172,7 @@ const Listejustificationscreen = ({ navigation }) => {
 
   return (
     <>
-     <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
+      <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
       <View style={styles.complet}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
@@ -144,7 +211,7 @@ const Listejustificationscreen = ({ navigation }) => {
           <Listejustification
             mydata={filteredData}
             handDelete={handDelete}
-          
+
             Loading={Loading}
             handlupdate={handlupdate}
           />
@@ -157,17 +224,17 @@ const Listejustificationscreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 
 
-  addButtonIcon:{
-    color:COLORS.white
+  addButtonIcon: {
+    color: COLORS.white
 
   },
- 
+
   headerContainer: {
     marginTop: 90,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom:20,
+    paddingBottom: 20,
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
     height: 40,
@@ -183,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 5,
   },
- 
+
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,7 +294,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.grey,
   },
- 
+
   searchInput: {
     flex: 1,
     height: 40,

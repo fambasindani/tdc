@@ -7,6 +7,7 @@ import userImage from '../assets/user.png'; // Assurez-vous que le chemin est co
 import moment from 'moment';
 import ApiUrl from './ApiUrl';
 import axios from 'axios';
+import ApiUrlbis from './ApiUrlbis';
 
 const Listevalider = ({ mydata, SetLoading,getcompter, setcourseid, handDelete, embarquer, depart, arriver, compter, handupdate, Loading, fetchUserData, handleConfirm }) => {
  
@@ -59,14 +60,15 @@ const Listevalider = ({ mydata, SetLoading,getcompter, setcourseid, handDelete, 
 
   const renderItem = ({ item }) => {
     const count = tourCounts[item.id] || 0; // Utiliser le compte ici
-     
+    const urlimg = ApiUrlbis({ endpoint: '' });
     
   
   
     return (
       <View style={styles.itemContainer}>
         <TouchableOpacity style={styles.indexContainer}>
-          <Image source={userImage} style={styles.userImage} />
+         <Image source={{ uri:`${urlimg}${item.avatar}` }} style={styles.userImage} /> 
+                 
         </TouchableOpacity>
         <View style={styles.descriptionContainer}>
           <View style={styles.nameContainer}>

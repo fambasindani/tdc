@@ -17,6 +17,10 @@ export default function Addarretsreen({ navigation, route }) {
     const [description, setDescription] = useState('');
 
 
+
+  
+
+
     const handleCloseModal = () => {
         setShowSuccessModal(false);
     };

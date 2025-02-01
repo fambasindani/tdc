@@ -9,10 +9,12 @@ import Message from '../Message/Boxmessage';
 import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
 export default function Loginscreen({ navigation,setIsLoggedIn  }) {
+    const naviger=new useNavigation()
     const [loading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -91,7 +93,7 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
                 await AsyncStorage.setItem('role', role);
               
                 setiduser(id)
-                navigation.navigate('Test');
+                naviger.navigate('Test');
                 //alert(res.data.user.role)
                
                
@@ -106,11 +108,11 @@ export default function Loginscreen({ navigation,setIsLoggedIn  }) {
     };
 
     const Actionpassword = () => {
-        navigation.navigate('Passwordscreen');
+        naviger.navigate('Passwordscreen');
     };
 
     const Actioninscription = () => {
-        navigation.navigate('Inscription');
+        naviger.navigate('Inscription');
     };
 
     return (
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLORS.blanccasse,
+        backgroundColor: "f0f2f5",
     },
 
     container: {

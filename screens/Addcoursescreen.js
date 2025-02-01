@@ -86,7 +86,7 @@ export default function Addcoursescreen({ navigation, route }) {
   
       const getuser = async () => {
           try {
-            const urlget = ApiUrl({ endpoint: 'getuser' });
+            const urlget = ApiUrl({ endpoint: 'getusermotard' });
             const response = await axios.get(urlget);
             setData(response.data);
           } catch (error) {
