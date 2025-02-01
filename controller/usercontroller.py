@@ -378,7 +378,54 @@ def getuser():
     finally:
         # Assurez-vous que la connexion à la base de données est fermée
         cursor.close()
+        conn.close()     
+
+
+
+          
+def getusermotard():
+    try:
+        # Connexion à la base de données
+        conn = get_connection()
+        cursor = conn.cursor()
+        #motard="motard"
+
+        # Récupération des données des utilisateurs
+        cursor.execute("SELECT id, nom, prenom, email, password, avatar, telephone, adresse FROM listeusers WHERE libelle = 'motard'")
+        users = cursor.fetchall()
+
+        # Vérification si des utilisateurs ont été trouvés
+        if not users:
+            return []
+
+        # Conversion des données en format JSON
+        data = []
+        for id, nom, prenom, email, password, avatar, telephone, adresse in users:
+            image_url = f'/static/Image/{avatar}' if avatar else None  # Vérification de l'avatar
+            data.append({
+                'id': id,
+                'nom': nom,
+               
+                'prenom': prenom,
+                'email': email,
+                'password': password,  # Note: ne pas inclure le mot de passe dans les données retournées.
+                'avatar': image_url,
+                'telephone': telephone,
+                'adresse': adresse,
+                'url': avatar
+            })
+
+        return data
+
+    except Exception as e:
+        print(f"Erreur lors de la récupération des données utilisateur : {str(e)}")
+        return 'Erreur'
+
+    finally:
+        # Assurez-vous que la connexion à la base de données est fermée
+        cursor.close()
         conn.close()                  
+
 
 
 
@@ -427,3 +474,30 @@ def get_role():
         # Assurez-vous que la connexion à la base de données est fermée
         cursor.close()
         conn.close()        
+
+
+      
+def delete_user(id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        # Exécutez la commande de suppression
+        cur.execute("DELETE FROM users WHERE id=%s", (id,))
+        conn.commit()
+        
+        cur.close()
+        
+        return 'Opération effectuée.'
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Erreur lors de la suppression arrêt : {str(e)}")
+        return str(e)    
+
+
+
+    
+def get_pdf(filename):
+    return send_from_directory(os.path.join(os.getcwd(), 'static/Image'), filename)            
+    

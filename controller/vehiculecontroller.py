@@ -104,6 +104,29 @@ def getvehicule():
        
        
         return 'Erreur'
+
+
+
+     
+def delete_vehicule(id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        # Exécutez la commande de suppression
+        cur.execute("DELETE FROM vehicules WHERE id=%s", (id,))
+        conn.commit()
+        
+        cur.close()
+        
+        return 'Opération effectuée.'
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Erreur lors de la suppression arrêt : {str(e)}")
+        return str(e)           
+    
+
     
    
     

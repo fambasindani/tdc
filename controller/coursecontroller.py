@@ -112,6 +112,71 @@ def getcourses():
        
        
         return 'Erreur'
+    
+
+
+              
+def getclient():
+    try:
+        # Connexion à la base de données
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Récupération des données des utilisateurs
+        cursor.execute("SELECT id,nom, prenom, immatriculation, marque, montant, datecourse, iduser, idtarification, idvehicule, avatar, description FROM listecourses order by id desc ")
+        courses = cursor.fetchall()
+
+     
+        data = []
+    
+        for id,nom, prenom, immatriculation, marque, montant, datecourse,iduser, idtarification, idvehicule , avatar, description in courses:
+            image_url = f'/static/Image/{avatar}' if avatar else None  
+          
+            data.append({
+                'id': id,
+                'nom': nom,
+                'prenom': prenom,
+                'immatriculation': immatriculation,
+                'marque': marque,
+                'montant': montant,
+                'datecourse': datecourse,
+                'iduser': iduser,
+                'idtarification': idtarification,
+                'idvehicule': idvehicule,
+                'avatar': image_url,
+                'url': avatar,
+                'description': description,
+          
+            })
+
+        return data
+
+    except Exception as e:
+       
+       
+        return str(e) 
+
+
+
+     
+def delete_course(id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    try:
+        # Exécutez la commande de suppression
+        cur.execute("DELETE FROM courses WHERE id=%s", (id,))
+        conn.commit()
+        
+        cur.close()
+        
+        return 'Opération effectuée.'
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Erreur lors de la suppression arrêt : {str(e)}")
+        return str(e)           
+            
 
 
 

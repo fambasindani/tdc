@@ -108,6 +108,55 @@ def gettypejust():
       
         return e
     
+
+
+           
+def getjustificationid(id):
+    try:
+        # Connexion à la base de données
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Récupération des données des utilisateurs
+        cursor.execute("SELECT id, nom, prenom, email,  avatar, telephone, adresse, idjustification,datej,justification, idtype, description FROM listejustifications WHERE id=%s order by id asc", (id,))
+        users = cursor.fetchall()
+
+        # Vérification si des utilisateurs ont été trouvés
+        if not users:
+            return []
+
+        # Conversion des données en format JSON
+        data = []
+        for id, nom, prenom, email,  avatar, telephone, adresse , idjustification,datej,justification , idtype, description in users:
+            image_url = f'/static/Image/{avatar}' if avatar else None  # Vérification de l'avatar
+            data.append({
+                'id': id,
+                'nom': nom,
+               
+                'prenom': prenom,
+                'email': email,
+                #'password': password,  # Note: ne pas inclure le mot de passe dans les données retournées.
+                'avatar': image_url,
+                'telephone': telephone,
+                'adresse': adresse,
+                'url': avatar,
+                'idjustification': idjustification,
+                'datej': datej,
+                'description': description,
+                'idtype': idtype
+            })
+
+        return data
+
+    except Exception as e:
+        print(f"Erreur lors de la récupération des données utilisateur : {str(e)}")
+        return 'Erreur'
+
+    finally:
+        # Assurez-vous que la connexion à la base de données est fermée
+        cursor.close()
+        conn.close() 
+
                  
     
 
