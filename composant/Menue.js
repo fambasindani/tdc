@@ -370,11 +370,10 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-
-        name="Déconnecter"
+        name="Connexion"
         component={ConnexionScreen}
         options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/connexion.png')} style={styles.linear} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/logout.png')} style={styles.linear} />,
         }}
       />
 
