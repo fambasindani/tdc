@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import Listecat from '../composant/Listecat';
 import ApiUrl from '../composant/ApiUrl';
 import axios from 'axios';
+import Message from '../Message/Boxmessage';
 
 
 
@@ -16,7 +17,7 @@ import axios from 'axios';
 const url = ApiUrl({ endpoint: 'getcategorie' });
 
 const Listecatscreen = ({ navigation }) => {
-  const naviger=useNavigation()
+  const naviger = useNavigation()
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -29,15 +30,29 @@ const Listecatscreen = ({ navigation }) => {
 
 
 
-  
+  //message de notification
+  const [text, settext] = useState('');
+  const [showSuccesspopModal, setshowSuccesspopModal] = useState(false);
+
+
+  const closeSuccessModal = () => {
+    setshowSuccesspopModal(false);
+  };
+
+
+
+
+
+
+
 
   const addcat = async () => {
-    
+
     //naviger.navigate("Additineraire");
     naviger.navigate('addcat', { refreshList })
   }
 
-  
+
 
   useEffect(() => {
     fetchUserData();
@@ -45,16 +60,16 @@ const Listecatscreen = ({ navigation }) => {
 
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
-};
+  };
 
   const fetchUserData = async () => {
     SetLoading(true);
     try {
       const response = await axios.get(url, {
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
+      });
       const newData = response.data; // Utiliser les catégories de véhicule
       setUserData(newData);
     } catch (error) {
@@ -80,10 +95,7 @@ const Listecatscreen = ({ navigation }) => {
     setShowSuccessModal(false);
   };
 
-  const handleConfirms = async () => {
-    SetmodalVisible(false);
-    // Ici, tu peux ajouter la logique de confirmation
-  };
+
 
   const handleCancel = async () => {
     SetmodalVisible(false);
@@ -96,13 +108,55 @@ const Listecatscreen = ({ navigation }) => {
     Setmessage(`Voulez-vous supprimer ?`);
   };
 
+
+  
+  const handleConfirms = async () => {
+    SetmodalVisible(false);
+    const item = selected
+    //setshowSuccesspopModal(true);
+    //settext(item.id);
+     await delecategorie(item)
+
+    //alert(item.id)
+
+
+    // Ici, tu peux ajouter la logique de confirmation
+  };
+
+
+
+  const delecategorie = async (item) => {
+    const urldelete = ApiUrl({ endpoint: 'delete_categorie/' });
+
+
+    try {
+      const response = await axios.delete(`${urldelete}${item.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchUserData()
+      setshowSuccesspopModal(true);
+      settext(response.data);
+      console.log(response.data)
+      //setUserData(newData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      //SetLoading(false);
+    }
+  };
+
+
+
   const handlupdate = async (item) => {
     naviger.navigate('Updatecategorie', { items: item, refreshList });
   };
 
   return (
     <>
-     <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
+      <StatusBar barStyle="dark-content" backgroundColor="#0e79b6" />
       <View style={styles.complet}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
@@ -138,10 +192,17 @@ const Listecatscreen = ({ navigation }) => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
+          <Message
+            handleCloseModal={closeSuccessModal}
+            text={text}
+            showSuccessModal={showSuccesspopModal}
+            setShowSuccessModal={setshowSuccesspopModal}
+          />
+
           <Listecat
             mydata={filteredData}
             handDelete={handDelete}
-          
+
             Loading={Loading}
             handlupdate={handlupdate}
           />
@@ -154,17 +215,17 @@ const Listecatscreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 
 
-  addButtonIcon:{
-    color:COLORS.white
+  addButtonIcon: {
+    color: COLORS.white
 
   },
- 
+
   headerContainer: {
     marginTop: 90,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom:20,
+    paddingBottom: 20,
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
     height: 40,
@@ -180,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 5,
   },
- 
+
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -224,7 +285,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.grey,
   },
- 
+
   searchInput: {
     flex: 1,
     height: 40,

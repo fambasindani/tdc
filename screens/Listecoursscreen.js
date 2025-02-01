@@ -12,6 +12,7 @@ import ApiUrl from '../composant/ApiUrl';
 import ModalPopup from '../composant/ModalPopup';
 import ApiUrlbis from '../composant/ApiUrlbis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Message from '../Message/Boxmessage';
 
 const Listecoursscreen = () => {
   const naviger = useNavigation();
@@ -25,7 +26,7 @@ const Listecoursscreen = () => {
 
 
 
-  
+
   const [Visible, setVisible] = useState(false);
   const [phone, setphone] = useState(null);
   const [email, setemail] = useState(null);
@@ -37,24 +38,36 @@ const Listecoursscreen = () => {
 
 
 
-  
+
+  //message de notification
+  const [text, settext] = useState('');
+  const [showSuccesspopModal, setshowSuccesspopModal] = useState(false);
+
+
+  const closeSuccessModal = () => {
+    setshowSuccesspopModal(false);
+  };
+
+
+
+
   // Vos fonctions d'écran
-const [role, setRole] = useState('');
+  const [role, setRole] = useState('');
 
-const retrieveRole = async () => {
-  try {
-    const storedRole = await AsyncStorage.getItem('role');
-    if (storedRole) {
-      setRole(storedRole);
+  const retrieveRole = async () => {
+    try {
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
     }
-  } catch (e) {
-    console.error('Erreur lors de la récupération du rôle:', e);
-  }
-};
+  };
 
-useEffect(() => {
-  retrieveRole();
-}, []);
+  useEffect(() => {
+    retrieveRole();
+  }, []);
 
 
 
@@ -62,35 +75,35 @@ useEffect(() => {
   //const url = ApiUrl({ endpoint: 'getvehicule' });
 
 
- 
+
 
 
 
   const toggleModal = () => {
     setVisible(!Visible);
   };
-  const handdetails  = (item) => {
+  const handdetails = (item) => {
     // Logique d'édition ici
     console.log('Confirmé');
-    
-      setphone("Itin. : "+item.description)
-      setemail(item.montant +" CDF")
-      setnom(item.nom)
-      setprenom(item.prenom)
-      setmarque(item.marque)
-      //setmarque(item.nom)
-      setmonimage(`${urlimg}${item.avatar}`);
-     // Alert.alert(urlimg+item.avatar)
+
+    setphone("Itin. : " + item.description)
+    setemail(item.montant + " CDF")
+    setnom(item.nom)
+    setprenom(item.prenom)
+    setmarque(item.marque)
+    //setmarque(item.nom)
+    setmonimage(`${urlimg}${item.avatar}`);
+    // Alert.alert(urlimg+item.avatar)
     toggleModal();
   };
 
 
   const url = ApiUrl({ endpoint: 'getcourses' });
 
-  
+
 
   const additin = () => {
-    naviger.navigate("Addcours", {refreshList});
+    naviger.navigate("Addcours", { refreshList });
   };
 
   useEffect(() => {
@@ -99,16 +112,16 @@ useEffect(() => {
 
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
-};
+  };
 
-  const fetchUserData = async() => {
+  const fetchUserData = async () => {
     SetLoading(true);
     try {
       const response = await axios.get(url, {
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
+      });
       const newData = response.data; // Utiliser les données des courses
       setUserData(newData);
     } catch (error) {
@@ -134,10 +147,7 @@ useEffect(() => {
     setShowSuccessModal(false);
   };
 
-  const handleConfirms = () => {
-    SetmodalVisible(false);
-    // Ici, tu peux ajouter la logique de confirmation
-  };
+
 
   const handleCancel = () => {
     SetmodalVisible(false);
@@ -147,8 +157,55 @@ useEffect(() => {
     setShowSuccessModal(true);
     SetmodalVisible(true);
     Setselected(item);
-    Setmessage(`Voulez-vous supprimer ${item.nomChauffeur} ?`);
+    Setmessage(`Voulez-vous supprimer ${item.nom} ?`);
   };
+
+
+  const handleConfirms = async () => {
+    SetmodalVisible(false);
+    const item = selected
+    //setshowSuccesspopModal(true);
+    //settext(item.id);
+     await delecourse(item)
+
+    //alert(item.id)
+
+
+    // Ici, tu peux ajouter la logique de confirmation
+  };
+
+
+
+  const delecourse = async (item) => {
+    const urldelete = ApiUrl({ endpoint: 'delete_course/' });
+
+
+    try {
+      const response = await axios.delete(`${urldelete}${item.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchUserData()
+      setshowSuccesspopModal(true);
+      settext(response.data);
+      console.log(response.data)
+      //setUserData(newData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      //SetLoading(false);
+    }
+  };
+
+
+
+
+
+
+
+
 
   const handleupdate = (item) => {
     naviger.navigate('Updatecours', { items: item, refreshList });
@@ -192,6 +249,13 @@ useEffect(() => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
+          <Message
+            handleCloseModal={closeSuccessModal}
+            text={text}
+            showSuccessModal={showSuccesspopModal}
+            setShowSuccessModal={setshowSuccesspopModal}
+          />
+
           <Listecours
             mydata={filteredData}
             handDelete={handDelete}
@@ -199,8 +263,8 @@ useEffect(() => {
             Loading={Loading}
             handdetails={handdetails}
           />
-           <ModalPopup marque={marque} monimage={monimage} setmonimage={setmonimage} nom={nom} prenom={prenom} phone={phone} email={email} modalVisible={Visible} setModalVisible={setVisible} toggleModal={toggleModal} />
-   
+          <ModalPopup marque={marque} monimage={monimage} setmonimage={setmonimage} nom={nom} prenom={prenom} phone={phone} email={email} modalVisible={Visible} setModalVisible={setVisible} toggleModal={toggleModal} />
+
         </View>
       </View>
     </>
@@ -222,7 +286,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom:20,
+    paddingBottom: 20,
     borderBottomWidth: 0.4,
     borderBottomColor: COLORS.grey,
     height: 40,

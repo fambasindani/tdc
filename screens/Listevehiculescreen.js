@@ -11,6 +11,7 @@ import axios from 'axios';
 import ApiUrl from '../composant/ApiUrl';
 import ModalPopup from '../composant/ModalPopup';
 import ApiUrlbis from '../composant/ApiUrlbis';
+import Message from '../Message/Boxmessage';
 
 const Listevehiculescreen = ({ navigation }) => {
   const naviger = useNavigation();
@@ -32,7 +33,18 @@ const Listevehiculescreen = ({ navigation }) => {
   const [monimage, setmonimage] = useState();
   const [marque, setmarque] = useState();
 
+
+  //message de notification
+  const [text, settext] = useState('');
+  const [showSuccesspopModal, setshowSuccesspopModal] = useState(false);
   
+  
+  const closeSuccessModal = () => {
+    setshowSuccesspopModal(false);
+};
+//const [isModalVisible, setisModalVisible] = useState(false);
+
+
 
 
   const urlimg = ApiUrlbis({ endpoint: '' });
@@ -49,35 +61,35 @@ const Listevehiculescreen = ({ navigation }) => {
   const toggleModal = () => {
     setVisible(!Visible);
   };
-  const handdetails  = (item) => {
+  const handdetails = (item) => {
     // Logique d'édition ici
     console.log('Confirmé');
-    
-      setphone(item.telephone)
-      setemail(item.email)
-      setnom(item.nom)
-      setprenom(item.prenom)
-      setmarque(item.marque)
-      setmonimage(`${urlimg}${item.avatar}`);
-     // Alert.alert(urlimg+item.avatar)
+
+    setphone(item.telephone)
+    setemail(item.email)
+    setnom(item.nom)
+    setprenom(item.prenom)
+    setmarque(item.marque)
+    setmonimage(`${urlimg}${item.avatar}`);
+    // Alert.alert(urlimg+item.avatar)
     toggleModal();
   };
-  
+
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
-};
+  };
   useEffect(() => {
     fetchUserData();
   }, []);
 
-  const fetchUserData = async() => {
+  const fetchUserData = async () => {
     SetLoading(true);
     try {
       const response = await axios.get(url, {
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-    });
+      });
       const newData = response.data; // Utiliser les données des véhicules
       setUserData(newData);
     } catch (error) {
@@ -101,11 +113,43 @@ const Listevehiculescreen = ({ navigation }) => {
 
   const handleCloseModal = () => {
     setShowSuccessModal(false);
+
   };
 
-  const handleConfirms = () => {
+  const handleConfirms = async () => {
     SetmodalVisible(false);
+    const item = selected
+    await delevehicule(item)
+   
+    //alert(item.id)
+
+
     // Ici, tu peux ajouter la logique de confirmation
+  };
+
+
+
+  const delevehicule = async (item) => {
+    const urldelete = ApiUrl({ endpoint: 'delete_vehicule/' });
+
+
+    try {
+      const response = await axios.delete(`${urldelete}${item.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      fetchUserData()
+      setshowSuccesspopModal(true);
+      settext(response.data);
+      console.log(response.data)
+      //setUserData(newData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      //SetLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -120,9 +164,13 @@ const Listevehiculescreen = ({ navigation }) => {
   };
 
   const handupdate = (item) => {
-    naviger.navigate('Updatevehicule', { items: item, refreshList  });
-   //alert('update')
+    naviger.navigate('Updatevehicule', { items: item, refreshList });
+    //alert('update')
   };
+
+
+
+
 
   return (
     <>
@@ -162,6 +210,14 @@ const Listevehiculescreen = ({ navigation }) => {
             setShowSuccessModal={setShowSuccessModal}
           />
 
+          <Message
+            handleCloseModal={closeSuccessModal}
+            text={text}
+            showSuccessModal={showSuccesspopModal}
+            setShowSuccessModal={setshowSuccesspopModal}
+          />
+
+
           <Listevehicule
             mydata={filteredData}
             handDelete={handDelete}
@@ -170,7 +226,7 @@ const Listevehiculescreen = ({ navigation }) => {
             handdetails={handdetails}
           />
           <ModalPopup marque={marque} monimage={monimage} setmonimage={setmonimage} nom={nom} prenom={prenom} phone={phone} email={email} modalVisible={Visible} setModalVisible={setVisible} toggleModal={toggleModal} />
-   
+
         </View>
       </View>
     </>

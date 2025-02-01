@@ -31,10 +31,35 @@ export default function Justificationscreen({ navigation, route }) {
 
     const { refreshList } = route.params;
 
+    // Vos fonctions d'écran
+  const [role, setRole] = useState('');
+
+  const retrieveRole = async () => {
+    try {
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
 
    const formatDate = (madate) => {
         return moment(madate).format('YYYY-MM-DD HH:mm:ss');
-    };     
+    };  
+       
 // Vos fonctions d'écran
 const [monid, setmonid] = useState('');
 
@@ -53,6 +78,7 @@ const retrieveuser = async () => {
 
 useEffect(() => {
   retrieveuser();
+  retrieveRole();
 }, []);
 
 
@@ -74,10 +100,12 @@ useEffect(() => {
 
     const getjustification = async () => {
         try {
-         // setcontenu('description')
+         // setcontenu('description')getjustificationid
+       
+           
+         
           const urlget = ApiUrl({ endpoint: 'gettypejust' });
           const response = await axios.get(urlget);
-         
           setdatadescription(response.data[0].idtype)
           SetJust(response.data);
         } catch (error) {

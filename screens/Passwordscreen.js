@@ -17,8 +17,8 @@ import Boutons from '../composant/Boutons';
 
 
 export default function Passwordscreen({ navigation }) {
-    const [loading, setloading] = useState(false)
-    const [text, settext] = useState('');
+    const [loading, setLoading] = useState(false)
+    const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [email, setemail] = useState('');
  
@@ -53,69 +53,54 @@ export default function Passwordscreen({ navigation }) {
 
 
 
-
-  const uploadImage = async () => {
-
-    const url = ApiUrl({ endpoint: 'send_email' });
-
-    setloading(true)
-    setTimeout(async () => {
-    try {
-      // const varemail = ''
-      setloading(false)
-      const formData = new FormData();
-  
-    
-
-      formData.append('email', email);
-   
-
-
-   
-
-  
-    
-    
-
-      if (email.trim() === '') {
-        setShowSuccessModal(true);
-        settext("Veuillez inserer l'email")
-
-      }
-
-      else if (!email.match(/\S+@\S+\.\S+/)) {
-        setShowSuccessModal(true);
-        settext('Email incorrect')
-      }
-
-        else {
-       
-            const res = await axios.post(url, formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-         
-          
-          annuler()
+      const sendEmail = async () => {
+      //  alert('ggggggggggg')
+        const url = ApiUrl({ endpoint: 'send_email' });
+        setLoading(true);
+       // setLoading(true);
+      
+        try {
+          // Vérification de l'email avant d'envoyer la requête
+          if (email.trim() === '') {
+           
+            setShowSuccessModal(true);
+            setText("Veuillez insérer l'email");
+            setLoading(false);
+            return; // Sortir de la fonction si l'email est vide
+          }
+      
+          if (!email.match(/\S+@\S+\.\S+/)) {
+            setShowSuccessModal(true);
+            setText('Email incorrect');
+            setLoading(false);
+            return; // Sortir de la fonction si l'email est incorrect
+          }
+      
+          // Préparation des données à envoyer
+          const formData = new FormData();
+          formData.append('email', email);
+      
+          // Envoi de la requête
+          const res = await axios.post(url, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+      
+          // Actions après la réussite de l'envoi
+          annuler();
           setShowSuccessModal(true);
-          settext(res.data)
+          setText(res.data);
           // navigation.navigate('MonMenu');
-
-
-         
-            
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-      setShowSuccessModal(true);
-      settext('Erreur')
-      //Alert.alert();
-      // Alert.alert(res.data)
-    }
-  }, 5000);
-  };
-
+      
+        } catch (error) {
+          console.error('Erreur:', error);
+          setShowSuccessModal(true);
+          setText('Erreur');
+        } finally {
+          setLoading(false); // Toujours arrêter le chargement à la fin
+        }
+      };
   
   const Actionconnection = () => {
 
@@ -129,7 +114,13 @@ export default function Passwordscreen({ navigation }) {
 
     <View style={styles.container} >
       <Loading  visible={loading}/>
-      <Message handleCloseModal={handleCloseModal} text={text} showSuccessModal={showSuccessModal} setShowSuccessModal={setShowSuccessModal}/>
+    
+      <Message 
+                handleCloseModal={handleCloseModal} 
+                text={text} 
+                showSuccessModal={showSuccessModal} 
+                setShowSuccessModal={setShowSuccessModal} 
+            />
      
      
       <ScrollView style={styles.scrollview}>
@@ -145,7 +136,7 @@ export default function Passwordscreen({ navigation }) {
        
         <Input icons="envelope" label="Email" placeholder="Votre e-mail" name={email} setname={setemail}/>
        
-        <Buttons title='Continuer' Actionconnection={Actionconnection}  onPress={uploadImage} connexion="Retour à l'accueil "/> 
+        <Buttons title='Continuer' Actionconnection={Actionconnection}  onPress={sendEmail} connexion="Retour à login "/> 
     
         
         
