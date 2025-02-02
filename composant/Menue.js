@@ -326,7 +326,7 @@ const DrawerNavigator = () => {
           name="Securite"
           component={Securite}
           options={{
-            drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
+            drawerIcon: ({ color }) => <Image source={require('../assets/secure.png')} style={styles.linear} />,
 
             title: "Sécurité",
             headerStyle: {
@@ -344,7 +344,7 @@ const DrawerNavigator = () => {
         name="Apropos"
         component={ActionApropos}
         options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/about.png')} style={styles.linear} />,
           title: "A propos",
           headerStyle: {
             backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
@@ -359,7 +359,7 @@ const DrawerNavigator = () => {
         name="Manuel"
         component={Actionmanuel}
         options={{
-          drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
+          drawerIcon: ({ color }) => <Image source={require('../assets/userbook.png')} style={styles.linear} />,
           title: "Manuel",
           headerStyle: {
             backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
@@ -370,7 +370,7 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Connexion"
+        name="Déconnexion"
         component={ConnexionScreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/logout.png')} style={styles.linear} />,

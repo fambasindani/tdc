@@ -63,19 +63,18 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 130,
-    marginBottom: 20,
+    marginBottom: 70,
   },
   button: {
-    backgroundColor: '#0e79b6',
+    backgroundColor: '#976666',
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 10,
+    borderRadius: 80,
     elevation: 3,
   },
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: 'bold',
     width: '100%',
   },
   errorText: {

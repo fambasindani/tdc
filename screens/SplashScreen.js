@@ -11,13 +11,13 @@ const SplashScreen = () => {
   useEffect(() => {
     Animated.timing(opacity, {
       toValue: 1,
-      duration: 2000, // Fade in effect
+      duration: 955, // Fade in effect
       useNativeDriver: true,
     }).start();
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // 3 secondes
+    }, 955); // 3 secondes
 
     return () => clearTimeout(timer); // Nettoyage du timer
   }, []);
@@ -27,7 +27,7 @@ const SplashScreen = () => {
       <View style={styles.container}>
         <Animated.View style={{ opacity }}>
           <Image source={require('../assets/Likunzi.png')} style={styles.logo} />
-          <Text style={styles.title}>Bienvenue</Text>
+ 
         </Animated.View>
       </View>
     );
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4A90E2', // Une belle couleur de fond
+    backgroundColor: 'white', // Une belle couleur de fond
   },
   logo: {
     width: 150,
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff', // Couleur de texte blanche
+    color: 'gray', // Couleur de texte blanche
     textAlign: 'center',
   },
 });

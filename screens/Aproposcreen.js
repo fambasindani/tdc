@@ -16,7 +16,8 @@ const Aproposcreen = () => {
     <View style={styles.container}>
       <Animated.View style={{ opacity }}>
         <Image source={require('../assets/Likunzi.png')} style={styles.logo} />
-        <Text style={styles.title}>version 1.0</Text>
+        <Text style={styles.title}>Version 0.0.1</Text>
+        <Text style={styles.subtitle}>© 2024-2025 / TDTC</Text>
       </Animated.View>
     </View>
   );
@@ -36,10 +37,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000', // Couleur de texte noire
+    fontSize: 15,
+    color: 'white', // Couleur de texte noire
     textAlign: 'center',
+    backgroundColor:'gray',
+    borderRadius:54
+  },
+  subtitle: {
+    fontSize: 15,
+    color: 'gray', // Couleur de texte noire
+    textAlign: 'center',
+    paddingTop:150,
+    borderRadius:50
   },
 });
 
