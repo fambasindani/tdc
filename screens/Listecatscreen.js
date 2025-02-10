@@ -52,10 +52,18 @@ const Listecatscreen = ({ navigation }) => {
     naviger.navigate('addcat', { refreshList })
   }
 
+  useFocusEffect(
+        React.useCallback(() => {
+          fetchUserData();
 
+            return () => {
+                // Optionnel : logique de nettoyage si nécessaire
+            };
+        }, [])
+    );
 
   useEffect(() => {
-    fetchUserData();
+   
   }, []);
 
   const refreshList = () => {

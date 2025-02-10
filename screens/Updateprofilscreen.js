@@ -194,7 +194,7 @@ export default function Updateprofilscreen({ navigation}) {
   const navigations = useNavigation();
 
     const Actionconnection = () => {
-        navigation.navigate('Login');
+       // navigation.navigate('Login');
       
       // navigations.goBack();
           
@@ -229,7 +229,7 @@ export default function Updateprofilscreen({ navigation}) {
         <Input icons="phone" label="Phone" placeholder="Votre phone" name={phone} setname={setphone}/>
         <Textareainput icons="map-marker" label="Adresse" placeholder="Votre adresse" name={adresse} setname={setadresse}/>
 
-        <Buttons title='Enregistrer'  onPress={updateuser} Actionconnection={Actionconnection} connexion="Connexion"/>
+        <Buttons title='Enregistrer'  onPress={updateuser} Actionconnection={Actionconnection} connexion=""/>
 
 
         

@@ -51,8 +51,19 @@ const Listearretscreen = ({ navigation }) => {
     fetchUserData(); // Mettre à jour la liste
   };
 
+  
+    useFocusEffect(
+          React.useCallback(() => {
+            fetchUserData();
+  
+              return () => {
+                  // Optionnel : logique de nettoyage si nécessaire
+              };
+          }, [])
+      );
+
   useEffect(() => {
-    fetchUserData();
+    //fetchUserData();
   }, []);
 
   const fetchUserData = async () => {

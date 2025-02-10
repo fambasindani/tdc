@@ -11,6 +11,7 @@ import Justificationscreen from '../screens/Justificationscreen';
 import HistoriqueScreen from '../screens/HistoriqueScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Listejustificationscreen from '../screens/Listejustificationscreen';
+import Listemapscreen from '../screens/Listemapscreen';
 
 
 
@@ -44,9 +45,7 @@ function valider() {
 }
 function Maps() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Maps</Text>
-    </View>
+    <Listemapscreen/>
   );
 }
 function Cours() {
@@ -103,7 +102,7 @@ useEffect(() => {
         }}
       >
 
-{(role === 'admin'||role === 'super user' ||role === 'motard') && (   
+{(role === 'admin'||role === 'super user') && (   
 <Tab.Screen 
           name="Course" 
           component={Cours} 
@@ -126,6 +125,8 @@ useEffect(() => {
         />
         )}
 
+{(role === 'admin'||role === 'super user' ||role === 'motard') && ( 
+
          <Tab.Screen 
           name="Valider" 
           component={valider} 
@@ -146,6 +147,7 @@ useEffect(() => {
             },
           }} 
         />
+)}
          <Tab.Screen 
           name="Maps" 
           component={Maps} 
@@ -166,7 +168,7 @@ useEffect(() => {
             },
           }} 
         />
-{(role === 'admin'||role === 'super user' ) && ( 
+{(role === 'admin'||role === 'super user'||role === 'client' ) && ( 
 <Tab.Screen 
           name="Historique" 
           component={Historique} 
@@ -216,7 +218,7 @@ useEffect(() => {
 )}
 
 
-
+{(role === 'admin'||role === 'super user' ||role === 'motard') && ( 
         <Tab.Screen 
           name="Justification" 
           
@@ -239,6 +241,7 @@ useEffect(() => {
             },
           }} 
         />
+)}
       </Tab.Navigator>
    
   );

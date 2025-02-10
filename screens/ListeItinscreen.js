@@ -68,9 +68,18 @@ useEffect(() => {
 
 
 
+  useFocusEffect(
+        React.useCallback(() => {
+          fetchUserData();
+
+            return () => {
+                // Optionnel : logique de nettoyage si nécessaire
+            };
+        }, [])
+    );
 
   useEffect(() => {
-    fetchUserData();
+    //fetchUserData();
   }, []);
 
   const refreshList = () => {

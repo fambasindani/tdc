@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Messagebox from '../composant/Messagebox';
 import Listevehicule from '../composant/Listevehicule'; // Assurez-vous que ce chemin est correct
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import COLORS from '../Couleurs/COLORS'; // Assurez-vous que ce chemin est correct
 import Listecours from '../composant/Listecours';
@@ -13,8 +13,11 @@ import ModalPopup from '../composant/ModalPopup';
 import ApiUrlbis from '../composant/ApiUrlbis';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Message from '../Message/Boxmessage';
+import Listemaps from '../composant/Listemaps';
+import { useFocusEffect } from '@react-navigation/native';
+import Mapscreen from './Mapscreen';
 
-const Listecoursscreen = () => {
+const Listemapscreen = () => {
   const naviger = useNavigation();
   const [userData, setUserData] = useState([]);
   const [Loading, SetLoading] = useState(false);
@@ -35,6 +38,13 @@ const Listecoursscreen = () => {
   const [confirmation, setconfirmation] = useState('');
   const [monimage, setmonimage] = useState();
   const [marque, setmarque] = useState();
+  const [longitude, setlongitude] = useState('');
+  const [altitude, setaltitude] = useState('');
+  const [lalatitude, setlalatitude] = useState('');
+  const [modalVisiblemap, setModalVisiblemap] = useState(false);
+  const [client, setclient] = useState(null);
+  const [selectedMapData, setSelectedMapData] = useState(null);
+  const [monitem, setmonitem] = useState(null);
 
 
 
@@ -86,8 +96,8 @@ const Listecoursscreen = () => {
     // Logique d'édition ici
     console.log('Confirmé');
 
-    setphone("Itin. : " + item.description)
-    setemail(item.montant + " CDF")
+    setphone("Cat. : " + item.description)
+    setemail("Imm. :"+item.immatriculation)
     setnom(item.nom)
     setprenom(item.prenom)
     setmarque(item.marque)
@@ -98,29 +108,17 @@ const Listecoursscreen = () => {
   };
 
 
-  const url = ApiUrl({ endpoint: 'getcourses' });
+  const url = ApiUrl({ endpoint: 'getvehicule' });
 
 
 
-  const additin = () => {
-    naviger.navigate("Addcours", { refreshList });
-  };
 
 
-  
-    useFocusEffect(
-          React.useCallback(() => {
-            fetchUserData();
-  
-              return () => {
-                  // Optionnel : logique de nettoyage si nécessaire
-              };
-          }, [])
-      );
-
-  useEffect(() => {
-    //fetchUserData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
   const refreshList = () => {
     fetchUserData(); // Mettre à jour la liste
@@ -178,7 +176,7 @@ const Listecoursscreen = () => {
     const item = selected
     //setshowSuccesspopModal(true);
     //settext(item.id);
-     await delecourse(item)
+    await delecourse(item)
 
     //alert(item.id)
 
@@ -214,13 +212,62 @@ const Listecoursscreen = () => {
 
 
 
+  const fetchData = async (ime) => {
+    try {
+      const response = await axios.get(`https://gsh36.net/id20/api/api.php?api=user&key=C73CBF6F154B03D77FBC4C6D39053485&cmd=OBJECT_GET_LOCATIONS,${ime}`);
+      const data = response.data; // Stocker les données dans une variable
+      const id = Object.keys(data)[0]; // Récupérer l'ID
+      if (id) {
+        console.log(`Altitude: ${data[id].altitude}`); // Afficher l'altitude dans la console
+        console.log(`Longitude: ${data[id].lng}`); // Afficher la longitude dans la console
+        console.log(`Latitude: ${data[id].lat}`);
+        // alert(data[id].lat)
+        // console.log(data[0].altitude)
+        // setLocationData(data); // Mettre à jour l'état avec les données
+        //const long=data[id].lng
+
+        setaltitude(data[id].lat); // Récupérer l'altitude
+        setlongitude(data[id].lng); // Récupérer la longitude
+        setlalatitude(data[id].lat); // Récupérer la latitude
+
+        //alert(longitude)
 
 
+      }
+
+      setError(null); // Réinitialiser l'erreur si la récupération est réussie
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const handleupdate = async (item) => {
+    setmonitem(item.numero_chassies)
+    setclient(item.nom)
+    setModalVisiblemap(true);
 
 
+  }
 
-  const handleupdate = (item) => {
-    naviger.navigate('Updatecours', { items: item, refreshList });
+
+  const handleupdates = async (item) => {
+    const ime = item.numero_chassies; //setmonitem Assurez-vous que c'est la bonne propriété pour IME
+    try {
+      const response = await axios.get(`https://gsh36.net/id20/api/api.php?api=user&key=C73CBF6F154B03D77FBC4C6D39053485&cmd=OBJECT_GET_LOCATIONS,${ime}`);
+      const data = response.data;
+      const id = Object.keys(data)[0]; // Récupérer l'ID
+
+      if (id) {
+        setSelectedMapData({
+          latitudes: data[id].lat, // Mettez à jour en fonction de votre structure de données
+          longitude: data[id].lng,
+          nom: item.nom, // Le nom peut provenir de l'élément sélectionné
+        });
+        setModalVisiblemap(true);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données de localisation:', error);
+    }
   };
 
   return (
@@ -246,10 +293,17 @@ const Listecoursscreen = () => {
                 <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
               )}
             </View>
-            <TouchableOpacity style={styles.addButton} onPress={additin}>
-              <Icon name="plus" size={20} style={styles.addButtonIcon} />
-            </TouchableOpacity>
+
           </View>
+
+          <Mapscreen
+            modalVisible={modalVisiblemap}
+            setModalVisible={setModalVisiblemap}
+            //latitudes={selectedMapData?.latitudes}
+            //longitude={selectedMapData?.longitude}
+            ime={monitem}
+            nom={client}
+          />
 
           <Messagebox
             message={message}
@@ -268,7 +322,7 @@ const Listecoursscreen = () => {
             setShowSuccessModal={setshowSuccesspopModal}
           />
 
-          <Listecours
+          <Listemaps
             mydata={filteredData}
             handDelete={handDelete}
             handleupdate={handleupdate}
@@ -336,4 +390,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Listecoursscreen;
+export default Listemapscreen;

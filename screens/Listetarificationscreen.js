@@ -51,6 +51,17 @@ const retrieveRole = async () => {
   }
 };
 
+
+  useFocusEffect(
+        React.useCallback(() => {
+          fetchUserData();
+
+            return () => {
+                // Optionnel : logique de nettoyage si nécessaire
+            };
+        }, [])
+    );
+
 useEffect(() => {
   retrieveRole();
 }, []);
@@ -62,7 +73,7 @@ useEffect(() => {
   }
 
   useEffect(() => {
-    fetchUserData();
+    //fetchUserData();
   }, []);
 
   const refreshList = () => {

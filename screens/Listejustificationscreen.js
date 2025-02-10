@@ -29,6 +29,34 @@ const Listejustificationscreen = ({ navigation }) => {
   const [selected, Setselected] = useState(null);
 
 
+// Vos fonctions d'écran
+const [monid, setmonid] = useState('');
+
+const retrieveuser = async () => {
+  try {
+    const iduser = await AsyncStorage.getItem('monid');
+
+    if (iduser) {
+      setmonid(iduser);
+
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
+
+const [role, setRole] = useState('');
+
+const retrieveRole = async () => {
+  try {
+    const storedRole = await AsyncStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  } catch (e) {
+    console.error('Erreur lors de la récupération du rôle:', e);
+  }
+};
 
 
 
@@ -36,11 +64,34 @@ const Listejustificationscreen = ({ navigation }) => {
 
 
 
-  useEffect(() => {
-    retrieveuser();
-    retrieveRole();
-    fetchUserData();
-  }, []);
+
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    await retrieveRole();
+    await retrieveuser();
+  };
+  
+  fetchData();
+}, []);
+
+
+
+useFocusEffect(
+  React.useCallback(() => {
+    console.log(`monid: ${monid}, role: ${role}`);
+    
+    // Vérifiez si les données sont disponibles avant d'appeler fetchUserData
+    if (monid && role) {
+      fetchUserData();
+    }
+
+    return () => {
+      // Optionnel : logique de nettoyage si nécessaire
+    };
+  }, [monid, role]) // Assurez-vous que le rappel est mis à jour lorsque monid ou role changent
+);
 
 
 
@@ -66,38 +117,13 @@ const Listejustificationscreen = ({ navigation }) => {
 
 
   
-  // Vos fonctions d'écran
-  const [monid, setmonid] = useState('');
-
-  const retrieveuser = async () => {
-    try {
-      const iduser = await AsyncStorage.getItem('monid');
-
-      if (iduser) {
-        setmonid(iduser);
-
-      }
-    } catch (e) {
-      console.error('Erreur lors de la récupération du rôle:', e);
-    }
-  };
+  
 
 
 
   
 
-  const [role, setRole] = useState('');
-
-  const retrieveRole = async () => {
-    try {
-      const storedRole = await AsyncStorage.getItem('role');
-      if (storedRole) {
-        setRole(storedRole);
-      }
-    } catch (e) {
-      console.error('Erreur lors de la récupération du rôle:', e);
-    }
-  };
+ 
 
 
 
@@ -105,22 +131,27 @@ const Listejustificationscreen = ({ navigation }) => {
   const fetchUserData = async () => {
     SetLoading(true); // Correction de la casse
     try {
-      let response;
+      //let response;
       
       if (role==="motard") {
-        alert(monid)
+       // alert(monid)
         const urlGetId = ApiUrl({ endpoint: 'getjustificationid' });
-        response = await axios.get(`${urlGetId}/${monid}`);
-      }
-       if (role!=="motard") {
-        alert(role)
-        const urlGet = ApiUrl({ endpoint: 'getjustification' });
-        response = await axios.get(urlGet);
-      }
-  
+        const response = await axios.get(`${urlGetId}/${monid}`);
+        
       const newData = response.data; // Utiliser les catégories de véhicule
       console.log(newData)
       setUserData(newData);
+      }
+       else {
+       // alert(role)
+        const urlGet = ApiUrl({ endpoint: 'getjustification' });
+        const response = await axios.get(urlGet);
+        
+      const newData = response.data; // Utiliser les catégories de véhicule
+      console.log(newData)
+      setUserData(newData);
+      }
+  
   
     } catch (error) {
       console.error('Erreur lors de la récupération des données utilisateur:', error);

@@ -37,6 +37,7 @@ export default function Updatevehiculescreen({ navigation, route }) {
     useEffect(() => {
       getCategorie();
       getuser();
+     // alert(items.id)
     }, []);
     
     const getCategorie = async () => {
@@ -54,7 +55,7 @@ export default function Updatevehiculescreen({ navigation, route }) {
 
     const getuser = async () => {
         try {
-          const urlget = ApiUrl({ endpoint: 'getuser' });
+          const urlget = ApiUrl({ endpoint: 'get_client' });
           const response = await axios.get(urlget);
           setData(response.data);
         } catch (error) {
@@ -98,7 +99,7 @@ export default function Updatevehiculescreen({ navigation, route }) {
                 formData.append('idcat', description);  //iduser
                 formData.append('iduser', proprietaire); 
                 
-               
+               // alert(items.id)
 
                 if (!description || !proprietaire || marque.trim() === '' || immatricule.trim() === '' || numeroChassie.trim() === '') {
                     setShowSuccessModal(true);
@@ -140,7 +141,7 @@ export default function Updatevehiculescreen({ navigation, route }) {
                     <View style={styles.modalContent}>
 
                     <Droplist icons="pencil" contenus="description" identifiant="id" getCategorie={getCategorie} data={datacat} setData={setDatacat} description={description} setDescription={setDescription} label="Catégorie" placephold="Sélectionnez catégorie"/>
-                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Propriétaire" placephold="Sélectionnez propriétaire"/>
+                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Client" placephold="Sélectionnez client"/>
       
                         <Input 
                             icons="car" 

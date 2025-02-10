@@ -51,7 +51,7 @@ export default function Addvehiculescreen({ navigation, route }) {
 
     const getuser = async () => {
         try {
-          const urlget = ApiUrl({ endpoint: 'getuser' });
+          const urlget = ApiUrl({ endpoint: 'get_client' });
           const response = await axios.get(urlget);
           setData(response.data);
         } catch (error) {
@@ -136,7 +136,7 @@ export default function Addvehiculescreen({ navigation, route }) {
                     <View style={styles.modalContent}>
 
                     <Droplist icons="pencil" contenus="description" identifiant="id" getCategorie={getCategorie} data={datacat} setData={setDatacat} description={description} setDescription={setDescription} label="Catégorie" placephold="Sélectionnez catégorie"/>
-                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Propriétaire" placephold="Sélectionnez propriétaire"/>
+                    <Droplist  icons="user" contenus="nom" identifiant="id" getCategorie={getuser} data={data} setData={setData} description={proprietaire} setDescription={setproprietaire} label="Client" placephold="Sélectionnez client"/>
       
                         <Input 
                             icons="car" 
@@ -154,8 +154,8 @@ export default function Addvehiculescreen({ navigation, route }) {
                         />
                         <Input 
                             icons="key" 
-                            label="Numéro de Châssis" 
-                            placeholder="Numéro de châssis" 
+                            label="Identifiant" 
+                            placeholder="Identifiant" 
                             name={numeroChassie} 
                             setname={setNumeroChassie} 
                         />

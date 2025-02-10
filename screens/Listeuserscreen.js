@@ -26,6 +26,18 @@ const Listeuserscreen = ({ navigation }) => {
     naviger.navigate("Adduser", {refreshList});
   }
 
+
+  
+    useFocusEffect(
+          React.useCallback(() => {
+            fetchUserData();
+  
+              return () => {
+                  // Optionnel : logique de nettoyage si nécessaire
+              };
+          }, [])
+      );
+
   useEffect(() => {
     fetchUserData();
   }, []);

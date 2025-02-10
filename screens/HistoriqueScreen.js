@@ -9,6 +9,9 @@ import Loading from '../Message/Loading';
 import ApiUrl from '../composant/ApiUrl';
 import Droplist from '../composant/Droplist';
 import DatePicker from '../composant/DatePicker';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import Mapscreen2 from './Mapscreen2';
+import moment from 'moment';
 
 
 export default function Historiquescreen({ navigation }) {
@@ -16,12 +19,48 @@ export default function Historiquescreen({ navigation }) {
     const [text, setText] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [date, setDate] = useState(new Date());
+    const [datefin, setDatefin]=useState(new Date())
+    const [data, setdata]=useState([])
 
-    // Nouveaux états pour les champs
+    // Nouveaux états pour les champs  
     const [marque, setMarque] = useState('');
     const [immatricule, setImmatricule] = useState('');
     const [numeroChassie, setNumeroChassie] = useState('');
     const [description, setDescription] = useState('');
+    const [modalVisiblemap, setModalVisiblemap] = useState(false);
+
+
+
+   
+  const Madate  = (dt) => {
+
+    return dt ? moment(dt).format('YYYY-MM-DD') : null;
+  
+    }
+
+
+    const getvehicule = async () => {
+        try {
+            const urlget = ApiUrl({ endpoint: 'getvehicule' });
+            const response = await axios.get(urlget);
+            setdata(response.data);
+        } catch (error) {
+            console.error('Erreur lors de la requête à l\'API :', error);
+        }
+    };
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getvehicule();
+
+            return () => {
+                // Optionnel : logique de nettoyage si nécessaire
+            };
+        }, [])
+    );
+
+
 
     const handleCloseModal = () => {
         setShowSuccessModal(false);
@@ -33,32 +72,32 @@ export default function Historiquescreen({ navigation }) {
         setNumeroChassie('');
     };
 
-    const uploadData = async () => {
-        const url = ApiUrl({ endpoint: 'send_vehicle_data' });
-
+    const Actionrecherhe = async () => {
+       // const url = ApiUrl({ endpoint: 'send_vehicle_data' });
+           // alert(description)
         setLoading(true);
         setTimeout(async () => {
             try {
                 setLoading(false);
-                const formData = new FormData();
-                formData.append('marque', marque);
-                formData.append('immatricule', immatricule);
-                formData.append('numeroChassie', numeroChassie);
+               // const formData = new FormData();
+               // formData.append('marque', marque);
+                //formData.append('immatricule', immatricule);
+                //formData.append('numeroChassie', numeroChassie);
 
-                if (marque.trim() === '' || immatricule.trim() === '' || numeroChassie.trim() === '') {
+                if(!description) {
                     setShowSuccessModal(true);
-                    setText("Veuillez remplir tous les champs");
-                } else {
-                    const res = await axios.post(url, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    });
+                    setText("Veuillez sélectionner le motard.");
+                    return;
+        
+                   }
+                   else{
 
-                    resetFields();
-                    setShowSuccessModal(true);
-                    setText(res.data);
-                }
+                    setModalVisiblemap(true)
+
+
+                   }
+
+            
             } catch (error) {
                 console.error('Erreur:', error);
                 setShowSuccessModal(true);
@@ -78,7 +117,16 @@ export default function Historiquescreen({ navigation }) {
             <View style={styles.container}>
                 <Loading visible={loading} />
                 <Message handleCloseModal={handleCloseModal} text={text} showSuccessModal={showSuccessModal} setShowSuccessModal={setShowSuccessModal} />
-
+                <Mapscreen2
+            modalVisible={modalVisiblemap}
+            setModalVisible={setModalVisiblemap}
+           
+            
+             objectId={description}
+             dateinitial={Madate(date)}
+             datefinal={Madate(datefin)}
+            nom={description}
+          />
                 <ScrollView style={styles.scrollview}>
                     <View style={styles.modalContent}>
                         {/*     
@@ -86,14 +134,15 @@ export default function Historiquescreen({ navigation }) {
                         <DatePicker date={date} setDate={setDate} label="Date de Fin" />
                         <Droplist placephold="Sélectionner Immatriculation" icons="directions-car" description={description} setDescription={setDescription} label="Immatriculation" />
                          */}
-
-
+                        <Droplist icons="car" contenus="numero_chassies" identifiant="numero_chassies" getCategorie={getvehicule} data={data} setData={setdata} description={description} setDescription={setDescription} label="Identifiant" placephold="Sélectionnez identifiant" />
+                        <DatePicker date={date} setDate={setDate} label="Date de début" />
+                        <DatePicker date={datefin} setDate={setDatefin} label="Date de Fin" />
 
 
                         <Buttons
                             title='Recherche'
                             Actionconnection={ActionConnection}
-                            onPress={uploadData}
+                            onPress={Actionrecherhe}
                         />
                     </View>
                 </ScrollView>

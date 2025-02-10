@@ -199,7 +199,7 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="Profil"
-        component={Profilscreen}
+        component={Profilscreens}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/user2.png')} style={styles.linear} />,
           title: "Profil",
@@ -213,7 +213,7 @@ const DrawerNavigator = () => {
       {(role === 'admin' || role === 'super user') && (
         <Drawer.Screen
           name="Véhicule"
-          component={VehiculeScreen}
+          component={Listevehiculescreen}
           options={{
             drawerIcon: ({ color }) => <Image source={require('../assets/car.png')} style={styles.linear} />,
             headerStyle: {
@@ -259,7 +259,7 @@ const DrawerNavigator = () => {
       {(role === 'admin' || role === 'super user') && (
         <Drawer.Screen
           name="Listecat"
-          component={Actionlistcat}
+          component={Listecatscreen}
           options={{
             drawerIcon: ({ color }) => <Image source={require('../assets/cat.png')} style={styles.linear} />,
             title: "Catégorie",
@@ -273,10 +273,10 @@ const DrawerNavigator = () => {
       )}
 
 
-
+{(role === 'admin' || role === 'super user') && (
       <Drawer.Screen
         name="Itineraire"
-        component={Actioninineraire}
+        component={ListeItinscreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/maps.png')} style={styles.linear} />,
           title: "Itinéraire",
@@ -288,12 +288,13 @@ const DrawerNavigator = () => {
 
         }}
       />
+)}
       {(role === 'admin' || role === 'super user') && (
         <Drawer.Screen
           name="Listearret"
-          component={ArretScreen}
+          component={Listearretscreen}
           options={{
-            drawerIcon: ({ color }) => <Image source={require('../assets/arret.png')} style={styles.linear} />,
+            drawerIcon: ({ color }) => <Image source={require('../assets/maps.png')} style={styles.linear} />,
             title: "Arrêt",
             headerStyle: {
               backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
@@ -304,10 +305,10 @@ const DrawerNavigator = () => {
         />
       )}
 
-
+{(role === 'admin' || role === 'super user') && (
       <Drawer.Screen
         name="Tarification"
-        component={TarificationScreens}
+        component={Listetarificationscreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/cash.png')} style={styles.linear} />,
 
@@ -319,12 +320,33 @@ const DrawerNavigator = () => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+)}
+
+
+
+{(role === 'abonne'|| role === 'motard'||role === 'client') && (
+      <Drawer.Screen
+        name="Tarification"
+        component={Listetarificationscreen}
+        options={{
+          drawerIcon: ({ color }) => <Image source={require('../assets/maps.png')} style={styles.linear} />,
+
+          title: "Itinéraire",
+          headerStyle: {
+            backgroundColor: '#0e79b6', // Couleur bleue pour l'en-tête
+          },
+          headerTintColor: '#FFFFFF', // Couleur du texte de l'en-tête
+          headerTitleAlign: 'center', // Centrer le titre
+        }}
+      />
+)}
+
 
 
       {(role === 'admin' || role === 'super user') && (
         <Drawer.Screen
           name="Securite"
-          component={Securite}
+          component={Listeuserscreen}
           options={{
             drawerIcon: ({ color }) => <Image source={require('../assets/secure.png')} style={styles.linear} />,
 
@@ -342,7 +364,7 @@ const DrawerNavigator = () => {
       
 <Drawer.Screen
         name="Apropos"
-        component={ActionApropos}
+        component={Aproposcreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/about.png')} style={styles.linear} />,
           title: "A propos",
@@ -354,10 +376,10 @@ const DrawerNavigator = () => {
         }}
       />
 
-
+{(role !== 'abonne') && (
 <Drawer.Screen
         name="Manuel"
-        component={Actionmanuel}
+        component={Lirepdfscreen}
         options={{
           drawerIcon: ({ color }) => <Image source={require('../assets/userbook.png')} style={styles.linear} />,
           title: "Manuel",
@@ -368,6 +390,7 @@ const DrawerNavigator = () => {
           headerTitleAlign: 'center', // Centrer le titre
         }}
       />
+)}
 
       <Drawer.Screen
         name="Déconnexion"
@@ -387,11 +410,13 @@ const DrawerNavigator = () => {
 const AppNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+    <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
         options={{ headerShown: false }} // Masquer l'en-tête pour l'écran de connexion
-      />
+      /> 
+
+
 
 
 

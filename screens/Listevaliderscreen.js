@@ -13,6 +13,7 @@ import ApiUrl from '../composant/ApiUrl';
 import moment from 'moment'
 import Message from '../Message/Boxmessage';
 import Loading from '../Message/Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Listevaliderscreen = () => {
   const naviger = useNavigation();
@@ -34,65 +35,133 @@ const Listevaliderscreen = () => {
   const [courseid, setcourseid] = useState('');
 
 
+  // Vos fonctions d'écran
+  const [monid, setmonid] = useState('');
+
+  const retrieveuser = async () => {
+    try {
+      const iduser = await AsyncStorage.getItem('monid');
+
+      if (iduser) {
+        setmonid(iduser);
+
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
+    }
+  };
+
   const gettdate = () => {
     return moment().format('YYYY-MM-DD HH:mm:ss')
 
   }
 
-  
+
   const gettdates = () => {
     return moment().format('YYYY-MM-DD')
 
   }
-  
-  
 
-  
+
+
+
+
+
 
 
   const CloseModal = () => {
     setSuccessModal(false);
   };
 
+  //getcourseuser
+ 
+  //const urlget = ApiUrl({ endpoint: 'getcourseuser/' });
 
-  const url = ApiUrl({ endpoint: 'getcourseid/' });
 
 
   const additin = () => {
     naviger.navigate("Addcours");
   };
 
- 
- 
- 
+  // Vos fonctions d'écran
+  const [role, setRole] = useState('');
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchUserData();
-
-      return () => {
-        // Optionnel : logique de nettoyage si nécessaire
-      };
-    }, [])
-  );
-
-  const fetchUserData = async () => {
-    SetLoading(true);
+  const retrieveRole = async () => {
     try {
-      const response = await axios.get(`${url}${gettdates()}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const newData = response.data; // Utiliser les données des courses
-      setUserData(newData);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données utilisateur:', error);
-    } finally {
-      SetLoading(false);
+      const storedRole = await AsyncStorage.getItem('role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+    } catch (e) {
+      console.error('Erreur lors de la récupération du rôle:', e);
     }
   };
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await retrieveRole();
+      await retrieveuser();
+    };
+    
+    fetchData();
+  }, []);
+
+ 
+
+
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log(`monid: ${monid}, role: ${role}`);
+      
+      // Vérifiez si les données sont disponibles avant d'appeler fetchUserData
+      if (monid && role) {
+        fetchUserData();
+      }
+  
+      return () => {
+        // Optionnel : logique de nettoyage si nécessaire
+      };
+    }, [monid, role]) // Assurez-vous que le rappel est mis à jour lorsque monid ou role changent
+  );
+
+  const fetchUserData = async () => {
+    setLoading(true); // Correction de la casse
+    try {
+      const dates = gettdates(); // Stocker la date pour réutilisation
+      // alert(dates+"  "+monid); // Afficher la date
+      const url = ApiUrl({ endpoint: 'getcourseid/' });
+      if (role === "admin" || role === "super user") {
+        const response = await axios.get(`${url}${dates}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const newData = response.data; // Utiliser les données des courses
+        setUserData(newData);
+      } else {
+        const Monurl = ApiUrl({ endpoint: 'getcourseuser' });
+        const formData = new FormData();
+        formData.append('iduser', monid); // Assurez-vous que monid est défini
+        formData.append('datecourse', dates);
+        const response = await axios.post(Monurl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        //const response = await axios.get(`${url}${dates}`);
+        const newData = response.data; // Utiliser les données des courses
+        setUserData(newData);
+        console.log(response)
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données utilisateur:', error);
+    } finally {
+      setLoading(false); // Correction de la casse
+    }
+  };
   const handleSearch = (text) => {
     setSearchText(text);
   };
@@ -192,17 +261,17 @@ const Listevaliderscreen = () => {
         const formData = new FormData();
         formData.append('datedepart', gettdate());
         formData.append('idcourse', item.id);
-       // formData.append('iduser', item.iduser);
+        // formData.append('iduser', item.iduser);
 
-    
+
 
         const res = await axios.post(url, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-     
-      
+
+
         setSuccessModal(true);
         setText(res.data);
         // }
@@ -219,7 +288,7 @@ const Listevaliderscreen = () => {
 
 
 
-  
+
 
 
   const actiondepart = async () => {
@@ -236,11 +305,11 @@ const Listevaliderscreen = () => {
     setVisibleModal(false);
   };
 
-  
 
 
-  
-  
+
+
+
   const arriver = (item) => {
     setShowSuccessModalArriver(true);
     SetmodalVisibleArriver(true);
@@ -250,7 +319,7 @@ const Listevaliderscreen = () => {
   };
 
   const createarriver = async (item) => {
-     const url = ApiUrl({ endpoint: 'arriver' });
+    const url = ApiUrl({ endpoint: 'arriver' });
     setLoading(true);
     setTimeout(async () => {
       try {
@@ -258,9 +327,9 @@ const Listevaliderscreen = () => {
         const formData = new FormData();
         formData.append('datearriver', gettdate());
         formData.append('idcourse', item.id);
-       // formData.append('iduser', item.iduser);
+        // formData.append('iduser', item.iduser);
 
-    
+
 
         const res = await axios.post(url, formData, {
           headers: {
@@ -269,7 +338,7 @@ const Listevaliderscreen = () => {
         });
         //comptertour();
         fetchUserData();
-      
+
         setSuccessModal(true);
         setText(res.data);
         // }
@@ -284,7 +353,7 @@ const Listevaliderscreen = () => {
   }
 
   const actionarriver = async () => {
-    
+
 
     SetmodalVisibleArriver(false);
     //setVisibleModal(false)
@@ -387,10 +456,10 @@ const Listevaliderscreen = () => {
             embarquer={embarquer}
             depart={depart}
             arriver={arriver}
-          
+
             Loading={Loadings}
-          
-           
+
+
           />
 
         </View>

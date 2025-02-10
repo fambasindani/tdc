@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 0.41.0",
+    "appVersionSource": "remote" 
+  },
+  "build": {
+    "production": {  
+      "distribution": "store",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "release": {
+      "distribution": "store",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
